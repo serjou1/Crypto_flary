@@ -37,3 +37,10 @@
         padding:0 40px
     }
 }
+@media(max-width:600px){
+    .socialLink{
+        & span{
+            display: none;
+        }
+    }
+}

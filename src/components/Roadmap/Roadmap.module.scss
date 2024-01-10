@@ -97,6 +97,8 @@
   .timeLine {
     width: 700px;
     overflow-x: scroll;
+    padding: 10px 15px 10px 25px;
+    gap: 10px;
   }
   .tileLineBlok {
     background: -webkit-linear-gradient(var(--color-bg), var(--color-bg)) padding-box,
@@ -127,5 +129,13 @@
   }
   .littleTittle {
     gap: 20px;
+  }
+  .tileLineBlok {
+   //margin-right: 0;
+   min-width: 350px;
+   max-width: 350px;
+  }
+  .tileLineBlok:last-child {
+    margin-left: 22px;
   }
 }
