@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import style from './App.module.scss'
-import { Navbar } from './components';
+import { Footer, Navbar } from './components';
 import { Home } from './page';
 
 function App() {
@@ -11,6 +11,7 @@ function App() {
       <Route path='/' element={<Home/>}/>
     </Routes>
     </div>
+    <Footer/>
   </div>;
 }
 

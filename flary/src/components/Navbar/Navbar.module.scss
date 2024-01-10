@@ -9,6 +9,16 @@
   backdrop-filter: blur(64px);
   -webkit-backdrop-filter: blur(64px);
 }
+.bgBlur {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  background: #ff9151;
+  z-index: -1;
+  left: 10%;
+  top: 10%;
+  filter: blur(100px);
+}
 .flexbox {
   height: 88px;
   padding: 0 20px;
@@ -18,17 +28,15 @@
   justify-content: space-between;
   align-items: center;
 }
-.logo {
-  & img {
-    width: 130px;
-    height: 40px;
-  }
-}
+
 .list {
   font-size: 20px;
   font-weight: 600;
   display: flex;
   gap: 20px;
+  & li:hover a {
+    color: var(--color-text-yellow);
+  }
 }
 .left {
   align-items: center;
@@ -52,7 +60,7 @@
   padding: 12px 0;
   width: 176px;
   text-align: center;
-  color: #ffc837;
+  color: var(--color-text-yellow);
   cursor: pointer;
   &:hover {
     filter: brightness(120%);
@@ -87,8 +95,8 @@
     flex-direction: column;
     gap: 30px;
     font-size: 30px;
-    & li:hover a{
-        color: #ffc837;
+    & li:hover a {
+      color: var(--color-text-yellow);
     }
   }
   .mobile_open {
@@ -109,7 +117,7 @@
     transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
     transition-duration: 300ms;
   }
-  .mobile_close{
+  .mobile_close {
     backdrop-filter: blur(64px);
     position: absolute;
     top: 0;
@@ -126,6 +134,5 @@
     text-align: center;
     transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
     transition-duration: 300ms;
-    
   }
 }

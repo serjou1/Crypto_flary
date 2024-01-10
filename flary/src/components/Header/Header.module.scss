@@ -1,0 +1,71 @@
+.Header {
+  display: flex;
+  gap: 30px;
+  justify-content: space-between;
+  align-items: center;
+  //height: 100vh;
+}
+.description {
+  width: 55%;
+  padding: 40px 30px 0 30px;
+  & h1 {
+    background-image: linear-gradient(90deg,#ffa957,#ffd975);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+
+    font-size: 54px;
+    line-height: 120%;
+    text-transform: capitalize;
+  }
+  & p {
+    font-style: italic;
+    line-height: 25px;
+    font-weight: 400;
+    font-size: 18px;
+    margin-top: 40px;
+    margin-right: 100px;
+  }
+}
+.btn {
+    display: flex;
+    margin-top: 40px;
+    text-align: center;
+    justify-content: center;
+    
+  & a {
+    // background-image: linear-gradient(to right, #fda085 51%, #f6d365 100%);
+    background: linear-gradient(90deg,#ffa957,#ffd975);
+    
+    color: #000;
+    border-radius: 8px;
+    padding: 12px;
+    width: 186px;
+    font-weight: 700;
+    line-height: 26px;
+    transition: 0.5s;
+    &:hover{
+        filter: brightness(120%);
+        
+
+
+  }
+ 
+}
+
+}
+.img {
+  width: 40%;
+  & img {
+    width: 100%;
+    height: auto;
+    display: block;
+    animation: Move-HeaderImage 3s infinite ease alternate;
+  }
+}
+@keyframes Move-HeaderImage{
+    from{transform:translateY(-15px)};
+    to {transform:translateY(0px) scale(1.05)}
+
+}

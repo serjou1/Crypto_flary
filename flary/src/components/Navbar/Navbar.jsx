@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../../assets/logo.svg';
+import logo from '../../assets/FLARY svg.png';
 import { Select } from '../Select/Select';
 import style from './Navbar.module.scss';
 
@@ -14,8 +14,9 @@ export const Navbar = () => {
   };
   return (
     <div className={style.Navbar}>
+      <div className={style.bgBlur}></div>
       <div className={style.flexbox}>
-        <div className={style.logo}>
+        <div className='logo'>
           <img src={logo} alt="" />
         </div>
         <ul className={style.list}>
