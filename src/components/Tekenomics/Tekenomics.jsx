@@ -13,7 +13,8 @@ export const Tekenomics = () => {
         <div className={style.description}>
           <div className={style.data}>
             <div className={style.titleSchedule}>Total supply:</div>
-
+            <div className={style.adapt}>
+              <div className="">
             <div className={style.infoData}>
               <div className={style.dot}></div>
               <div className={style.info}>50% lorem</div>
@@ -26,6 +27,8 @@ export const Tekenomics = () => {
               <div className={style.dot}></div>
               <div className={style.info}>50% lorem</div>
             </div>
+            </div>
+            <div className="">
             <div className={style.infoData}>
               <div className={style.dot}></div>
               <div className={style.info}>50% lorem</div>
@@ -37,6 +40,8 @@ export const Tekenomics = () => {
             <div className={style.infoData}>
               <div className={style.dot}></div>
               <div className={style.info}>50% lorem</div>
+            </div>
+            </div>
             </div>
           </div>
         </div>

@@ -12,13 +12,14 @@
 }
 .social{
     display: flex;
-    gap: 30px;
+    gap: 50px;
     align-items: center;
 }
 .socialLink{
     color: var(--color-text-yellow);
     display: flex;
     align-items: center;
+    transition: all ease .3s;
     & img{
         width: 24px;
         height: 24px;
@@ -26,5 +27,8 @@
     }
     & span{
         margin-left: 10px;
+    }
+    &:hover{
+        transform: scale(1.2);
     }
 }

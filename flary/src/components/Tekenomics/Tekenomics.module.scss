@@ -60,3 +60,24 @@
 .schedule {
   width: 50%;
 }
+@media (max-width: 900px) {
+  .titleSchedule {
+    font-size: 26px;
+    
+  }
+  .Tekenomics {
+    & img {
+      top: 248px;
+      left: 123px;
+    }
+  }
+}
+
+@media (max-width: 770px) {
+  .Tekenomics {
+    & img {
+      top: 212px;
+      left: 101px;
+    }
+  }
+}

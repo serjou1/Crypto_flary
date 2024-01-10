@@ -15,91 +15,119 @@
 .infoData {
   display: flex;
   align-items: center;
-  
 }
 
 .dotGreen {
-    background:var(--color-text-darkGreen);
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-  }
-  .infoLine{
-    margin-left: 8px;
-  }
+  background: var(--color-text-darkGreen);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.infoLine {
+  margin-left: 8px;
+}
 
-  .dotYellow {
-    background: var(--color-text-darkYellow);
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
+.dotYellow {
+  background: var(--color-text-darkYellow);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.dotWhite {
+  background: var(--color-text-darkWhite);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.info {
+  margin-left: 10px;
+  font-size: 21px;
+  font-weight: 400;
+}
+
+.timeLine {
+  display: flex;
+  position: relative;
+}
+.tileLineBlok {
+  margin: 0 75px;
+}
+.line {
+  top: 7px;
+  position: absolute;
+  height: 1px;
+  width: 100%;
+  background-color: rgba(83, 81, 81, 0.5);
+}
+.lineDotGreen {
+  background: var(--color-text-darkGreen);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  filter: blur(3.5px);
+}
+.lineDotGreen {
+  background: var(--color-text-darkGreen);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  filter: blur(3.5px);
+}
+.lineDotGreen {
+  background: var(--color-text-darkGreen);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  filter: blur(3.5px);
+}
+.lineDotYellow {
+  background: var(--color-text-darkYellow);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  filter: blur(3.5px);
+}
+.lineDotWhite {
+  background: var(--color-text-darkWhite);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  filter: blur(3.5px);
+}
+.lineTittle {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 35px;
+  margin: 20px 0;
+}
+.timeLineResponse {
+  display: none;
+}
+@media (max-width: 1150px) {
+  .tileLineBlok {
+    margin: 0 25px 0 15px;
   }
-  .dotWhite {
-    background:  var(--color-text-darkWhite);
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-  }
-  .info {
-    margin-left: 10px;
-    font-size: 21px;
-    font-weight: 400;
-  }
-  
-  .timeLine{
+}
+@media (max-width: 940px) {
+  .timeLineResponse {
     display: flex;
-    position: relative;
-
+    overflow-x: scroll;
+    padding-bottom: 10px;
   }
-  .tileLineBlok{
-    margin: 0 75px;
+  .timeLine {
+    display: none;
   }
-  .line{
-    top: 7px;
-    position: absolute;
-   height: 1px;
-   width: 100%;
-   background-color: rgba(83, 81, 81, 0.5);
-
+  .tileLineBlok {
+    background: -webkit-linear-gradient(var(--color-bg), var(--color-bg)) padding-box,
+      linear-gradient(to bottom, #fe5e49, var(--color-bg)) border-box;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    margin-bottom: 24px;
+    min-width: 400px;
+    margin-left: 0;
+    margin-right: 35px;
+    padding: 0 20px;
   }
-  .lineDotGreen{
-    background: var(--color-text-darkGreen)   ;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    filter: blur(3.5px);
+  .infoData {
   }
-  .lineDotGreen{
-    background: var(--color-text-darkGreen)   ;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    filter: blur(3.5px);
-  }
-  .lineDotGreen{
-    background: var(--color-text-darkGreen)   ;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    filter: blur(3.5px);
-  }
-  .lineDotYellow{
-    background: var(--color-text-darkYellow)   ;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    filter: blur(3.5px);
-  }
-  .lineDotWhite{
-    background: var(--color-text-darkWhite)   ;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    filter: blur(3.5px);
-  }
-  .lineTittle{
-    font-size: 24px;
-    font-weight: 500;
-    line-height: 35px;
-    margin: 20px 0;
-  }
+}

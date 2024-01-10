@@ -26,7 +26,7 @@ export const Roadmap = () => {
           <div className={style.lineTittle}>Stage 1</div>
           <div className={style.infoData}>
             <div className={style.dotGreen}></div>
-            <div className={style.infoLine}>Team up</div>
+            <div className={style.infoLine}>Team up hhhhhhh</div>
           </div>
           <div className={style.infoData}>
             <div className={style.dotGreen}></div>
@@ -53,15 +53,15 @@ export const Roadmap = () => {
           <div className={style.lineDotYellow}></div>
           <div className={style.lineTittle}>Stage 2</div>
           <div className={style.infoData}>
-            <div className={style.dotYellow }></div>
+            <div className={style.dotYellow}></div>
             <div className={style.infoLine}>Main functional development</div>
           </div>
           <div className={style.infoData}>
-            <div className={style.dotYellow }></div>
+            <div className={style.dotYellow}></div>
             <div className={style.infoLine}>Main functional development</div>
           </div>
           <div className={style.infoData}>
-            <div className={style.dotYellow }></div>
+            <div className={style.dotYellow}></div>
             <div className={style.infoLine}>Main functional development</div>
           </div>
           <div className={style.infoData}>
@@ -71,6 +71,78 @@ export const Roadmap = () => {
         </div>
         <div className={style.tileLineBlok}>
           <div className={style.lineDotWhite}></div>
+          <div className={style.lineTittle}>Stage 3</div>
+          <div className={style.infoData}>
+            <div className={style.dotWhite}></div>
+            <div className={style.infoLine}>Main functional development</div>
+          </div>
+          <div className={style.infoData}>
+            <div className={style.dotWhite}></div>
+            <div className={style.infoLine}>Main functional development</div>
+          </div>
+          <div className={style.infoData}>
+            <div className={style.dotWhite}></div>
+            <div className={style.infoLine}>Main functional development</div>
+          </div>
+          <div className={style.infoData}>
+            <div className={style.dotWhite}></div>
+            <div className={style.infoLine}>Main functional development</div>
+          </div>
+          <div className={style.infoData}>
+            <div className={style.dotWhite}></div>
+            <div className={style.infoLine}>Main functional development</div>
+          </div>
+        </div>
+      </div>
+      <div className={style.timeLineResponse}>
+        <div className={style.tileLineBlok}>
+          <div className={style.lineTittle}>Stage 1</div>
+          <div className={style.infoData}>
+            <div className={style.dotGreen}></div>
+            <div className={style.infoLine}>Team up hhhhhhh</div>
+          </div>
+          <div className={style.infoData}>
+            <div className={style.dotGreen}></div>
+            <div className={style.infoLine}>Team up</div>
+          </div>
+          <div className={style.infoData}>
+            <div className={style.dotGreen}></div>
+            <div className={style.infoLine}>Team up</div>
+          </div>
+          <div className={style.infoData}>
+            <div className={style.dotGreen}></div>
+            <div className={style.infoLine}>Team up</div>
+          </div>
+          <div className={style.infoData}>
+            <div className={style.dotGreen}></div>
+            <div className={style.infoLine}>Team up</div>
+          </div>
+          <div className={style.infoData}>
+            <div className={style.dotGreen}></div>
+            <div className={style.infoLine}>Team up</div>
+          </div>
+        </div>
+
+        <div className={style.tileLineBlok}>
+          <div className={style.lineTittle}>Stage 2</div>
+          <div className={style.infoData}>
+            <div className={style.dotYellow}></div>
+            <div className={style.infoLine}>Main functional development</div>
+          </div>
+          <div className={style.infoData}>
+            <div className={style.dotYellow}></div>
+            <div className={style.infoLine}>Main functional development</div>
+          </div>
+          <div className={style.infoData}>
+            <div className={style.dotYellow}></div>
+            <div className={style.infoLine}>Main functional development</div>
+          </div>
+          <div className={style.infoData}>
+            <div className={style.dotWhite}></div>
+            <div className={style.infoLine}>Main functional development</div>
+          </div>
+        </div>
+        <div className={style.tileLineBlok}>
           <div className={style.lineTittle}>Stage 3</div>
           <div className={style.infoData}>
             <div className={style.dotWhite}></div>
