@@ -1,10 +1,8 @@
 import React from 'react';
+import { BsTwitterX } from 'react-icons/bs';
+import { FaDiscord, FaTelegramPlane } from 'react-icons/fa';
 import logo from '../../assets/FLARY svg.png';
 import style from './Footer.module.scss';
-
-import discord from '../../assets/discord.svg';
-import telegram from '../../assets/telegram.svg';
-import X from '../../assets/top-X.svg';
 
 export const Footer = () => {
   return (
@@ -21,19 +19,19 @@ export const Footer = () => {
           </div> */}
         <div className={style.socialItem}>
           <a href="#" className={style.socialLink}>
-            <img src={X} alt="" />
+            <BsTwitterX size={24} style={{ color: '#ffa957' }} />
             <span>X</span>
           </a>
         </div>
         <div className={style.socialItem}>
           <a href="#" className={style.socialLink}>
-            <img src={telegram} alt="" />
+            <FaTelegramPlane size={24} style={{ color: '#ffa957' }} />
             <span>Telegram</span>
           </a>
         </div>
         <div className={style.socialItem}>
           <a href="#" className={style.socialLink}>
-            <img src={discord} alt="" />
+            <FaDiscord size={24} style={{ color: '#ffa957' }} />
             <span>Discord</span>
           </a>
         </div>
