@@ -59,20 +59,7 @@
   width: 100%;
   background-color: rgba(83, 81, 81, 0.5);
 }
-.lineDotGreen {
-  background: var(--color-text-darkGreen);
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  filter: blur(3.5px);
-}
-.lineDotGreen {
-  background: var(--color-text-darkGreen);
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  filter: blur(3.5px);
-}
+
 .lineDotGreen {
   background: var(--color-text-darkGreen);
   width: 14px;
@@ -100,22 +87,16 @@
   line-height: 35px;
   margin: 20px 0;
 }
-.timeLineResponse {
-  display: none;
-}
+
 @media (max-width: 1150px) {
   .tileLineBlok {
     margin: 0 25px 0 15px;
   }
 }
 @media (max-width: 940px) {
-  .timeLineResponse {
-    display: flex;
-    overflow-x: scroll;
-    padding-bottom: 10px;
-  }
   .timeLine {
-    display: none;
+    width: 700px;
+    overflow-x: scroll;
   }
   .tileLineBlok {
     background: -webkit-linear-gradient(var(--color-bg), var(--color-bg)) padding-box,
@@ -128,6 +109,23 @@
     margin-right: 35px;
     padding: 0 20px;
   }
-  .infoData {
+  .lineDotGreen,
+  .lineDotYellow,
+  .lineDotWhite {
+    display: none;
+  }
+  .line {
+    display: none;
+  }
+}
+@media (max-width: 710px) {
+  .timeLine {
+    width: 420px;
+  }
+  .info {
+    font-size: 18px;
+  }
+  .littleTittle {
+    gap: 20px;
   }
 }
