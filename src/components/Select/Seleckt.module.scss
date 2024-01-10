@@ -1,0 +1,27 @@
+.Select {
+  position: relative;
+  cursor: pointer;
+}
+.crypto_list {
+  position: absolute;
+  right: 0;
+  top: 30px;
+  border-radius: 8px;
+  background-color: rgb(30, 35, 41, 0.63);
+  backdrop-filter: blur(64px);
+  -webkit-backdrop-filter: blur(64px);
+  overflow: hidden;
+}
+.item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: 300;
+  &:hover {
+    background-color: rgb(30, 35, 41, 0.83);
+    color: var(--color-text-yellow);
+  }
+}
+

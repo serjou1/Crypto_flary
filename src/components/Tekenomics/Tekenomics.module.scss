@@ -1,0 +1,62 @@
+.Tekenomics {
+  position: relative;
+  padding-top: 112px;
+  margin-bottom: 100px;
+  & p {
+    font-size: 48px;
+    font-weight: 700;
+    text-align: center;
+  }
+  & img {
+    position: absolute;
+  }
+  & img {
+    position: absolute;
+    top: 392px;
+    left: 187px;
+    transform: rotate3d(4, -3, 10, 0deg);
+    opacity: 0.7;
+    z-index: -1;
+    display: block;
+    width: 66%;
+    height: auto;
+  }
+}
+.tekenomicsInfo {
+  margin-top: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.description {
+  width: 45%;
+}
+.data {
+  line-height: 32px;
+  font-weight: 400;
+  font-size: 16px;
+  margin-left: 85px;
+}
+
+.titleSchedule {
+  font-size: 36px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+.infoData {
+  display: flex;
+  align-items: center;
+}
+.dot {
+  background: rgba(112, 41, 209);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.info {
+  margin-left: 16px;
+  font-size: 21px;
+}
+.schedule {
+  width: 50%;
+}
