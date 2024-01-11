@@ -1,16 +1,31 @@
+import { motion } from 'framer-motion';
 import React from 'react';
 import style from './AboutAs.module.scss';
 
 import AboutAsImg from '../../assets/AboutAs.png';
 
+const animation = {
+  hidden: {
+    scale: 1.4,
+    opacity: 0,
+  },
+  visible: {
+    scale: 1,
+    opacity: 1,
+  },
+};
+
 export const AboutAs = () => {
   return (
-    <div className={style.AboutAs} id='about'>
-      <div className={style.block}>
-        <div className={style.contentHelperImg}>
-          <img src={AboutAsImg} alt="" />
-        </div>
-        <div className={style.content}>
+    <div className={style.AboutAs} id="about">
+      <motion.div className={style.block} initial="hidden" whileInView="visible">
+        <motion.div
+          variants={animation}
+          transition={{ duration: '1' }}
+          className={style.contentHelperImg}>
+          <img src={AboutAsImg} alt="AboutAsImg" />
+        </motion.div>
+        <motion.div variants={animation} transition={{ duration: '2' }} className={style.content}>
           <div className={style.contentTitle}>About us - </div>
           <div className={style.contentText}>
             Founded by the team of great friends, we believe to be family with the whole community
@@ -18,10 +33,10 @@ export const AboutAs = () => {
             family, and that’s why we are so eager to provide you with the most useful solutions,
             powerful services and technical advantages.
           </div>
-        </div>
-      </div>
-      <div className={style.block}>
-        <div className={style.content}>
+        </motion.div>
+      </motion.div>
+      <motion.div initial="hidden" whileInView="visible" className={style.block}>
+        <motion.div variants={animation} transition={{ duration: '2' }} className={style.content}>
           <div className={style.contentTitleLittle}>Problem </div>
           <div className={style.contentText}>
             <p>
@@ -35,20 +50,28 @@ export const AboutAs = () => {
               you need even more funds for the future investments.
             </p>
           </div>
-        </div>
-        <div className={style.contentHelper}>
+        </motion.div>
+        <motion.div
+          variants={animation}
+          transition={{ duration: '2' }}
+          className={style.contentHelper}>
+          <span className={style.numSpan}>01</span>
           <h3>
-            Get the <span>maximum</span> with Flary finance
+            Get the <span className={style.textSpan}>maximum</span> with Flary finance
           </h3>
-        </div>
-      </div>
-      <div className={style.block}>
-        <div className={style.contentHelper}>
+        </motion.div>
+      </motion.div>
+      <motion.div initial="hidden" whileInView="visible" className={style.block}>
+        <motion.div
+          variants={animation}
+          transition={{ duration: '2' }}
+          className={style.contentHelper}>
+          <span className={style.numSpan}>02</span>
           <h3>
-            Get the <span>maximum</span> with Flary finance
+            Get the <span className={style.textSpan}>maximum</span> with Flary finance
           </h3>
-        </div>
-        <div className={style.content}>
+        </motion.div>
+        <motion.div variants={animation} transition={{ duration: '2' }} className={style.content}>
           <div className={style.contentTitleSolution}>Solution</div>
           <div className={style.contentText}>
             <p>
@@ -61,8 +84,8 @@ export const AboutAs = () => {
               pledge in our system.
             </p>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 };

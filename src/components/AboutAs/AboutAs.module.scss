@@ -15,10 +15,10 @@
 }
 .contentTitle {
   background-image: linear-gradient(90deg, #ffa957, #ffd975);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    -moz-background-clip: text;
-    -moz-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-background-clip: text;
+  -moz-text-fill-color: transparent;
   line-height: 58px;
   font-size: 48px;
   margin-bottom: 24px;
@@ -46,17 +46,32 @@
     width: 100%;
     height: auto;
     display: block;
-    animation: bounce 2s infinite;
+    //animation: bounce 2s infinite;
   }
 }
 .contentHelper {
   width: 45%;
+  position: relative;
+  & .numSpan {
+    font-weight: 500;
+    font-size: 85px;
+    line-height: 72px;
+    position: absolute;
+    left: 0;
+    top: 13px;
+    z-index: -1;
+    background: -webkit-linear-gradient(270deg, #fe5e49, var(--color-bg));
+    -webkit-text-fill-color: var(--color-bg);
+    -webkit-background-clip: text;
+    -webkit-text-stroke: 4px transparent;
+  }
 
   & h3 {
+    padding-left: 25px;
     font-size: 40px;
-    line-height: 48px;
-    margin-bottom: 55px;
-    & span {
+    line-height: 58px;
+    margin-top: 55px;
+    & .textSpan {
       color: var(--color-text-yellow);
     }
   }
@@ -88,10 +103,10 @@
 @media (max-width: 750px) {
   .AboutAs {
     // width:100vh;
-    margin-top: 50px;
+    margin-top: 250px;
     margin-bottom: 50px;
   }
-  .contentTitle{
+  .contentTitle {
     font-size: 38px;
   }
   .content {
@@ -101,9 +116,7 @@
     margin-top: 40px;
     width: 80%;
     & img {
-     
-      
-      animation: none
+      animation: none;
     }
   }
   .contentHelper {
@@ -112,6 +125,7 @@
       margin-left: 20px;
       margin-right: 20px;
       font-size: 30px;
+      margin-bottom: 40px;
     }
   }
   .block:nth-child(1) {
@@ -125,7 +139,7 @@
     flex-direction: column;
   }
   .contentText {
-    & p{
+    & p {
       font-size: 14px;
     }
   }

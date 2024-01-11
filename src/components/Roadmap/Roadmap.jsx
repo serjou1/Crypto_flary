@@ -1,9 +1,26 @@
+import { motion } from 'framer-motion';
 import React from 'react';
 import style from './Roadmap.module.scss';
+const animation = {
+  hidden: {
+    scale: 1.4,
+    opacity: 0,
+  },
+  visible: {
+    scale: 1,
+    opacity: 1,
+  },
+};
 
 export const Roadmap = () => {
   return (
-    <div className={style.Roadmap} id='roadmap'>
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      variants={animation}
+      transition={{ duration: '1' }}
+      className={style.Roadmap}
+      id="roadmap">
       <div className="tittle">Roadmap</div>
       <div className={style.littleTittle}>
         <div className={style.infoData}>
@@ -96,6 +113,6 @@ export const Roadmap = () => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };

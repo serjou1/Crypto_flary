@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Link as LinkSmooth } from 'react-scroll';
 import logo from '../../assets/FLARY svg.png';
 import { Select } from '../Select/Select';
@@ -21,7 +20,7 @@ export const Navbar = () => {
           <img src={logo} alt="" />
         </div>
         <ul className={style.list}>
-          <li className='active'>
+          <li className="active">
             <LinkSmooth to="hero" spy={true} offset={-150} smooth={true} duration={500}>
               Home
             </LinkSmooth>
@@ -33,7 +32,7 @@ export const Navbar = () => {
           </li>
           <li>
             <LinkSmooth to="tekenomics" spy={true} offset={-100} smooth={true} duration={500}>
-              Tekenomics
+              Tokenomics
             </LinkSmooth>
           </li>
           <li>
@@ -55,26 +54,50 @@ export const Navbar = () => {
         </div>
 
         <div className={mobileNav ? style.mobile_open : style.mobile_close}>
-          <ul className={style.mobile_list} >
-            <li >
-            <LinkSmooth to="hero" spy={true} offset={-150} smooth={true} duration={500} onClick={handlerMobileNav}>
-              Home
-            </LinkSmooth>
+          <ul className={style.mobile_list}>
+            <li>
+              <LinkSmooth
+                to="hero"
+                spy={true}
+                offset={-150}
+                smooth={true}
+                duration={500}
+                onClick={handlerMobileNav}>
+                Home
+              </LinkSmooth>
             </li>
             <li>
-            <LinkSmooth to="about" spy={true} offset={-100} smooth={true} duration={500} onClick={handlerMobileNav}>
-              About Us
-            </LinkSmooth>
-            </li>
-            <li >
-            <LinkSmooth to="tekenomics" spy={true} offset={-100} smooth={true} duration={500} onClick={handlerMobileNav}>
-              Tekenomics
-            </LinkSmooth>
+              <LinkSmooth
+                to="about"
+                spy={true}
+                offset={-100}
+                smooth={true}
+                duration={500}
+                onClick={handlerMobileNav}>
+                About Us
+              </LinkSmooth>
             </li>
             <li>
-            <LinkSmooth to="roadmap" spy={true} offset={-150} smooth={true} duration={500} onClick={handlerMobileNav}>
-              Roadmap
-            </LinkSmooth>
+              <LinkSmooth
+                to="tekenomics"
+                spy={true}
+                offset={-100}
+                smooth={true}
+                duration={500}
+                onClick={handlerMobileNav}>
+                Tokenomics
+              </LinkSmooth>
+            </li>
+            <li>
+              <LinkSmooth
+                to="roadmap"
+                spy={true}
+                offset={-150}
+                smooth={true}
+                duration={500}
+                onClick={handlerMobileNav}>
+                Roadmap
+              </LinkSmooth>
             </li>
           </ul>
           <div className="">
