@@ -3,7 +3,7 @@ import style from './Roadmap.module.scss';
 
 export const Roadmap = () => {
   return (
-    <div className={style.Roadmap}>
+    <div className={style.Roadmap} id='roadmap'>
       <div className="tittle">Roadmap</div>
       <div className={style.littleTittle}>
         <div className={style.infoData}>

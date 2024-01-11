@@ -5,7 +5,7 @@ import AboutAsImg from '../../assets/AboutAs.png';
 
 export const AboutAs = () => {
   return (
-    <div className={style.AboutAs}>
+    <div className={style.AboutAs} id='about'>
       <div className={style.block}>
         <div className={style.contentHelperImg}>
           <img src={AboutAsImg} alt="" />

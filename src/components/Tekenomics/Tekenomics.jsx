@@ -6,7 +6,7 @@ import BgImage from '../../assets/bg-tekenomics.png'
 
 export const Tekenomics = () => {
   return (
-    <div className={style.Tekenomics}>
+    <div className={style.Tekenomics} id='tekenomics'>
       <img src={BgImage} alt="" />
       <p>Tekenomics</p>
       <div className={style.tekenomicsInfo}>

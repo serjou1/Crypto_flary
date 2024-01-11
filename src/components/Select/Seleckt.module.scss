@@ -1,4 +1,5 @@
 .Select {
+  margin-right: -240px;
   position: relative;
   cursor: pointer;
 }
@@ -23,5 +24,9 @@
     background-color: rgb(30, 35, 41, 0.83);
     color: var(--color-text-yellow);
   }
+}
+@media (max-width:600px){
+  .Select {
+    margin-right: -150px;}
 }
 

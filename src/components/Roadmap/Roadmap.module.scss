@@ -121,6 +121,9 @@
   }
 }
 @media (max-width: 710px) {
+  .Roadmap{
+    margin-bottom: 40px;
+  }
   .timeLine {
     width: 420px;
   }
@@ -131,11 +134,11 @@
     gap: 20px;
   }
   .tileLineBlok {
-   //margin-right: 0;
-   min-width: 350px;
-   max-width: 350px;
+    //margin-right: 0;
+    min-width: 350px;
+    max-width: 350px;
   }
   .tileLineBlok:last-child {
-    margin-left: 22px;
+    margin-left: 20px;
   }
 }

@@ -14,6 +14,11 @@
   width: 45%;
 }
 .contentTitle {
+  background-image: linear-gradient(90deg, #ffa957, #ffd975);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
   line-height: 58px;
   font-size: 48px;
   margin-bottom: 24px;
