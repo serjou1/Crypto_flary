@@ -19,6 +19,7 @@ export const Roadmap = () => {
       whileInView="visible"
       variants={animation}
       transition={{ duration: '1' }}
+      viewport={{amount:0.2,once:true}}
       className={style.Roadmap}
       id="roadmap">
       <div className="tittle">Roadmap</div>

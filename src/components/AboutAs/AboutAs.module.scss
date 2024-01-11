@@ -1,13 +1,19 @@
 .AboutAs {
   // width:100vh;
   margin-top: 250px;
-  margin-bottom: 300px;
+  margin-bottom: 150px;
 }
 .block {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 100px;
+}
+.netBackground{
+  background: radial-gradient(70.71% 70.71% at 50% 50%,transparent 0,rgba(0,0,0,.5) 79%),url(../../assets/bg-net.png),transparent 0 0/100% 100% no-repeat;
+    
+    padding-top: 28px;
+    padding-bottom: 30px;
 }
 
 .content {
@@ -22,6 +28,7 @@
   line-height: 58px;
   font-size: 48px;
   margin-bottom: 24px;
+  font-weight: 700;
 }
 .contentTitleLittle {
   font-weight: 500;
