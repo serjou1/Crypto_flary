@@ -14,14 +14,6 @@ const animation = {
     scale: 1,
   },
 };
-const animationSchedule = {
-  hidden: {
-    opacity: 0,
-  },
-  visible: {
-    opacity: 1,
-  },
-};
 
 const animationSupply = {
   hidden: {
@@ -43,12 +35,17 @@ export const Tekenomics = () => {
         initial="hidden"
         whileInView="visible"
         variants={animation}
-        transition={{ duration: '0.5' }}>
+        transition={{ duration: '0.5' }}
+        viewport={{ once: true }}>
         Tokenomics
       </motion.p>
       <div className={style.tekenomicsInfo}>
         <div className={style.description}>
-          <motion.div initial="hidden" whileInView="visible" className={style.data}>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className={style.data}>
             <motion.div
               className={style.titleSchedule}
               variants={animation}
@@ -87,14 +84,9 @@ export const Tekenomics = () => {
             </div>
           </motion.div>
         </div>
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          variants={animationSchedule}
-          transition={{ duration: '5.5' }}
-          className={style.schedule}>
+        <div className={style.schedule}>
           <Schedule />
-        </motion.div>
+        </div>
       </div>
     </div>
   );

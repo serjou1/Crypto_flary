@@ -4,10 +4,18 @@
   margin-bottom: 150px;
 }
 .block {
+  position:relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 100px;
+  & .bgBlik{
+    overflow: visible;
+    position:absolute;
+    top: -213px;
+    left: 75%;
+    z-index: -1;
+  }
 }
 .netBackground {
   background: radial-gradient(70.71% 70.71% at 50% 50%, transparent 0, rgba(0, 0, 0, 0.5) 79%),
@@ -107,9 +115,18 @@
       font-size: 30px;
     }
   }
+  .block{
+    & .bgBlik{
+      position:absolute;
+      top: -213px;
+      left: 44%;
+      z-index: -1;
+    }
+  }
 }
 @media (max-width: 750px) {
   .AboutAs {
+     
     // width:100vh;
     margin-top: 250px;
     margin-bottom: 50px;
@@ -139,11 +156,19 @@
     flex-direction: column-reverse;
     margin-bottom: 50px;
   }
-  .block:nth-child(2) {
-    flex-direction: column-reverse;
-  }
+  
   .block {
     flex-direction: column;
+    & .bgBlik{
+      overflow: visible;
+      position:absolute;
+      top: -280px;
+      left: -47%;
+      z-index: -1;
+    }
+  }
+  .netBackground {
+    overflow: hidden;
   }
   .contentText {
     & p {

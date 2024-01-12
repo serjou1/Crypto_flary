@@ -18,7 +18,7 @@ const animation = {
 export const Header = () => {
   return (
     <div className={style.Header} id="hero">
-      <motion.div id="hero" initial="hidden" whileInView="visible" className={style.description}>
+      <motion.div id="hero" initial="hidden" whileInView="visible" viewport={{once:true}} className={style.description}>
         <motion.h1 custom={1} variants={animation}>
           The First Lending & Borrowing platform that really cares about you
         </motion.h1>

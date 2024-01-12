@@ -23,9 +23,9 @@ export const Schedule = () => {
   };
 
   const options = {
-    borderWidth: 10,
+    borderWidth: 15,
     hoverBorderWidth: 0,
-    borderRadius: 15,
+    borderRadius: 30,
     cutout: '60%',
     plugins: {
       legend: false,
