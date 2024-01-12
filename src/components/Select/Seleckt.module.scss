@@ -1,5 +1,5 @@
 .Select {
-  margin-right: -240px;
+  margin-right: -60px;
   position: relative;
   cursor: pointer;
 }
@@ -25,7 +25,11 @@
     color: var(--color-text-yellow);
   }
 }
-@media (max-width:600px){
+@media(max-width:940px){
+  .Select {
+    margin-right: -500px;}
+}
+@media (max-width:750px){
   .Select {
     margin-right: -150px;}
 }

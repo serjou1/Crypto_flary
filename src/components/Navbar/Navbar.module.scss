@@ -72,7 +72,17 @@
     filter: brightness(120%);
   }
 }
-@media (max-width: 700px) {
+@media (max-width: 1025px){
+  .list {
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    gap: 25px;}
+}
+@media (max-width: 950px) {
+  .mobile_button {
+    display: block;
+  }
   .list {
     font-size: 16px;
     gap: 15px;
@@ -80,22 +90,18 @@
   .left {
     font-size: 14px;
   }
-}
-
-@media (max-width: 640px) {
-  .list {
-    font-size: 20px;
-    font-weight: 600;
-    display: flex;
-    gap: 20px;
-  }
-  .mobile_button {
-    display: block;
-  }
   .list,
   .left {
     display: none;
   }
+  // .list {
+  //   font-size: 20px;
+  //   font-weight: 600;
+  //   display: flex;
+  //   gap: 20px;
+  // }
+ 
+  
   .mobile_list {
     display: flex;
     flex-direction: column;
