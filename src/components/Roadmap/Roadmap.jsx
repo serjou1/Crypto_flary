@@ -14,16 +14,17 @@ const animation = {
 
 export const Roadmap = () => {
   return (
-    <section className={style.hidden}>
+    <section className={style.hidden} >
       <motion.div
+      id="roadmap"
         initial="hidden"
         whileInView="visible"
         variants={animation}
         transition={{ duration: '1' }}
         viewport={{ amount: 0.2, once: true }}
         className={style.Roadmap}
-        id="roadmap">
-        <div className="tittle">Roadmap</div>
+        >
+        <div className="tittle" >Roadmap</div>
         <div className={style.littleTittle}>
           <div className={style.infoData}>
             <div className={style.dotGreen}></div>

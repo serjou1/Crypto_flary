@@ -165,10 +165,9 @@
   .block {
     flex-direction: column;
     & .bgBlik {
-      overflow: visible;
       position: absolute;
       top: -354px;
-      left: -47%;
+      left: 23%;
       z-index: -1;
     }
   }
@@ -178,6 +177,41 @@
   .contentText {
     & p {
       font-size: 14px;
+    }
+  }
+}
+@media (max-width: 650px) {
+  .block {
+    & .bgBlik {
+      left: 10%;
+    }
+  }
+}
+@media (max-width: 550px) {
+  .block {
+    & .bgBlik {
+      left: -9%;
+    }
+  }
+}
+@media (max-width: 500px) {
+  .block {
+    & .bgBlik {
+      left: -22%;
+    }
+  }
+}
+@media (max-width: 430px) {
+  .block {
+    & .bgBlik {
+      left: -44%;
+    }
+  }
+}
+@media (max-width: 390px) {
+  .block {
+    & .bgBlik {
+      left: -61%;
     }
   }
 }

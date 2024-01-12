@@ -92,7 +92,7 @@ export const Navbar = () => {
               <LinkSmooth
                 to="roadmap"
                 spy={true}
-                offset={-150}
+                offset={-1000}
                 smooth={true}
                 duration={500}
                 onClick={handlerMobileNav}>

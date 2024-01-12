@@ -1,5 +1,5 @@
 .Roadmap {
-  padding-top: 112px;
+  
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -7,8 +7,10 @@
   
 }
 .hidden{
+  
   overflow: hidden;
 }
+
 .littleTittle {
   margin-top: 50px;
   display: flex;
@@ -145,5 +147,10 @@
   }
   .tileLineBlok:last-child {
     margin-left: 20px;
+  }
+}
+@media(max-width:390px){
+   .info {
+    font-size: 16px;
   }
 }
