@@ -11,22 +11,27 @@ const animation = {
   },
   visible: (custom) => ({
     opacity: 1,
-    transition: { delay: custom * 0.2 ,duration:custom*1.5},
+    transition: { delay: custom * 0.2, duration: custom * 1.5 },
   }),
 };
 
 export const Header = () => {
   return (
     <div className={style.Header} id="hero">
-      <motion.div id="hero" initial="hidden" whileInView="visible" viewport={{once:true}} className={style.description}>
+      <motion.div
+        id="hero"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        className={style.description}>
         <motion.h1 custom={1} variants={animation}>
           The First Lending & Borrowing platform that really cares about you
         </motion.h1>
         <motion.p custom={2} variants={animation}>
-          First of all, Flary finance Is an innovative project, offering completely new solutions to
-          its customers. We take care of all the crucial infrastructure and services that called to
-          rise profitability, beat commissions, and assure smooth experience for all those, who are
-          ready to develop and not afraid of making a real fire.
+          Flary Finance is an innovative omni-chain lending platform specializing on offering its
+          users brand new solutions and services that greatly simplify cross-chain transactions.
+          While based on BRC20 mainly, it helps distribute liquidity across different networks and
+          attract assets of completely different classes
         </motion.p>
         <motion.div custom={3} variants={animation} className={style.btn}>
           <Link to="">Launch App</Link>

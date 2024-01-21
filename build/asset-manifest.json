@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/static/css/main.33dcb0b7.css",
+    "main.js": "/static/js/main.f4b35b76.js",
+    "static/media/Heder.png": "/static/media/Heder.375556346c06b8f81014.png",
+    "static/media/AboutAs.png": "/static/media/AboutAs.5f781d1a3d8adcb8bfac.png",
+    "static/media/bg_blik.png": "/static/media/bg_blik.6e21cea4d98f57e09cb4.png",
+    "static/media/Flary Logo.png": "/static/media/Flary Logo.24af69f3b5c3c7be81a6.png",
+    "static/media/bg-tekenomics.png": "/static/media/bg-tekenomics.9d5a5e45e537ae24ea43.png",
+    "static/media/FLARY svg.png": "/static/media/FLARY svg.3235132f37c7898fcb98.png",
+    "static/media/bg-net.png": "/static/media/bg-net.98296a0f2c68160cadf6.png",
+    "static/media/BTC.svg": "/static/media/BTC.68131bda61bab6c2add5cebd9ce355c4.svg",
+    "static/media/ETH.svg": "/static/media/ETH.63c6edcab39d32afad3c933ff1d4f8b3.svg",
+    "index.html": "/index.html",
+    "static/media/arrow_down.svg": "/static/media/arrow_down.c0b5c79f69cc62a5aaab074e49c6a4e0.svg",
+    "main.33dcb0b7.css.map": "/static/css/main.33dcb0b7.css.map",
+    "main.f4b35b76.js.map": "/static/js/main.f4b35b76.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.33dcb0b7.css",
+    "static/js/main.f4b35b76.js"
+  ]
+}

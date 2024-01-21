@@ -1,7 +1,7 @@
 import React from 'react';
 import { BsTwitterX } from 'react-icons/bs';
 import { FaDiscord, FaTelegramPlane } from 'react-icons/fa';
-import logo from '../../assets/FLARY svg.png';
+import logo from '../../assets/Flary Logo.png';
 import style from './Footer.module.scss';
 
 export const Footer = () => {

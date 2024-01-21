@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link as LinkSmooth } from 'react-scroll';
-import logo from '../../assets/FLARY svg.png';
+import logo from '../../assets/Flary Logo.png';
 import { Select } from '../Select/Select';
 import style from './Navbar.module.scss';
 
@@ -31,12 +31,12 @@ export const Navbar = () => {
             </LinkSmooth>
           </li>
           <li>
-            <LinkSmooth to="tekenomics" spy={true} offset={-100} smooth={true} duration={500}>
+            <LinkSmooth to="tekenomics" spy={true} offset={-150} smooth={true} duration={500}>
               Tokenomics
             </LinkSmooth>
           </li>
           <li>
-            <LinkSmooth to="roadmap" spy={true} offset={-350} smooth={true} duration={500}>
+            <LinkSmooth to="roadmap" spy={true} offset={-150} smooth={true} duration={500}>
               Roadmap
             </LinkSmooth>
           </li>
@@ -81,7 +81,7 @@ export const Navbar = () => {
               <LinkSmooth
                 to="tekenomics"
                 spy={true}
-                offset={-100}
+                offset={-150}
                 smooth={true}
                 duration={500}
                 onClick={handlerMobileNav}>
@@ -92,7 +92,7 @@ export const Navbar = () => {
               <LinkSmooth
                 to="roadmap"
                 spy={true}
-                offset={-1000}
+                offset={-150}
                 smooth={true}
                 duration={500}
                 onClick={handlerMobileNav}>

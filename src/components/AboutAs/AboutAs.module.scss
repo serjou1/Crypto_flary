@@ -2,18 +2,19 @@
   // width:100vh;
   margin-top: 250px;
   margin-bottom: 150px;
+  //overflow: hidden;
 }
 .block {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 100px;
+  margin-bottom: 150px;
+
   & .bgBlik {
-    overflow: visible;
     position: absolute;
     top: -213px;
-    left: 75%;
+    left: 72%;
     z-index: -1;
   }
 }
@@ -57,7 +58,7 @@
   line-height: 23px;
 }
 .contentHelperImg {
-  width: 35%;
+  width: 45%;
   & img {
     width: 100%;
     height: auto;
@@ -143,8 +144,8 @@
     width: 100%;
   }
   .contentHelperImg {
-    margin-top: 40px;
-    width: 80%;
+    margin-top: 60px;
+    width: 100%;
     & img {
       animation: none;
     }

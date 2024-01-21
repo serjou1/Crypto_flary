@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import style from './AboutAs.module.scss';
 
 import AboutAsImg from '../../assets/AboutAs.png';
-import BgBlik from '../../assets/bg_blik.png'
+import BgBlik from '../../assets/bg_blik.png';
 
 const animation = {
   hidden: {
@@ -39,7 +39,9 @@ export const AboutAs = () => {
             powerful services and technical advantages.
           </div>
         </motion.div>
-        <img className={style.bgBlik} src={BgBlik} alt="" />
+        <div className={style.containerBlik}>
+          <img className={style.bgBlik} src={BgBlik} alt="" />
+        </div>
       </motion.div>
       <section className={style.netBackground}>
         <motion.div
