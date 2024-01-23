@@ -25,13 +25,10 @@ export const Header = () => {
         viewport={{ once: true }}
         className={style.description}>
         <motion.h1 custom={1} variants={animation}>
-          The First Lending & Borrowing platform that really cares about you
+        The First Cross-Chain Lending & Borrowing platform that really cares about you
         </motion.h1>
         <motion.p custom={2} variants={animation}>
-          Flary Finance is an innovative omni-chain lending platform specializing on offering its
-          users brand new solutions and services that greatly simplify cross-chain transactions.
-          While based on BRC20 mainly, it helps distribute liquidity across different networks and
-          attract assets of completely different classes
+        Flary Finance is an innovative cross-chain lending platform focused on the bitcoin space, including BRC20 and Inscriptions, which provides its users with brand new solutions and services designed to greatly simplify cross-chain transactions and help distribute liquidity across different networks
         </motion.p>
         <motion.div custom={3} variants={animation} className={style.btn}>
           <Link to="">Launch App</Link>
@@ -41,7 +38,7 @@ export const Header = () => {
       <div className={style.img}>
         <img
           src={HeaderImage}
-          alt=""
+          alt="HeaderImage"
           // variants={animationImg}
           // transition={{ duration: '1' }}
         />

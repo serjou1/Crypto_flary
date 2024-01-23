@@ -41,7 +41,7 @@ export const Navbar = () => {
             </LinkSmooth>
           </li>
         </ul>
-        <Select />
+        {/* <Select /> */}
         <div className={style.left}>
           <div className={style.btn}>Connect Wallet</div>
         </div>

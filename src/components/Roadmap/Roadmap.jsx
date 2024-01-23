@@ -45,27 +45,27 @@ export const Roadmap = () => {
               <div className={style.lineTittle}>Stage 1</div>
               <div className={style.infoData}>
                 <div className={style.dotGreen}></div>
-                <div className={style.infoLine}>Team up hhhhhhh</div>
-              </div>
-              <div className={style.infoData}>
-                <div className={style.dotGreen}></div>
                 <div className={style.infoLine}>Team up</div>
               </div>
               <div className={style.infoData}>
                 <div className={style.dotGreen}></div>
-                <div className={style.infoLine}>Team up</div>
+                <div className={style.infoLine}>Start of development</div>
               </div>
               <div className={style.infoData}>
                 <div className={style.dotGreen}></div>
-                <div className={style.infoLine}>Team up</div>
+                <div className={style.infoLine}>Launch social medias</div>
               </div>
               <div className={style.infoData}>
                 <div className={style.dotGreen}></div>
-                <div className={style.infoLine}>Team up</div>
+                <div className={style.infoLine}>Website development</div>
               </div>
               <div className={style.infoData}>
                 <div className={style.dotGreen}></div>
-                <div className={style.infoLine}>Team up</div>
+                <div className={style.infoLine}>Community building</div>
+              </div>
+              <div className={style.infoData}>
+                <div className={style.dotYellow}></div>
+                <div className={style.infoLine}>Active marketing</div>
               </div>
             </div>
             <div className={style.tileLineBlok}>
@@ -73,19 +73,27 @@ export const Roadmap = () => {
               <div className={style.lineTittle}>Stage 2</div>
               <div className={style.infoData}>
                 <div className={style.dotYellow}></div>
-                <div className={style.infoLine}>Main functional development</div>
+                <div className={style.infoLine}>Release technical documentation</div>
               </div>
               <div className={style.infoData}>
                 <div className={style.dotYellow}></div>
-                <div className={style.infoLine}>Main functional development</div>
-              </div>
-              <div className={style.infoData}>
-                <div className={style.dotYellow}></div>
-                <div className={style.infoLine}>Main functional development</div>
+                <div className={style.infoLine}>TGE</div>
               </div>
               <div className={style.infoData}>
                 <div className={style.dotWhite}></div>
-                <div className={style.infoLine}>Main functional development</div>
+                <div className={style.infoLine}>Closed Beta test </div>
+              </div>
+              <div className={style.infoData}>
+                <div className={style.dotWhite}></div>
+                <div className={style.infoLine}>Improving UI/UX</div>
+              </div>
+              <div className={style.infoData}>
+                <div className={style.dotWhite}></div>
+                <div className={style.infoLine}>Launch testnet</div>
+              </div>
+              <div className={style.infoData}>
+                <div className={style.dotWhite}></div>
+                <div className={style.infoLine}>Security audit</div>
               </div>
             </div>
             <div className={style.tileLineBlok}>
@@ -93,23 +101,19 @@ export const Roadmap = () => {
               <div className={style.lineTittle}>Stage 3</div>
               <div className={style.infoData}>
                 <div className={style.dotWhite}></div>
-                <div className={style.infoLine}>Main functional development</div>
+                <div className={style.infoLine}>Mainnet Launch</div>
               </div>
               <div className={style.infoData}>
                 <div className={style.dotWhite}></div>
-                <div className={style.infoLine}>Main functional development</div>
+                <div className={style.infoLine}>Community Rewards</div>
               </div>
               <div className={style.infoData}>
                 <div className={style.dotWhite}></div>
-                <div className={style.infoLine}>Main functional development</div>
+                <div className={style.infoLine}>Global Expansion</div>
               </div>
               <div className={style.infoData}>
                 <div className={style.dotWhite}></div>
-                <div className={style.infoLine}>Main functional development</div>
-              </div>
-              <div className={style.infoData}>
-                <div className={style.dotWhite}></div>
-                <div className={style.infoLine}>Main functional development</div>
+                <div className={style.infoLine}>Tier 1 listing</div>
               </div>
             </div>
           </div>

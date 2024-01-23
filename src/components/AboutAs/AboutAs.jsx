@@ -31,12 +31,12 @@ export const AboutAs = () => {
           <img src={AboutAsImg} alt="AboutAsImg" />
         </motion.div>
         <motion.div variants={animation} transition={{ duration: '2' }} className={style.content}>
-          <div className={style.contentTitle}>About us - </div>
+          <div className={style.contentTitle}>One platform - multiple solution </div>
           <div className={style.contentText}>
-            Founded by the team of great friends, we believe to be family with the whole community
-            of ours. As a leading lending and borrowing platform Flary Finance do care about it’s
-            family, and that’s why we are so eager to provide you with the most useful solutions,
-            powerful services and technical advantages.
+            Built by a team of professionals, we know how to satisfy the most demanding users. As
+            the leading cross-chain lending platform, Flary Finance has developed an advanced
+            protocol that supports a wide range of networks and tokens. Yielding, lending, borrowing
+            and bridging all in one place, Flary is the ultimate aggregator.
           </div>
         </motion.div>
         <div className={style.containerBlik}>
@@ -54,13 +54,13 @@ export const AboutAs = () => {
             <div className={style.contentText}>
               <p>
                 {' '}
-                Today, in the prime of the crypto-era, many different networks and platforms exist.
-                We know how annoying it could be what you constantly need to bridge and swap your
-                tokens, loosing your time and paying commissions.
+                Today, in the prime of the crypto-era and volatile bull market, there is a great
+                need to increase the mobility of your assets so as not to lose the best
+                opportunities.
                 <br />
-                <br /> We also feel, how strongly you are proud of your actives, and how passionate
-                you are about feeling the financial return of your efforts, especially at times when
-                you need even more funds for the future investments.
+                <br /> Imagine a scenario where you need USDT tokens on the ERC-20 network urgently
+                to participate in some promising event, but you only have bitcoin Inscriptions that
+                you are bullish on and wouldn’t like to sell, what would you do?
               </p>
             </div>
           </motion.div>
@@ -85,20 +85,14 @@ export const AboutAs = () => {
             className={style.contentHelper}>
             <span className={style.numSpan}>02</span>
             <h3>
-              Get the <span className={style.textSpan}>maximum</span> with Flary finance
+              We work to <span className={style.textSpan}>make</span> your life easier
             </h3>
           </motion.div>
           <motion.div variants={animation} transition={{ duration: '2' }} className={style.content}>
             <div className={style.contentTitleSolution}>Solution</div>
             <div className={style.contentText}>
               <p>
-                Flary helps you to cut the corners and solve these issues. Thanks to our technical
-                developments, we make lending and borrowing actives based on different platforms
-                possible, which is the game-changing feature in industry. <br />
-                <br />
-                Borrowing and earning is possible - Made full of care for our fellow cryptans,
-                auto-staking feature helps you to earn additional rewards for staking actives you
-                pledge in our system.
+              Flary Finance is innovatively designed to tackle such complex tasks as lending assets from one network while borrowing on completely another one. Our unique developments allow us to combine advanced lending & borrowing protocol with cross-chain bridges enhanced by Yielding solutions. Great liquidity, low commissions, and absolute flexibility. All in one place. All for your convenience. All is Flary.
               </p>
             </div>
           </motion.div>

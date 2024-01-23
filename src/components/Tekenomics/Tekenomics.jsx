@@ -54,31 +54,35 @@ export const Tekenomics = () => {
             </motion.div>
             <div className={style.adapt}>
               <div>
-                <motion.div variants={animationSupply} custom={1} className={style.infoData}>
-                  <div className={style.dot}></div>
-                  <div className={style.info}>50% lorem</div>
+                <motion.div variants={animationSupply} custom={1} className={style.infoData} >
+                  <div className={style.dot} style={{background:'#6f29d1'}}></div>
+                  <div className={style.info}>30% Public</div>
                 </motion.div>
                 <motion.div variants={animationSupply} custom={2} className={style.infoData}>
-                  <div className={style.dot}></div>
-                  <div className={style.info}>50% lorem</div>
+                  <div className={style.dot} style={{background:'#36a3eb'}}></div>
+                  <div className={style.info}>19% Staking&liquidity rewards</div>
                 </motion.div>
                 <motion.div variants={animationSupply} custom={3} className={style.infoData}>
-                  <div className={style.dot}></div>
-                  <div className={style.info}>50% lorem</div>
+                  <div className={style.dot} style={{background:'#e67e10'}}></div>
+                  <div className={style.info}>15% Marketing/Treasury </div>
+                </motion.div>
+                <motion.div variants={animationSupply} custom={3} className={style.infoData}>
+                  <div className={style.dot} style={{background:'#00c763'}}></div>
+                  <div className={style.info}>12% Adv&Team </div>
                 </motion.div>
               </div>
               <div>
                 <motion.div variants={animationSupply} custom={4} className={style.infoData}>
-                  <div className={style.dot}></div>
-                  <div className={style.info}>50% lorem</div>
+                  <div className={style.dot} style={{background:'#ffcf56'}}></div>
+                  <div className={style.info}>12% Community&ecosystem</div>
                 </motion.div>
                 <motion.div variants={animationSupply} custom={5} className={style.infoData}>
-                  <div className={style.dot}></div>
-                  <div className={style.info}>50% lorem</div>
+                  <div className={style.dot} style={{background:'#ff6456'}}></div>
+                  <div className={style.info}>7% Liquidity</div>
                 </motion.div>
                 <motion.div variants={animationSupply} custom={6} className={style.infoData}>
-                  <div className={style.dot}></div>
-                  <div className={style.info}>50% lorem</div>
+                  <div className={style.dot} style={{background:'#ff56c9'}}></div>
+                  <div className={style.info}>5% Early invest/Private</div>
                 </motion.div>
               </div>
             </div>

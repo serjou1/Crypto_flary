@@ -18,22 +18,28 @@ export const Footer = () => {
           </a> 
           </div> */}
         <div className={style.socialItem}>
-          <a href="#" className={style.socialLink}>
+          <a
+            href="https://twitter.com/FlaryFinance"
+            target="_blank"
+            rel="noreferrer"
+            className={style.socialLink}>
             <BsTwitterX size={24} style={{ color: '#ffa957' }} />
             <span>X</span>
           </a>
         </div>
         <div className={style.socialItem}>
-          <a href="#" className={style.socialLink}>
+          <div className={style.socialLink}>
+            <div className={style.prompting}>Coming soon</div>
             <FaTelegramPlane size={24} style={{ color: '#ffa957' }} />
             <span>Telegram</span>
-          </a>
+          </div>
         </div>
         <div className={style.socialItem}>
-          <a href="#" className={style.socialLink}>
+          <div className={style.socialLink}>
+            <div className={style.prompting}>Coming soon</div>
             <FaDiscord size={24} style={{ color: '#ffa957' }} />
             <span>Discord</span>
-          </a>
+          </div>
         </div>
       </div>
     </div>

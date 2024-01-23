@@ -4,18 +4,20 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 export const Schedule = () => {
   const data = {
-    labels: ['re'],
+    labels: ['VC/Private ','Liquidity','Community&ecosystem','Adv&Team','Marketing/Treasury','Staking&liquidity rewards','Public'],
     datasets: [
       {
-        label: 'gogo',
-        data: [50, 10, 10, 5, 20, 5],
+        label: '',
+        data: [5, 7, 12, 12, 15, 19,30],
         backgroundColor: [
-          'rgba(112,41,209)',
-          'rgba(54, 162, 235)',
+          'rgba(255,86,201)',
+          'rgba(255, 100, 86)',
           'rgba(255, 206, 86)',
-          'rgba(75, 192, 192)',
-          'rgba(153, 102, 255)',
-          'rgba(255, 159, 64)',
+          'rgba(0, 199, 99)',
+          'rgba(230, 126, 16)',
+          'rgba(54, 162, 235)',
+          'rgba(112,41,209)',
+          
         ],
         borderColor: ['#000'],
       },

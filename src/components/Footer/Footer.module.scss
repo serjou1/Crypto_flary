@@ -16,10 +16,12 @@
     align-items: center;
 }
 .socialLink{
+    position: relative;
     color: var(--color-text-yellow);
     display: flex;
     align-items: center;
     transition: all ease .3s;
+    cursor: pointer;
     & img{
         width: 24px;
         height: 24px;
@@ -31,6 +33,19 @@
     &:hover{
         transform: scale(1.2);
     }
+    &:hover .prompting{
+     display: block;
+     transform: scale(1);
+    }
+}
+.prompting{
+    position: absolute;
+    display: none;
+    top: -35px;
+    font-size: 14px;
+    color:white;
+    left: 10px;
+    white-space: nowrap;
 }
 @media(max-width:900px){
     .Footer{
