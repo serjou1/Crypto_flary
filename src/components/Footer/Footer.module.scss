@@ -53,6 +53,9 @@
     }
 }
 @media(max-width:600px){
+    .prompting{
+        left: -35px;
+    }
     .socialLink{
         & span{
             display: none;
