@@ -65,7 +65,7 @@ export const Roadmap = () => {
               </div>
               <div className={style.infoData}>
                 <div className={style.dotYellow}></div>
-                <div className={style.infoLine}>Active marketing</div>
+                <div className={style.infoLine}>Active marketing campaign</div>
               </div>
             </div>
             <div className={style.tileLineBlok}>

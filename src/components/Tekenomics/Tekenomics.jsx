@@ -60,7 +60,7 @@ export const Tekenomics = () => {
                 </motion.div>
                 <motion.div variants={animationSupply} custom={2} className={style.infoData}>
                   <div className={style.dot} style={{background:'#36a3eb'}}></div>
-                  <div className={style.info}>19% Staking&liquidity rewards</div>
+                  <div className={style.info}>19% Staking&Liquidity rewards</div>
                 </motion.div>
                 <motion.div variants={animationSupply} custom={3} className={style.infoData}>
                   <div className={style.dot} style={{background:'#e67e10'}}></div>
@@ -74,7 +74,7 @@ export const Tekenomics = () => {
               <div>
                 <motion.div variants={animationSupply} custom={4} className={style.infoData}>
                   <div className={style.dot} style={{background:'#ffcf56'}}></div>
-                  <div className={style.info}>12% Community&ecosystem</div>
+                  <div className={style.info}>12% Community&Ecosystem</div>
                 </motion.div>
                 <motion.div variants={animationSupply} custom={5} className={style.infoData}>
                   <div className={style.dot} style={{background:'#ff6456'}}></div>
@@ -82,7 +82,7 @@ export const Tekenomics = () => {
                 </motion.div>
                 <motion.div variants={animationSupply} custom={6} className={style.infoData}>
                   <div className={style.dot} style={{background:'#ff56c9'}}></div>
-                  <div className={style.info}>5% Early invest/Private</div>
+                  <div className={style.info}>5% Early invest</div>
                 </motion.div>
               </div>
             </div>

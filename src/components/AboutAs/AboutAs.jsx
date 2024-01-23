@@ -92,7 +92,7 @@ export const AboutAs = () => {
             <div className={style.contentTitleSolution}>Solution</div>
             <div className={style.contentText}>
               <p>
-              Flary Finance is innovatively designed to tackle such complex tasks as lending assets from one network while borrowing on completely another one. Our unique developments allow us to combine advanced lending & borrowing protocol with cross-chain bridges enhanced by Yielding solutions. Great liquidity, low commissions, and absolute flexibility. All in one place. All for your convenience. All is Flary.
+              Flary Finance is innovatively designed to tackle such complex tasks as lending assets from one network while borrowing on completely another one. Our unique developments allow us to combine advanced lending & borrowing protocol with cross-chain bridges enhanced by yielding solutions. Great liquidity, low commissions, and absolute flexibility. All in one place. All for your convenience. All is Flary.
               </p>
             </div>
           </motion.div>
