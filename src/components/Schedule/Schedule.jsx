@@ -4,7 +4,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 export const Schedule = () => {
   const data = {
-    labels: ['VC/Private ','Liquidity','Community&ecosystem','Adv&Team','Marketing/Treasury','Staking&liquidity rewards','Public'],
+    labels: ['Early invest','Liquidity','Community&Ecosystem','Adv&Team','Marketing/Treasury','Staking&Liquidity rewards','Public'],
     datasets: [
       {
         label: '',
