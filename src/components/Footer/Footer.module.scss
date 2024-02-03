@@ -1,64 +1,62 @@
-.Footer{
-    // position: absolute;
-    // bottom: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 140px;
+.Footer {
+  // position: absolute;
+  // bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 140px;
   padding: 0 120px;
   margin: auto;
   max-width: 1550px;
-
 }
-.social{
-    display: flex;
-    gap: 50px;
-    align-items: center;
+.social {
+  display: flex;
+  gap: 50px;
+  align-items: center;
 }
-.socialLink{
-    position: relative;
-    color: var(--color-text-yellow);
-    display: flex;
-    align-items: center;
-    transition: all ease .3s;
-    cursor: pointer;
-    & img{
-        width: 24px;
-        height: 24px;
-        fill: var(--color-text-darkYellow);
-    }
-    & span{
-        margin-left: 10px;
-    }
-    &:hover{
-        transform: scale(1.2);
-    }
-    &:hover .prompting{
-     display: block;
-     transform: scale(1);
-    }
+.socialLink {
+  position: relative;
+  color: var(--color-text-yellow);
+  display: flex;
+  align-items: center;
+  transition: all ease 0.3s;
+  cursor: pointer;
+  & img {
+    width: 24px;
+    height: 24px;
+  }
+  & span {
+    margin-left: 10px;
+  }
+  &:hover {
+    transform: scale(1.2);
+  }
+  &:hover .prompting {
+    display: block;
+    transform: scale(1);
+  }
 }
-.prompting{
-    position: absolute;
-    display: none;
-    top: -35px;
-    font-size: 14px;
-    color:white;
-    left: 10px;
-    white-space: nowrap;
+.prompting {
+  position: absolute;
+  display: none;
+  top: -35px;
+  font-size: 14px;
+  color: white;
+  left: 10px;
+  white-space: nowrap;
 }
-@media(max-width:900px){
-    .Footer{
-        padding:0 40px
-    }
+@media (max-width: 900px) {
+  .Footer {
+    padding: 0 40px;
+  }
 }
-@media(max-width:600px){
-    .prompting{
-        left: -35px;
+@media (max-width: 600px) {
+  .prompting {
+    left: -35px;
+  }
+  .socialLink {
+    & span {
+      display: none;
     }
-    .socialLink{
-        & span{
-            display: none;
-        }
-    }
+  }
 }

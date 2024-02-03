@@ -2,6 +2,7 @@ import React from 'react';
 import { BsTwitterX } from 'react-icons/bs';
 import { FaDiscord, FaTelegramPlane } from 'react-icons/fa';
 import logo from '../../assets/Flary Logo.png';
+import GitBook from '../../assets/GitBook.svg'
 import style from './Footer.module.scss';
 
 export const Footer = () => {
@@ -28,18 +29,24 @@ export const Footer = () => {
           </a>
         </div>
         <div className={style.socialItem}>
-          <div className={style.socialLink}>
-            <div className={style.prompting}>Coming soon</div>
-            <FaTelegramPlane size={24} style={{ color: '#ffa957' }} />
-            <span>Telegram</span>
-          </div>
+          <a
+            className={style.socialLink}
+            href="https://flary-finance.gitbook.io/"
+            target="_blank"
+            rel="noreferrer">
+            <img src={GitBook}   alt='GitBook' />
+            <span>GitBook</span>
+          </a>
         </div>
         <div className={style.socialItem}>
-          <div className={style.socialLink}>
-            <div className={style.prompting}>Coming soon</div>
+          <a
+            className={style.socialLink}
+            href="https://discord.gg/yUtkcMns"
+            target="_blank"
+            rel="noreferrer">
             <FaDiscord size={24} style={{ color: '#ffa957' }} />
             <span>Discord</span>
-          </div>
+          </a>
         </div>
       </div>
     </div>

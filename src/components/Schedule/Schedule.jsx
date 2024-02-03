@@ -4,7 +4,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 export const Schedule = () => {
   const data = {
-    labels: ['Early invest','Liquidity','Community&Ecosystem','Adv&Team','Marketing/Treasury','Staking&Liquidity rewards','Public'],
+    labels: ['Early investors','Liquidity','Community&Ecosystem','Adv&Team','Marketing/Treasury','Staking&Liquidity rewards','Public'],
     datasets: [
       {
         label: '',
@@ -25,7 +25,7 @@ export const Schedule = () => {
   };
 
   const options = {
-    borderWidth: 15,
+    borderWidth: 10,
     hoverBorderWidth: 0,
     borderRadius: 10,
     cutout: '60%',

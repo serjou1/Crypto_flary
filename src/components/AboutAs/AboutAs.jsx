@@ -54,13 +54,13 @@ export const AboutAs = () => {
             <div className={style.contentText}>
               <p>
                 {' '}
-                Today, in the prime of the crypto-era and volatile bull market, there is a great
-                need to increase the mobility of your assets so as not to lose the best
+                Today, at the height of the crypto era and the volatile bull market, there is a
+                great need to increase the mobility of your assets in order not to lose the best
                 opportunities.
                 <br />
-                <br /> Imagine a scenario where you need USDT tokens on the ERC-20 network urgently
-                to participate in some promising event, but you only have bitcoin Inscriptions that
-                you are bullish on and wouldn’t like to sell, what would you do?
+                <br /> Imagine a scenario where you urgently need USDT tokens on the ERC-20 network
+                to participate in some promising event, but you only have Bitcoin Inscriptions that
+                you are bullish on and don't want to sell, what would you do?
               </p>
             </div>
           </motion.div>
@@ -92,7 +92,12 @@ export const AboutAs = () => {
             <div className={style.contentTitleSolution}>Solution</div>
             <div className={style.contentText}>
               <p>
-              Flary Finance is innovatively designed to tackle such complex tasks as lending assets from one network while borrowing on completely another one. Our unique developments allow us to combine advanced lending & borrowing protocol with cross-chain bridges enhanced by yielding solutions. Great liquidity, low commissions, and absolute flexibility. All in one place. All for your convenience. All is Flary.
+                Flary Finance is innovatively designed to tackle such complex tasks as lending
+                assets from one network while borrowing on a completely different one. Our unique
+                developments allow us to combine advanced lending & borrowing protocol with
+                cross-chain bridges enhanced by revenue-generating solutions. High liquidity, low
+                commissions and total flexibility. All in one place. All at your convenience. All is
+                Flary.
               </p>
             </div>
           </motion.div>

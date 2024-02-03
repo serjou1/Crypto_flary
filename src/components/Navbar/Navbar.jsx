@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link as LinkSmooth } from 'react-scroll';
 import logo from '../../assets/Flary Logo.png';
-import { Select } from '../Select/Select';
 import style from './Navbar.module.scss';
 
 import { FaBars, FaTimes } from 'react-icons/fa';
@@ -42,9 +41,6 @@ export const Navbar = () => {
           </li>
         </ul>
         {/* <Select /> */}
-        <div className={style.left}>
-          <div className={style.btn}>Connect Wallet</div>
-        </div>
         <div className={style.mobile_button} onClick={handlerMobileNav}>
           {mobileNav ? (
             <FaTimes size={20} style={{ color: '#fff', cursor: 'pointer' }} />
@@ -100,9 +96,7 @@ export const Navbar = () => {
               </LinkSmooth>
             </li>
           </ul>
-          <div className="">
-            <div className={style.btn}>Connect Wallet</div>
-          </div>
+          
         </div>
       </div>
     </div>
