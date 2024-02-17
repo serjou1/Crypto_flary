@@ -4,41 +4,32 @@ import logo from '../../assets/Flary Logo.png';
 import style from './Navbar.module.scss';
 
 import { FaBars, FaTimes } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
-export const Navbar = () => {
+export const Navbar = ({ nav }) => {
   const [mobileNav, SetMobileNav] = useState(false);
 
   const handlerMobileNav = () => {
     SetMobileNav(!mobileNav);
   };
+  
   return (
     <div className={style.Navbar}>
       <div className={style.bgBlur}></div>
       <div className={style.flexbox}>
-        <div className="logo">
+        <Link to='/' className="logo">
           <img src={logo} alt="" />
-        </div>
+        </Link>
         <ul className={style.list}>
-          <li className="active">
-            <LinkSmooth to="hero" spy={true} offset={-150} smooth={true} duration={500}>
-              Home
-            </LinkSmooth>
-          </li>
-          <li>
-            <LinkSmooth to="about" spy={true} offset={-100} smooth={true} duration={500}>
-              About Us
-            </LinkSmooth>
-          </li>
-          <li>
-            <LinkSmooth to="tekenomics" spy={true} offset={-150} smooth={true} duration={500}>
-              Tokenomics
-            </LinkSmooth>
-          </li>
-          <li>
-            <LinkSmooth to="roadmap" spy={true} offset={-150} smooth={true} duration={500}>
-              Roadmap
-            </LinkSmooth>
-          </li>
+          <li >
+            <Link to='/'>Home</Link></li>
+          {nav.map((item) => (
+            <li key={item.name}>
+              <LinkSmooth to={item.to} spy={true} offset={item.offset} smooth={true} duration={500}>
+                {item.name}
+              </LinkSmooth>
+            </li>
+          ))}
         </ul>
         {/* <Select /> */}
         <div className={style.mobile_button} onClick={handlerMobileNav}>
@@ -96,7 +87,6 @@ export const Navbar = () => {
               </LinkSmooth>
             </li>
           </ul>
-          
         </div>
       </div>
     </div>

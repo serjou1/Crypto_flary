@@ -34,8 +34,8 @@
   text-align: center;
   justify-content: center;
 
-  & a {
-    // background-image: linear-gradient(to right, #fda085 51%, #f6d365 100%);
+  & .button {
+    
     background: linear-gradient(90deg, #ffa957, #ffd975);
 
     color: #000;
@@ -56,17 +56,11 @@
     width: 100%;
     height: auto;
     display: block;
-    animation: Move-HeaderImage 3s infinite ease alternate;
+    
   }
 }
-@keyframes Move-HeaderImage {
-  from {
-    transform: translateY(-15px);
-  }
-  to {
-    transform: translateY(0px) scale(1.05);
-  }
-}
+
+
 
 @media (max-width: 950px) {
   .description {

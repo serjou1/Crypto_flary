@@ -1,8 +1,11 @@
 export { AboutAs } from './AboutAs/AboutAs';
+export { Form } from './FairLaunch/Form/Form';
+export { HeaderFairLaunch } from './FairLaunch/Header/HeaderFairLaunch';
+export { Footer } from './Footer/Footer';
 export { Header } from './Header/Header';
 export { Navbar } from './Navbar/Navbar';
+export { Roadmap } from './Roadmap/Roadmap';
+export { Schedule } from './Schedule/Schedule';
 export { Select } from './Select/Select';
 export { Tekenomics } from './Tekenomics/Tekenomics';
-export {Schedule} from './Schedule/Schedule'
-export {Roadmap} from './Roadmap/Roadmap'
-export { Footer } from './Footer/Footer';
+export { Timer } from './Timer/Timer';

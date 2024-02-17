@@ -1,13 +1,13 @@
 .Footer {
-  // position: absolute;
-  // bottom: 0;
+ 
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 140px;
   padding: 0 120px;
   margin: auto;
-  max-width: 1550px;
+  
 }
 .social {
   display: flex;
@@ -58,5 +58,10 @@
     & span {
       display: none;
     }
+  }
+}
+@media (max-width:390px){
+  .social{
+    gap: 35px;
   }
 }

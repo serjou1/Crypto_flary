@@ -7,11 +7,11 @@ import BgBlik from '../../assets/bg_blik.png';
 
 const animation = {
   hidden: {
-    scale: 1.4,
+    y: 75,
     opacity: 0,
   },
   visible: {
-    scale: 1,
+    y: 0,
     opacity: 1,
   },
 };
@@ -26,11 +26,14 @@ export const AboutAs = () => {
         viewport={{ once: true }}>
         <motion.div
           variants={animation}
-          transition={{ duration: '1' }}
+          transition={{ duration: '1', delay: 0.25 }}
           className={style.contentHelperImg}>
           <img src={AboutAsImg} alt="AboutAsImg" />
         </motion.div>
-        <motion.div variants={animation} transition={{ duration: '2' }} className={style.content}>
+        <motion.div
+          variants={animation}
+          transition={{ duration: '1', delay: 0.25 }}
+          className={style.content}>
           <div className={style.contentTitle}>One platform - multiple solution </div>
           <div className={style.contentText}>
             Built by a team of professionals, we know how to satisfy the most demanding users. As
@@ -38,18 +41,22 @@ export const AboutAs = () => {
             protocol that supports a wide range of networks and tokens. Yielding, lending, borrowing
             and bridging all in one place, Flary is the ultimate aggregator.
           </div>
+          <div className={style.containerBlik}>
+            <img className={style.bgBlik} src={BgBlik} alt="" />
+          </div>
         </motion.div>
-        <div className={style.containerBlik}>
-          <img className={style.bgBlik} src={BgBlik} alt="" />
-        </div>
       </motion.div>
+
       <section className={style.netBackground}>
         <motion.div
           viewport={{ once: true }}
           initial="hidden"
           whileInView="visible"
           className={style.block}>
-          <motion.div variants={animation} transition={{ duration: '2' }} className={style.content}>
+          <motion.div
+            variants={animation}
+            transition={{ duration: '1', delay: 0.25 }}
+            className={style.content}>
             <div className={style.contentTitleLittle}>Problem </div>
             <div className={style.contentText}>
               <p>
@@ -66,7 +73,7 @@ export const AboutAs = () => {
           </motion.div>
           <motion.div
             variants={animation}
-            transition={{ duration: '2' }}
+            transition={{ duration: '1', delay: 0.25 }}
             className={style.contentHelper}>
             <span className={style.numSpan}>01</span>
             <h3>
@@ -81,14 +88,17 @@ export const AboutAs = () => {
           className={style.block}>
           <motion.div
             variants={animation}
-            transition={{ duration: '2' }}
+            transition={{ duration: '1', delay: 0.25 }}
             className={style.contentHelper}>
             <span className={style.numSpan}>02</span>
             <h3>
               We work to <span className={style.textSpan}>make</span> your life easier
             </h3>
           </motion.div>
-          <motion.div variants={animation} transition={{ duration: '2' }} className={style.content}>
+          <motion.div
+            variants={animation}
+            transition={{ duration: '1', delay: 0.25 }}
+            className={style.content}>
             <div className={style.contentTitleSolution}>Solution</div>
             <div className={style.contentText}>
               <p>

@@ -1,0 +1,25 @@
+.progress {
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+    gap:40px;
+     margin-top: 40px;
+     padding: 33px 32px;
+     border-radius: 20px;
+     border: 1px solid gray;
+   }
+   .progress_bar{
+       background: #2a1502;
+       border-radius: 16px;
+       height: 14px;
+       width: 100%;
+   }
+   .progress_thumb{background: linear-gradient( 90deg,
+       rgba(189, 67, 17, 0.9) 0%,
+       rgba(163, 91, 17, 1) 45%,
+       rgba(203, 116, 12, 0.9) 100%);
+       border-radius: 5px;
+       height: 100%;
+       max-width: 100%;
+       min-width: 10px;
+       transition: width .3s;}
