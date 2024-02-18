@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import style from './Timer.module.scss';
 
 export const Timer = () => {
-  const [time, setTime] = useState(new Date('2024-03-1') - new Date('2024-02-1'));
+  const [time, setTime] = useState(2505223000);
   const [date, setDate] = useState({});
 
   useEffect(() => {
@@ -18,6 +18,7 @@ export const Timer = () => {
     });
   }, []);
 
+  
   const getFormatDate = (milliseconds) => {
     let total_seconds = parseInt(Math.floor(milliseconds / 1000));
     let total_minutes = parseInt(Math.floor(total_seconds / 60));
