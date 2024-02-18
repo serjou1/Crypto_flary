@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import ETH from '../../../assets/ETH.svg';
+import { Timer } from '../../Timer/Timer';
 import { Progress } from '../Progress/Progress';
 import style from './Form.module.scss';
 
@@ -10,34 +11,41 @@ export const Form = () => {
   const [progress, setProgress] = useState(0);
   const [inputValue, setInputValue] = useState('');
 
+  const date = new Date('2024-03-1') - new Date();
   const curs = 1000;
   const totalValue = 800000;
 
   const handleClick = () => {
     const progressInPercent = ((inputValue * curs) / totalValue) * 100;
-    setRiseValue(riseValue + inputValue);
-    setProgress(progress + progressInPercent);
+    setRiseValue((prevRiseValue) => prevRiseValue + inputValue);
+    setProgress((prevProgress) => prevProgress + progressInPercent);
     setInputValue('');
     console.log(progressInPercent);
   };
   console.log(riseValue);
 
   return (
-    <div className={style.Form}>
+    <div className={style.Form} id='fairLaunch'>
       <div className={style.header}>
-        <div className={style.raisedBalance}>
-          <div className={style.icon}>
-            <img src={ETH} alt="Eth" />
-          </div>
-          <div className={style.value}>{riseValue}</div>
-          <p>Raised (Quantity of ETH)</p>
-        </div>
         <div className={style.totalValue}>
-          <div className={style.value}>{totalValue}</div>
-          <p>Total value ($)</p>
+          <Timer data={date} />
+        </div>
+        <div className={style.balance}>
+          <div className={style.borderRight}>
+            <div className={style.icon}>
+              <img src={ETH} alt="Eth" />
+            </div>
+
+            <div className={style.value}>{riseValue.toFixed(3)}</div>
+            <p>Raised (Quantity of ETH)</p>
+          </div>
+          <div className={style.borderLeft}>
+            <div className={style.value}>800,000</div>
+            <p>Total value ($)</p>
+          </div>
         </div>
       </div>
-      <Progress progress={progress} />
+      <Progress progress={progress.toFixed(2)} />
       <div className={style.formStyle}>
         <div className={style.info}>
           <div className={style.infoLeft}>
@@ -52,7 +60,7 @@ export const Form = () => {
             type="number"
             value={inputValue}
             placeholder="0"
-            onChange={(e) => setInputValue(parseInt(e.target.value))}
+            onChange={(e) => setInputValue(parseFloat(e.target.value))}
           />
           <p>ETH</p>
         </div>

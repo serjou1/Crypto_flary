@@ -1,12 +1,13 @@
 .progress {
     display: flex;
-    justify-content: space-between;
-    align-items:center;
-    gap:40px;
+    // justify-content: space-between;
+    // align-items:center;
+    flex-direction: column;
+    gap:10px;
      margin-top: 40px;
-     padding: 33px 32px;
+     padding: 33px 32px 53px 32px; 
      border-radius: 20px;
-     border: 1px solid gray;
+     border: 1px solid var(--color-text-darkYellow);
    }
    .progress_bar{
        background: #2a1502;

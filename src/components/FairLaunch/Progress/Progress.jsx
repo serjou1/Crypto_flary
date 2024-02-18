@@ -1,13 +1,13 @@
-import React from 'react'
-import style from './Progress.module.scss'
+import React from 'react';
+import style from './Progress.module.scss';
 
-export const Progress = ({progress}) => {
+export const Progress = ({ progress }) => {
   return (
-    <div className={style.progress}>
-            <div className={style.progress_bar}>
-                <div className={style.progress_thumb} style={{width:`${progress}%`}}></div>
-            </div>
-            <p >{progress}%</p>
-        </div>
-  )
-}
+    <div className={style.progress} >
+      <p style={progress<=100?{ marginLeft: `${progress-2}%` }:{marginLeft:'95%'}}>{progress}%</p>
+      <div className={style.progress_bar}>
+        <div className={style.progress_thumb} style={{ width: `${progress}%` }}></div>
+      </div>
+    </div>
+  );
+};
