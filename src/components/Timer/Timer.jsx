@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import style from './Timer.module.scss';
 
-export const Timer = ({ data }) => {
-  const [time, setTime] = useState(data);
+export const Timer = () => {
+  const [time, setTime] = useState(new Date('2024-03-1') - new Date());
   const [date, setDate] = useState({});
 
   useEffect(() => {
