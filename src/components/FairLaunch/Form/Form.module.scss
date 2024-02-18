@@ -28,7 +28,7 @@
   padding-left: 30px;
 }
 .borderRight {
-     padding-right: 30px;
+  padding-right: 30px;
   border-right: 1px solid var(--color-text-darkYellow);
 }
 .icon {
@@ -129,4 +129,18 @@
       filter: brightness(120%);
     }
   }
+}
+@media (max-width: 440px) {
+  .header {
+    flex-direction: column;
+  }
+  .balance {
+    margin-top: 40px;
+  }
+ .valueBlock {
+  
+  & p {padding: 5px 10px;
+border-radius:5px;
+font-size: 14px;}
+}
 }

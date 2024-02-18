@@ -1,9 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import style from './Timer.module.scss';
+// import { differenceInMilliseconds, parseISO } from 'date-fns';
+// import { utcToZonedTime } from 'date-fns-tz';
+
+
 
 export const Timer = () => {
-  const [time, setTime] = useState(2505223000);
+  const [time, setTime] = useState(new Date('2024-03-1') - new Date());
   const [date, setDate] = useState({});
+  
+
+// // Установите целевую дату в формате UTC
+// const targetDateUTC = parseISO('2024-03-01T00:00:00');
+
+// // Преобразуйте текущую дату в формат UTC
+// const currentDateUTC = new Date(Date.now()).toISOString();
+
+// // Определите временную зону по вашему выбору
+// const timeZone = 'Europe/Paris';
+
+// // Преобразуйте текущую дату в формат времени с учетом временной зоны
+// const currentDate = utcToZonedTime(currentDateUTC, timeZone);
+
+// // Определите временную зону для целевой даты
+// const targetDate = utcToZonedTime(targetDateUTC, timeZone);
+
+// // Вычислите разницу в миллисекундах между текущим временем и целевой датой
+// const timeRemainingMillis = differenceInMilliseconds(targetDate, currentDate);
 
   useEffect(() => {
     setTimeout(() => {
@@ -18,7 +41,6 @@ export const Timer = () => {
     });
   }, []);
 
-  
   const getFormatDate = (milliseconds) => {
     let total_seconds = parseInt(Math.floor(milliseconds / 1000));
     let total_minutes = parseInt(Math.floor(total_seconds / 60));

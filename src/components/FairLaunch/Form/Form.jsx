@@ -11,7 +11,6 @@ export const Form = () => {
   const [progress, setProgress] = useState(0);
   const [inputValue, setInputValue] = useState('');
 
-  
   const curs = 1000;
   const totalValue = 800000;
 
@@ -20,15 +19,13 @@ export const Form = () => {
     setRiseValue((prevRiseValue) => prevRiseValue + inputValue);
     setProgress((prevProgress) => prevProgress + progressInPercent);
     setInputValue('');
-    
   };
-  
 
   return (
-    <div className={style.Form} id='fairLaunch'>
+    <div className={style.Form} id="fairLaunch">
       <div className={style.header}>
         <div className={style.totalValue}>
-          <Timer  />
+          <Timer />
         </div>
         <div className={style.balance}>
           <div className={style.borderRight}>
