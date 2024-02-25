@@ -4,6 +4,7 @@ import ETH from '../../../assets/ETH.svg';
 import { Timer } from '../../Timer/Timer';
 import { Progress } from '../Progress/Progress';
 import style from './Form.module.scss';
+import { Loader } from './Loader';
 
 export const Form = () => {
   const [riseValue, setRiseValue] = useState(0);
@@ -15,10 +16,18 @@ export const Form = () => {
   const totalValue = 800000;
 
   const handleClick = () => {
-    const progressInPercent = ((inputValue * curs) / totalValue) * 100;
-    setRiseValue((prevRiseValue) => prevRiseValue + inputValue);
+    const progressInPercent = ((parseFloat(inputValue) * curs) / totalValue) * 100;
+    setRiseValue((prevRiseValue) => prevRiseValue + parseFloat(inputValue));
     setProgress((prevProgress) => prevProgress + progressInPercent);
     setInputValue('');
+  };
+  const handleKeyPress = (event) => {
+    const charCode = event.which || event.keyCode;
+
+    // Разрешаем ввод только цифр и точки
+    if ((charCode < 48 || charCode > 57) && charCode !== 46) {
+      event.preventDefault();
+    }
   };
 
   return (
@@ -54,10 +63,11 @@ export const Form = () => {
         </div>
         <div className={style.input_container}>
           <input
-            type="number"
+            type="text"
             value={inputValue}
             placeholder="0"
-            onChange={(e) => setInputValue(parseFloat(e.target.value))}
+            onKeyPress={handleKeyPress}
+            onChange={(e) => setInputValue(e.target.value)}
           />
           <p>ETH</p>
         </div>
@@ -66,9 +76,9 @@ export const Form = () => {
           <p onClick={() => setInputValue(3)}>3 ETH</p>
           <p onClick={() => setInputValue(5)}>5 ETH</p>
         </div>
-        <div className={style.btn} onClick={handleClick}>
+        {false?<Loader/>:<div className={style.btn} onClick={handleClick}>
           <div className={style.button}>Donate</div>
-        </div>
+        </div>}
       </div>
     </div>
   );

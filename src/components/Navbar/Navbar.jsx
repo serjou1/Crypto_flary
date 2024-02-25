@@ -12,17 +12,18 @@ export const Navbar = ({ nav }) => {
   const handlerMobileNav = () => {
     SetMobileNav(!mobileNav);
   };
-  
+
   return (
     <div className={style.Navbar}>
       <div className={style.bgBlur}></div>
       <div className={style.flexbox}>
-        <Link to='/' className="logo">
+        <Link to="/" className="logo">
           <img src={logo} alt="" />
         </Link>
         <ul className={style.list}>
-          <li >
-            <Link to='/'>Home</Link></li>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
           {nav.map((item) => (
             <li key={item.name}>
               <LinkSmooth to={item.to} spy={true} offset={item.offset} smooth={true} duration={500}>
@@ -43,49 +44,23 @@ export const Navbar = ({ nav }) => {
         <div className={mobileNav ? style.mobile_open : style.mobile_close}>
           <ul className={style.mobile_list}>
             <li>
-              <LinkSmooth
-                to="hero"
-                spy={true}
-                offset={-150}
-                smooth={true}
-                duration={500}
-                onClick={handlerMobileNav}>
+              <Link to="/" onClick={handlerMobileNav}>
                 Home
-              </LinkSmooth>
+              </Link>
             </li>
-            <li>
-              <LinkSmooth
-                to="about"
-                spy={true}
-                offset={-100}
-                smooth={true}
-                duration={500}
-                onClick={handlerMobileNav}>
-                About Us
-              </LinkSmooth>
-            </li>
-            <li>
-              <LinkSmooth
-                to="tekenomics"
-                spy={true}
-                offset={-150}
-                smooth={true}
-                duration={500}
-                onClick={handlerMobileNav}>
-                Tokenomics
-              </LinkSmooth>
-            </li>
-            <li>
-              <LinkSmooth
-                to="roadmap"
-                spy={true}
-                offset={-150}
-                smooth={true}
-                duration={500}
-                onClick={handlerMobileNav}>
-                Roadmap
-              </LinkSmooth>
-            </li>
+            {nav.map((item) => (
+              <li key={item.name}>
+                <LinkSmooth
+                  to={item.to}
+                  spy={true}
+                  offset={item.offset}
+                  smooth={true}
+                  duration={500}
+                  onClick={handlerMobileNav}>
+                  {item.name}
+                </LinkSmooth>
+              </li>
+            ))}
           </ul>
         </div>
       </div>

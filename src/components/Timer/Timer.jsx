@@ -6,10 +6,10 @@ import style from './Timer.module.scss';
 
 
 export const Timer = () => {
-  const [time, setTime] = useState(new Date('2024-03-01T23:59:59')-new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' })));
+  const [time, setTime] = useState(new Date('2024-03-01T00:00:00')-new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' })));
   const [date, setDate] = useState({});
    
-console.log(time)
+
 // // Установите целевую дату в формате UTC
 // const targetDateUTC = parseISO('2024-03-01T00:00:00');
 
