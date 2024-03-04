@@ -7,7 +7,7 @@ export const Home = () => {
   const example = [
     { to: 'about', offset: -150, name: 'About Us' },
     { to: 'tekenomics', offset: -150, name: 'Tokenomics' },
-    { to: 'roadmap', offset: -150, name: 'Roadmap' },
+    { to: 'roadmap', offset: -200, name: 'Roadmap' },
   ];
   return (
     <>

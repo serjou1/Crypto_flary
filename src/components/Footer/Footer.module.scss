@@ -1,13 +1,29 @@
 .Footer {
- 
+  // position: absolute;
+  // bottom: 0;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 140px;
   padding: 0 120px;
-  margin: auto;
+  margin: 0 auto;
   
+}
+.bottom{
+  
+}
+.rules{
+  margin-left: 15px;
+  font-weight: 300;
+  z-index: 100;
+}
+.copy{
+  padding-bottom: 10px;
+  font-size: 14px;
+  font-weight: 300;
+  color: gray;;
+ 
 }
 .social {
   display: flex;
@@ -51,6 +67,10 @@
   }
 }
 @media (max-width: 600px) {
+  .rules{
+    text-align: center;
+    margin-left: 0px;
+  }
   .prompting {
     left: -35px;
   }

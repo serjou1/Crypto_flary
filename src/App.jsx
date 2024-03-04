@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import style from './App.module.scss';
 import { Footer } from './components';
 import { FairLaunch, Home } from './page';
+import { PrivacyPolicy } from './page/PrivacyPolicy/PrivacyPolicy';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/fairlaunch" element={<FairLaunch />} />
+          <Route path="/policy" element={<PrivacyPolicy />} />
         </Routes>
       </div>
       <Footer />

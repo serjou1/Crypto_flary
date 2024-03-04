@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import ETH from '../../../assets/ETH.svg';
 import { Timer } from '../../Timer/Timer';
 import { Progress } from '../Progress/Progress';
 import style from './Form.module.scss';
 import { Loader } from './Loader';
+import { TransactionContext } from '../../../context/TransacionContext';
 
 export const Form = () => {
+
+  const {balance} = useContext(TransactionContext)
   const [riseValue, setRiseValue] = useState(0);
 
   const [progress, setProgress] = useState(0);
@@ -58,7 +61,7 @@ export const Form = () => {
             <p>Deposit</p>
           </div>
           <div className={style.infoRight}>
-            <p>Balance: 0 ETH</p>
+            <p>Balance: {parseFloat(balance).toFixed(3)} ETH</p>
           </div>
         </div>
         <div className={style.input_container}>

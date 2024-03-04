@@ -6,28 +6,9 @@ import style from './Timer.module.scss';
 
 
 export const Timer = () => {
-  const [time, setTime] = useState(new Date('2024-03-01T00:00:00')-new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' })));
+  const [time, setTime] = useState(new Date('2024-03-20T00:00:00')-new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' })));
   const [date, setDate] = useState({});
    
-
-// // Установите целевую дату в формате UTC
-// const targetDateUTC = parseISO('2024-03-01T00:00:00');
-
-// // Преобразуйте текущую дату в формат UTC
-// const currentDateUTC = new Date(Date.now()).toISOString();
-
-// // Определите временную зону по вашему выбору
-// const timeZone = 'Europe/Paris';
-
-// // Преобразуйте текущую дату в формат времени с учетом временной зоны
-// const currentDate = utcToZonedTime(currentDateUTC, timeZone);
-
-// // Определите временную зону для целевой даты
-// const targetDate = utcToZonedTime(targetDateUTC, timeZone);
-
-// // Вычислите разницу в миллисекундах между текущим временем и целевой датой
-// const timeRemainingMillis = differenceInMilliseconds(targetDate, currentDate);
-
   useEffect(() => {
     setTimeout(() => {
       setTime(time - 1000);
