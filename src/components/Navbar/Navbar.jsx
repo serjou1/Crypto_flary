@@ -34,7 +34,7 @@ export const Navbar = ({ nav }) => {
               </LinkSmooth>
             </li>
           ))}
-          <li><Button/></li>
+          {/* <li><Button/></li> */}
         </ul>
         {/* <Select /> */}
         <div className={style.mobile_button} onClick={handlerMobileNav}>
@@ -65,7 +65,7 @@ export const Navbar = ({ nav }) => {
                 </LinkSmooth>
               </li>
             ))}
-            <li><Button/></li>
+            {/* <li><Button/></li> */}
           </ul>
         </div>
       </div>

@@ -1,15 +1,14 @@
 import React, { useContext, useState } from 'react';
 
 import ETH from '../../../assets/ETH.svg';
+import { TransactionContext } from '../../../context/TransacionContext';
 import { Timer } from '../../Timer/Timer';
 import { Progress } from '../Progress/Progress';
 import style from './Form.module.scss';
 import { Loader } from './Loader';
-import { TransactionContext } from '../../../context/TransacionContext';
 
 export const Form = () => {
-
-  const {balance} = useContext(TransactionContext)
+  const { balance } = useContext(TransactionContext);
   const [riseValue, setRiseValue] = useState(0);
 
   const [progress, setProgress] = useState(0);
@@ -17,12 +16,18 @@ export const Form = () => {
 
   const curs = 1000;
   const totalValue = 800000;
+  const currentBalance =parseFloat(balance).toFixed(3)
 
   const handleClick = () => {
-    const progressInPercent = ((parseFloat(inputValue) * curs) / totalValue) * 100;
-    setRiseValue((prevRiseValue) => prevRiseValue + parseFloat(inputValue));
-    setProgress((prevProgress) => prevProgress + progressInPercent);
-    setInputValue('');
+    if (inputValue > 0) {
+      const progressInPercent = ((parseFloat(inputValue) * curs) / totalValue) * 100;
+      setRiseValue((prevRiseValue) => prevRiseValue + parseFloat(inputValue));
+      setProgress((prevProgress) => prevProgress + progressInPercent);
+      setInputValue('');
+    } else {
+      alert('Please enter value more than 0');
+      setInputValue('');
+    }
   };
   const handleKeyPress = (event) => {
     const charCode = event.which || event.keyCode;
@@ -61,7 +66,7 @@ export const Form = () => {
             <p>Deposit</p>
           </div>
           <div className={style.infoRight}>
-            <p>Balance: {parseFloat(balance).toFixed(3)} ETH</p>
+            <p>Balance: {!balance ? 0 : `${currentBalance}`} ETH</p>
           </div>
         </div>
         <div className={style.input_container}>
@@ -79,9 +84,13 @@ export const Form = () => {
           <p onClick={() => setInputValue(3)}>3 ETH</p>
           <p onClick={() => setInputValue(5)}>5 ETH</p>
         </div>
-        {false?<Loader/>:<div className={style.btn} onClick={handleClick}>
-          <div className={style.button}>Donate</div>
-        </div>}
+        {false ? (
+          <Loader />
+        ) : (
+          <div className={style.btn} onClick={handleClick}>
+            <div className={style.button}>Donate</div>
+          </div>
+        )}
       </div>
     </div>
   );

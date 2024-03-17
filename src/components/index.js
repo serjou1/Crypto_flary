@@ -10,3 +10,4 @@ export { Schedule } from './Schedule/Schedule';
 export { Select } from './Select/Select';
 export { Tekenomics } from './Tekenomics/Tekenomics';
 export { Timer } from './Timer/Timer';
+export {ModalRules} from './ModalRules/ModalRules'
