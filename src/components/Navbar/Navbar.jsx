@@ -3,11 +3,9 @@ import { Link as LinkSmooth } from 'react-scroll';
 import logo from '../../assets/Flary Logo.png';
 import style from './Navbar.module.scss';
 
-
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { Button } from '../Button/Button';
-
 
 export const Navbar = ({ nav }) => {
   const [mobileNav, SetMobileNav] = useState(false);
@@ -25,7 +23,16 @@ export const Navbar = ({ nav }) => {
         </Link>
         <ul className={style.list}>
           <li>
-            <Link to="/">Home</Link>
+            <Link
+              onClick={() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior:'smooth'
+                });
+              }}
+              to="/">
+              Home
+            </Link>
           </li>
           {nav.map((item) => (
             <li key={item.name}>
@@ -34,7 +41,9 @@ export const Navbar = ({ nav }) => {
               </LinkSmooth>
             </li>
           ))}
-          {/* <li><Button/></li> */}
+          <li>
+            <Button />
+          </li>
         </ul>
         {/* <Select /> */}
         <div className={style.mobile_button} onClick={handlerMobileNav}>
@@ -48,7 +57,13 @@ export const Navbar = ({ nav }) => {
         <div className={mobileNav ? style.mobile_open : style.mobile_close}>
           <ul className={style.mobile_list}>
             <li>
-              <Link to="/" onClick={handlerMobileNav}>
+              <Link to="/" onClick={() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior:'smooth'
+                });
+                handlerMobileNav()
+              }}>
                 Home
               </Link>
             </li>
@@ -65,7 +80,9 @@ export const Navbar = ({ nav }) => {
                 </LinkSmooth>
               </li>
             ))}
-            {/* <li><Button/></li> */}
+            <li>
+              <Button />
+            </li>
           </ul>
         </div>
       </div>

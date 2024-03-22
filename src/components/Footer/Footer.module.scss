@@ -71,9 +71,15 @@
   }
 }
 @media (max-width: 600px) {
+  h2{
+    font-size: 15px;
+  }
+  p{
+    font-size: 9px;
+  }
   .rules {
     position: absolute;
-    left: 80px;
+    left: 110px;
    
   }
   .prompting {
@@ -86,6 +92,11 @@
   }
 }
 @media (max-width: 390px) {
+  .rules {
+    position: absolute;
+    left: 80px;
+   
+  }
   .social {
     gap: 35px;
   }

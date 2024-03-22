@@ -9,7 +9,7 @@ export const TransactionProvider = ({ children }) => {
   const [connectedAccount, setConnectedAccount] = useState('');
   const [balance, setBalance] = useState(0);
   const checkIfWalletIsConnected = async () => {
-    try {if (!ethereum) return alert('Please install metamask');
+    try {;
     const accounts = await ethereum.request({ method: 'eth_accounts' });
     // const balance = await ethereum.request({
     //   method: 'eth_getBalance',

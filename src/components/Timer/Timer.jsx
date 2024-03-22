@@ -6,7 +6,7 @@ import style from './Timer.module.scss';
 
 
 export const Timer = () => {
-  const [time, setTime] = useState(new Date('2024-03-20T00:00:00')-new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' })));
+  const [time, setTime] = useState(new Date('2024-03-30T00:00:00')-new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' })));
   const [date, setDate] = useState({});
    
   useEffect(() => {

@@ -8,8 +8,8 @@ export const ModalRules = ({ isOpen, onClose, children }) => {
     <>
       {isOpen && (
         <div className={style.modal}>
-          <div className={style.modal_wrapper}>
-            <div className={style.modal_content}>
+          <div className={style.modal_wrapper} onClick={() => onClose()}>
+            <div className={style.modal_content} onClick={(e) => e.stopPropagation()}>
               <button onClick={() => onClose()} className={style.close_button}>
                 <IoMdClose size={24} />
               </button>

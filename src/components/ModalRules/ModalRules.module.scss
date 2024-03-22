@@ -4,7 +4,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgba(0, 0, 0, 0.85);
   overflow: hidden;
   overflow-y: auto;
   transition: opacity 0.3s;
@@ -17,30 +17,34 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  
   width: 100%;
   min-height: 100%;
 }
+
 .modal_content {
-    top:60px;
+  
+  border: 1px solid white;
+  top: 60px;
   position: relative;
   margin: 40px;
   width: 100%;
   max-width: 1000px;
   border-radius: 20px;
-  background: #ffffff;
+  background: black;
   padding: 50px 30px 30px 30px;
   transform: translateY(-50px);
   transition: opacity 0.3s, transform 0.3s;
-  color: black;
+  color: #ffffff;
 }
-.close_button{
-    cursor: pointer;
-    position:absolute;
-    top: 16px;
-    right: 16px;
-    width:30px;
-    height:30px;
-    padding: 0;
-    background-color:transparent
-
+.close_button {
+  cursor: pointer;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  background-color: transparent;
+  color: white;
 }

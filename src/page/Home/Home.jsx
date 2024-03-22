@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AboutAs, Header, Navbar, Roadmap, Tekenomics } from '../../components';
 
 import style from './Home.module.scss';
@@ -9,6 +9,11 @@ export const Home = () => {
     { to: 'tekenomics', offset: -150, name: 'Tokenomics' },
     { to: 'roadmap', offset: -200, name: 'Roadmap' },
   ];
+  useEffect(()=>{
+    window.scrollTo({
+      top: 0,
+    })
+  })
   return (
     <>
       <Navbar nav={example} />

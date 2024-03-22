@@ -23,7 +23,7 @@ export const Header = () => {
         </Animate>
         <Animate custom={3}>
         <div className={style.btn}>
-          <Link to='/' className={style.button}>Launch App</Link>
+          <Link to='/fairlaunch' className={style.button}>Launch App</Link>
         </div>
         </Animate>
       </div>
