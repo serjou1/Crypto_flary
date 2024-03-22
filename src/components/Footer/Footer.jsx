@@ -448,7 +448,7 @@ export const Footer = () => {
           <div className={style.socialItem}>
             <a
               className={style.socialLink}
-              href="https://discord.gg/yUtkcMns"
+              href="https://discord.gg/vQtzREsQ6k"
               target="_blank"
               rel="noreferrer">
               <FaDiscord size={24} style={{ color: '#ffa957' }} />
@@ -457,10 +457,7 @@ export const Footer = () => {
           </div>
         </div>
       </div>
-      {/* <div className={style.rules} >
-        <div>&copy; Flary 2024</div>
-        <Link to="/policy" className={style.copy}>Privacy policy</Link>
-      </div> */}
+     
     </>
   );
 };
