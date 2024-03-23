@@ -23,8 +23,10 @@ export const Footer = () => {
               Terms of use
             </div>
           </div>
-          <ModalRules isOpen={modalPolicyIsOpen} onClose={() => setModalPolicyIsOpen(false)}>
-            <h2 style={{ paddingBottom: '20px' }}>PRIVACY POLICY FOR SITE</h2>
+          <ModalRules
+            isOpen={modalPolicyIsOpen}
+            onClose={() => setModalPolicyIsOpen(false)}
+            title={<h2 style={{ paddingTop: '60px',paddingBottom:'40px' }}>PRIVACY POLICY FOR SITE</h2>}>
             <p>
               The platform's collection, use, and sharing of personal information are governed by
               its Privacy Policy, which is incorporated into these Terms by reference. By using the
@@ -38,8 +40,10 @@ export const Footer = () => {
               disclosure of your PII and aggregate data.
             </p>
           </ModalRules>
-          <ModalRules isOpen={modalTermsIsOpen} onClose={() => setModalTermsIsOpen(false)}>
-            <h2 style={{ paddingBottom: '20px' }}>TERMS OF USE FOR SITE</h2>
+          <ModalRules
+            isOpen={modalTermsIsOpen}
+            onClose={() => setModalTermsIsOpen(false)}
+            title={<h2 style={{ paddingTop: '60px',paddingBottom:'40px' }}>TERMS OF USE FOR SITE</h2>}>
             <p>
               Flary Finance is an innovative cross-chain lending platform connecting EVM and non-EVM
               networks including bitcoin ordinals, FlaryFinance (“we”, “our”, or “us”). provides its
@@ -457,7 +461,6 @@ export const Footer = () => {
           </div>
         </div>
       </div>
-     
     </>
   );
 };

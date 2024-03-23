@@ -3,12 +3,13 @@ import style from './Timer.module.scss';
 // import { differenceInMilliseconds, parseISO } from 'date-fns';
 // import { utcToZonedTime } from 'date-fns-tz';
 
-
-
 export const Timer = () => {
-  const [time, setTime] = useState(new Date('2024-03-30T00:00:00')-new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' })));
+  const [time, setTime] = useState(
+    new Date('2024-03-26T00:00:00') -
+      new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' })),
+  );
   const [date, setDate] = useState({});
-   
+
   useEffect(() => {
     setTimeout(() => {
       setTime(time - 1000);
@@ -38,7 +39,8 @@ export const Timer = () => {
       <p className={style.text_grey}>Left before the end of the fair launch</p>
       <div className={style.counter}>
         <div className={style.blockCounter}>
-          {date.days >= 10 ? <p>{date.days}</p> : <p>0{date.days}</p>}
+          {time <= 0 ? <p>--</p> : date.days >= 10 ? <p>{date.days}</p> : <p>0{date.days}</p>}
+
           <span className={style.text_grey}>D</span>
         </div>
 
