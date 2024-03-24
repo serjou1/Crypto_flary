@@ -1,13 +1,18 @@
 import React, { useContext, useState } from 'react';
 
 import ETH from '../../../assets/ETH.svg';
-import { TransactionContext } from '../../../context/TransacionContext';
+import { TransactionContext } from '../../../context/TransactionContext';
 import { Timer } from '../../Timer/Timer';
 import { Progress } from '../Progress/Progress';
 import style from './Form.module.scss';
 import { Loader } from './Loader';
 
 export const Form = () => {
+  const [time, setTime] = useState(
+    new Date('2024-03-23T00:00:00') -
+      new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' })),
+  );
+
   const { balance } = useContext(TransactionContext);
   const [riseValue, setRiseValue] = useState(0);
 
@@ -16,7 +21,7 @@ export const Form = () => {
 
   const curs = 1000;
   const totalValue = 800000;
-  const currentBalance =parseFloat(balance).toFixed(3)
+  const currentBalance = parseFloat(balance).toFixed(3);
 
   const handleClick = () => {
     if (inputValue > 0) {
@@ -42,7 +47,7 @@ export const Form = () => {
     <div className={style.Form} id="fairLaunch">
       <div className={style.header}>
         <div className={style.totalValue}>
-          <Timer />
+          <Timer time={time} setTime={setTime} />
         </div>
         <div className={style.balance}>
           <div className={style.borderRight}>
@@ -87,7 +92,10 @@ export const Form = () => {
         {false ? (
           <Loader />
         ) : (
-          <div className={style.btn} onClick={handleClick}>
+          <div
+            className={style.btn}
+            onClick={handleClick}
+            style={time <= 0 ? { opacity: '0.3' } : { opacity: '1' }}>
             <div className={style.button}>Donate</div>
           </div>
         )}

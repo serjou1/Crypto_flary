@@ -3,11 +3,11 @@ import style from './Timer.module.scss';
 // import { differenceInMilliseconds, parseISO } from 'date-fns';
 // import { utcToZonedTime } from 'date-fns-tz';
 
-export const Timer = () => {
-  const [time, setTime] = useState(
-    new Date('2024-03-26T00:00:00') -
-      new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' })),
-  );
+export const Timer = ({ time, setTime }) => {
+  // const [time, setTime] = useState(
+  //   new Date('2024-03-26T00:00:00') -
+  //     new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' })),
+  // );
   const [date, setDate] = useState({});
 
   useEffect(() => {
@@ -34,31 +34,34 @@ export const Timer = () => {
     let hours = parseInt(Math.floor(total_hours % 24));
     return setDate({ days, hours, minutes, seconds });
   };
+  const resetTimer = (data) => {
+    return time <= 0 ? <p>--</p> : data >= 10 ? <p>{data}</p> : <p>0{data}</p>;
+  };
   return (
     <div className={style.Timer}>
       <p className={style.text_grey}>Left before the end of the fair launch</p>
       <div className={style.counter}>
         <div className={style.blockCounter}>
-          {time <= 0 ? <p>--</p> : date.days >= 10 ? <p>{date.days}</p> : <p>0{date.days}</p>}
+          {resetTimer(date.days)}
 
           <span className={style.text_grey}>D</span>
         </div>
 
         <span>:</span>
         <div className={style.blockCounter}>
-          {date.hours >= 10 ? <p>{date.hours}</p> : <p>0{date.hours}</p>}
+          {resetTimer(date.hours)}
           <span className={style.text_grey}>H</span>
         </div>
 
         <span>:</span>
         <div className={style.blockCounter}>
-          {date.minutes >= 10 ? <p>{date.minutes}</p> : <p>0{date.minutes}</p>}
+          {resetTimer(date.minutes)}
           <span className={style.text_grey}>M</span>
         </div>
 
         <span>:</span>
         <div className={style.blockCounter}>
-          {date.seconds >= 10 ? <p>{date.seconds}</p> : <p>0{date.seconds}</p>}
+          {resetTimer(date.seconds)}
           <span className={style.text_grey}>S</span>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { TransactionContext } from '../../context/TransacionContext'
+import { TransactionContext } from '../../context/TransactionContext'
 import style from './Button.module.scss'
 
 export const Button = () => {
