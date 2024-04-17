@@ -64,7 +64,7 @@ export const Tekenomics = () => {
                 </motion.div>
                 <motion.div variants={animationSupply} custom={3} className={style.infoData}>
                   <div className={style.dot} style={{ background: '#e67e10' }}></div>
-                  <div className={style.info}>15% Marketing/Treasury </div>
+                  <div className={style.info}>13% Marketing/Treasury </div>
                 </motion.div>
                 <motion.div variants={animationSupply} custom={3} className={style.infoData}>
                   <div className={style.dot} style={{ background: '#00c763' }}></div>
@@ -78,11 +78,11 @@ export const Tekenomics = () => {
                 </motion.div>
                 <motion.div variants={animationSupply} custom={5} className={style.infoData}>
                   <div className={style.dot} style={{ background: '#ff6456' }}></div>
-                  <div className={style.info}>7% Liquidity</div>
+                  <div className={style.info}>10% Liquidity</div>
                 </motion.div>
                 <motion.div variants={animationSupply} custom={6} className={style.infoData}>
                   <div className={style.dot} style={{ background: '#ff56c9' }}></div>
-                  <div className={style.info}>5% Early investors</div>
+                  <div className={style.info}>4% Early investors</div>
                 </motion.div>
               </div>
             </div>

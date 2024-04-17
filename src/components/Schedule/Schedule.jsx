@@ -8,7 +8,7 @@ export const Schedule = () => {
     datasets: [
       {
         label: '',
-        data: [5, 7, 12, 12, 15, 19,30],
+        data: [4, 10, 12, 12, 13, 19,30],
         backgroundColor: [
           'rgba(255,86,201)',
           'rgba(255, 100, 86)',

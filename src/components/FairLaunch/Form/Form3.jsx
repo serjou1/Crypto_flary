@@ -8,7 +8,7 @@ import style from './Form.module.scss';
 import { Loader } from './Loader';
 import { toBeArray } from 'ethers';
 
-export const Form = ({tab}) => {
+export const Form3 = ({tab}) => {
   const [time, setTime] = useState(
     new Date('2024-03-23T00:00:00') -
       new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' })),
@@ -45,7 +45,7 @@ export const Form = ({tab}) => {
   };
 
   return (
-    <div className={style.Form} style={tab==='Round 1'?{display:'block'}:{display:'none'}} id="fairLaunch">
+    <div className={style.Form} style={tab==='Round 3'?{display:'block'}:{display:'none'}} id="fairLaunch">
       <div className={style.header}>
         <div className={style.totalValue}>
           <Timer time={time} setTime={setTime} />
