@@ -96,7 +96,7 @@ export const Form3 = ({tab}) => {
           <div
             className={style.btn}
             onClick={handleClick}
-            style={time <= 0 ? { opacity: '0.3' } : { opacity: '1' }}>
+            style={time <= 0 ? { opacity: '0.3', pointerEvents: 'none', cursor: 'not-allowed'  } : { opacity: '1' }}>
             <div className={style.button}>Donate</div>
           </div>
         )}

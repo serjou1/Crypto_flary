@@ -6,9 +6,8 @@ import { Timer } from '../../Timer/Timer';
 import { Progress } from '../Progress/Progress';
 import style from './Form.module.scss';
 import { Loader } from './Loader';
-import { toBeArray } from 'ethers';
 
-export const Form = ({tab}) => {
+export const Form = ({ tab }) => {
   const [time, setTime] = useState(
     new Date('2024-04-23T00:00:00') -
       new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' })),
@@ -45,7 +44,10 @@ export const Form = ({tab}) => {
   };
 
   return (
-    <div className={style.Form} style={tab==='Round 1'?{display:'block'}:{display:'none'}} id="fairLaunch">
+    <div
+      className={style.Form}
+      style={tab === 'Round 1' ? { display: 'block' } : { display: 'none' }}
+      id="fairLaunch">
       <div className={style.header}>
         <div className={style.totalValue}>
           <Timer time={time} setTime={setTime} />
@@ -96,7 +98,11 @@ export const Form = ({tab}) => {
           <div
             className={style.btn}
             onClick={handleClick}
-            style={time <= 0 ? { opacity: '0.3' } : { opacity: '1' }}>
+            style={
+              time <= 0
+                ? { opacity: '0.3', pointerEvents: 'none', cursor: 'not-allowed' }
+                : { opacity: '1' }
+            }>
             <div className={style.button}>Donate</div>
           </div>
         )}
