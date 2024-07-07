@@ -9,6 +9,7 @@ import { Button } from '../Button/Button';
 
 export const Navbar = ({ nav }) => {
   const [mobileNav, SetMobileNav] = useState(false);
+  
 
   const handlerMobileNav = () => {
     SetMobileNav(!mobileNav);
@@ -41,6 +42,13 @@ export const Navbar = ({ nav }) => {
               </LinkSmooth>
             </li>
           ))}
+          <li>
+            <Link
+             
+              to="/how-to-buy">
+              How To Buy
+            </Link>
+          </li>
           <li>
             <Button />
           </li>

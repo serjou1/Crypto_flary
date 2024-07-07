@@ -137,10 +137,11 @@
   .balance {
     margin-top: 40px;
   }
- .valueBlock {
-  
-  & p {padding: 5px 10px;
-border-radius:5px;
-font-size: 14px;}
-}
+  .valueBlock {
+    & p {
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+  }
 }

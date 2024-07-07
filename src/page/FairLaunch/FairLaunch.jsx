@@ -17,17 +17,29 @@ export const FairLaunch = () => {
       <div className={style.tab}>
         <button
           onClick={() => setTab('Round 1')}
-          style={tab === 'Round 1' ? { background: '#e2824f', color: '#fff' } : {}}>
+          style={
+            tab === 'Round 1'
+              ? { background: 'linear-gradient(90deg, #ffa957, #ffd975)', color: '#000' }
+              : {}
+          }>
           Round 1
         </button>
         <button
           onClick={() => setTab('Round 2')}
-          style={tab === 'Round 2' ? { background: '#e2824f', color: '#fff' } : {}}>
+          style={
+            tab === 'Round 2'
+              ? { background: 'linear-gradient(90deg, #ffa957, #ffd975)', color: '#000' }
+              : {}
+          }>
           Round 2
         </button>
         <button
           onClick={() => setTab('Round 3')}
-          style={tab === 'Round 3' ? { background: '#e2824f', color: '#fff' } : {}}>
+          style={
+            tab === 'Round 3'
+              ? { background: 'linear-gradient(90deg, #ffa957, #ffd975)', color: '#000' }
+              : {}
+          }>
           Round 3
         </button>
       </div>
