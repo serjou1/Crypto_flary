@@ -15,11 +15,12 @@
   }
 }
 .bajan_info {
+  transition-duration: 500ms;
   text-align: start;
   li {
     margin-top: 25px;
   }
-  span{
-    font-weight:600
+  span {
+    font-weight: 600;
   }
 }

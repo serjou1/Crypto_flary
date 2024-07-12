@@ -9,7 +9,6 @@ import { Button } from '../Button/Button';
 
 export const Navbar = ({ nav }) => {
   const [mobileNav, SetMobileNav] = useState(false);
-  
 
   const handlerMobileNav = () => {
     SetMobileNav(!mobileNav);
@@ -28,7 +27,7 @@ export const Navbar = ({ nav }) => {
               onClick={() => {
                 window.scrollTo({
                   top: 0,
-                  behavior:'smooth'
+                  behavior: 'smooth',
                 });
               }}
               to="/">
@@ -43,15 +42,14 @@ export const Navbar = ({ nav }) => {
             </li>
           ))}
           <li>
-            <Link
-             
-              to="/how-to-buy">
-              How To Buy
-            </Link>
+            <Link to="/how-to-buy">How To Buy</Link>
           </li>
           <li>
-            <Button />
+            <Link to="/giveaway">Win $999K</Link>
           </li>
+          {/* <li>
+            <Button />
+          </li> */}
         </ul>
         {/* <Select /> */}
         <div className={style.mobile_button} onClick={handlerMobileNav}>
@@ -65,13 +63,15 @@ export const Navbar = ({ nav }) => {
         <div className={mobileNav ? style.mobile_open : style.mobile_close}>
           <ul className={style.mobile_list}>
             <li>
-              <Link to="/" onClick={() => {
-                window.scrollTo({
-                  top: 0,
-                  behavior:'smooth'
-                });
-                handlerMobileNav()
-              }}>
+              <Link
+                to="/"
+                onClick={() => {
+                  window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth',
+                  });
+                  handlerMobileNav();
+                }}>
                 Home
               </Link>
             </li>
@@ -89,8 +89,14 @@ export const Navbar = ({ nav }) => {
               </li>
             ))}
             <li>
+            <Link to="/how-to-buy">How To Buy</Link>
+          </li>
+          <li>
+            <Link to="/giveaway">Win $999K</Link>
+          </li>
+            {/* <li>
               <Button />
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

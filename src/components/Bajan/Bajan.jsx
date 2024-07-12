@@ -8,20 +8,32 @@ export const Bajan = () => {
   const [open3, setOpen3] = useState(false);
   const [open4, setOpen4] = useState(false);
 
-  const hanlerOpenBajan = () => {
+  const handlerOpenBajan = () => {
     setOpen(!open);
+  };
+  const handlerOpenBajan1 = () => {
+    setOpen1(!open1);
+  };
+  const handlerOpenBajan2= () => {
+    setOpen2(!open2);
+  };
+  const handlerOpenBajan3 = () => {
+    setOpen3(!open3);
+  };
+  const handlerOpenBajan4 = () => {
+    setOpen4(!open4);
   };
   return (
     <div className={style.bajan}>
       <div className={style.bajan_section}>
         <div className={style.tittle}>
           <h2>Buying With Ethereum (ETH)</h2>
-          <p onClick={hanlerOpenBajan} style={{ fontSize: '20px' }}>
+          <p onClick={handlerOpenBajan} style={{ fontSize: '20px' }}>
             {open ? '-' : '+'}
           </p>
         </div>
         
-          <ul style={open?{display:'block'}:{display:'none'}} className={style.bajan_info}>
+          <ul style={open?{height:'auto',overflow:'visible'}:{height:'0px',overflow:'hidden'}} className={style.bajan_info}>
             <li>Buying with Ethereum (ETH)</li>
             <li><span>Step 1:</span> Go to Retik Finance website: https://retik.com.</li>
             <li><span>Step 2:</span> Click on "Connect Wallet".</li>
@@ -39,12 +51,12 @@ export const Bajan = () => {
       <div className={style.bajan_section}>
         <div className={style.tittle}>
           <h2>Buying With Ethereum (ETH)</h2>
-          <p onClick={hanlerOpenBajan} style={{ fontSize: '20px' }}>
-            {open ? '-' : '+'}
+          <p onClick={handlerOpenBajan1} style={{ fontSize: '20px' }}>
+            {open1 ? '-' : '+'}
           </p>
         </div>
         
-          <ul style={open?{display:'block'}:{display:'none'}} className={style.bajan_info}>
+          <ul style={open1?{display:'block'}:{display:'none'}} className={style.bajan_info}>
             <li>Buying with Ethereum (ETH)</li>
             <li><span>Step 1:</span> Go to Retik Finance website: https://retik.com.</li>
             <li><span>Step 2:</span> Click on "Connect Wallet".</li>
@@ -62,12 +74,12 @@ export const Bajan = () => {
       <div className={style.bajan_section}>
         <div className={style.tittle}>
           <h2>Buying With Ethereum (ETH)</h2>
-          <p onClick={hanlerOpenBajan} style={{ fontSize: '20px' }}>
-            {open ? '-' : '+'}
+          <p onClick={handlerOpenBajan2} style={{ fontSize: '20px' }}>
+            {open2 ? '-' : '+'}
           </p>
         </div>
         
-          <ul style={open?{display:'block'}:{display:'none'}} className={style.bajan_info}>
+          <ul style={open2?{display:'block'}:{display:'none'}} className={style.bajan_info}>
             <li>Buying with Ethereum (ETH)</li>
             <li><span>Step 1:</span> Go to Retik Finance website: https://retik.com.</li>
             <li><span>Step 2:</span> Click on "Connect Wallet".</li>
@@ -85,12 +97,12 @@ export const Bajan = () => {
       <div className={style.bajan_section}>
         <div className={style.tittle}>
           <h2>Buying With Ethereum (ETH)</h2>
-          <p onClick={hanlerOpenBajan} style={{ fontSize: '20px' }}>
-            {open ? '-' : '+'}
+          <p onClick={handlerOpenBajan3} style={{ fontSize: '20px' }}>
+            {open3 ? '-' : '+'}
           </p>
         </div>
         
-          <ul style={open?{display:'block'}:{display:'none'}} className={style.bajan_info}>
+          <ul style={open3?{display:'block'}:{display:'none'}} className={style.bajan_info}>
             <li>Buying with Ethereum (ETH)</li>
             <li><span>Step 1:</span> Go to Retik Finance website: https://retik.com.</li>
             <li><span>Step 2:</span> Click on "Connect Wallet".</li>
@@ -108,12 +120,12 @@ export const Bajan = () => {
       <div className={style.bajan_section}>
         <div className={style.tittle}>
           <h2>Buying With Ethereum (ETH)</h2>
-          <p onClick={hanlerOpenBajan} style={{ fontSize: '20px' }}>
-            {open ? '-' : '+'}
+          <p onClick={handlerOpenBajan4} style={{ fontSize: '20px' }}>
+            {open4 ? '-' : '+'}
           </p>
         </div>
         
-          <ul style={open?{display:'block'}:{display:'none'}} className={style.bajan_info}>
+          <ul style={open4?{display:'block'}:{display:'none'}} className={style.bajan_info}>
             <li>Buying with Ethereum (ETH)</li>
             <li><span>Step 1:</span> Go to Retik Finance website: https://retik.com.</li>
             <li><span>Step 2:</span> Click on "Connect Wallet".</li>

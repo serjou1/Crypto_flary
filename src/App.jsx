@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import style from './App.module.scss';
 import { Footer } from './components';
-import { FairLaunch, Home, HowToBuy } from './page';
+import { FairLaunch, Giveaway, Home, HowToBuy } from './page';
 
 
 
@@ -13,6 +13,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/fairlaunch" element={<FairLaunch />} />
           <Route path="/how-to-buy" element={<HowToBuy  />} />
+          <Route path="/giveaway" element={<Giveaway  />} />
         </Routes>
       </div>
       <Footer />
