@@ -1,0 +1,24 @@
+.HeaderNav {
+    display: flex;
+    margin-top: 40px;
+    text-align: center;
+    justify-content: start;
+   gap: 30px;
+    & .button {
+     
+      background: linear-gradient(90deg, #ffa957, #ffd975);
+      background-position: -200%;
+      background-size: 200%;
+      color: #000;
+      border-radius: 8px;
+      padding: 12px;
+      width: 186px;
+      font-weight: 700;
+      line-height: 26px;
+      transition: 1s;
+      &:hover {
+        filter: brightness(120%);
+        background-position: 100%;
+      }
+    }
+  }

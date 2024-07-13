@@ -16,7 +16,7 @@ export const Home = () => {
   })
   return (
     <>
-      <Navbar nav={example} />
+      <Navbar nav={example} navLink={[]} />
       <div className={style.Home}>
         <Header />
         <Tiker/>

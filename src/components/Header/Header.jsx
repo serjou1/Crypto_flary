@@ -4,6 +4,7 @@ import HeaderImage from '../../assets/Heder.png';
 import style from './Header.module.scss';
 import { Animate } from './Animate';
 import { Link } from 'react-router-dom';
+import { HeaderNav } from '../HeaderNav/HeaderNav';
 
 
 
@@ -22,9 +23,9 @@ export const Header = () => {
         </p>
         </Animate>
         <Animate custom={3}>
-        <div className={style.btn}>
-          <Link to='/fairlaunch' className={style.button}>Launch App</Link>
-        </div>
+
+          <HeaderNav/>
+        
         </Animate>
       </div>
 

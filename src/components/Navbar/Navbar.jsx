@@ -4,9 +4,11 @@ import logo from '../../assets/Flary Logo.png';
 import style from './Navbar.module.scss';
 
 import { FaBars, FaTimes } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
-export const Navbar = ({ nav }) => {
+export const Navbar = ({ nav, navLink }) => {
+  const params = useLocation().pathname.slice(1);
+
   const [mobileNav, SetMobileNav] = useState(false);
 
   const handlerMobileNav = () => {
@@ -23,6 +25,7 @@ export const Navbar = ({ nav }) => {
         <ul className={style.list}>
           <li>
             <Link
+              style={params === '' ? { color: '#ffd975' } : {}}
               onClick={() => {
                 window.scrollTo({
                   top: 0,
@@ -40,14 +43,19 @@ export const Navbar = ({ nav }) => {
               </LinkSmooth>
             </li>
           ))}
+          {navLink.map((item, i) => (
+            // console.log(item.tittle.toLowerCase())
+            <li key={i}>
+              <Link to={item.link} style={params === item.id ? { color: '#ffd975' } : {}}>
+                {item.tittle}
+              </Link>
+            </li>
+          ))}
+
           <li>
-            <Link to="/how-to-buy">How To Buy</Link>
-          </li>
-          <li>
-            <Link to="/giveaway">Win $999K</Link>
-          </li>
-          <li>
-            <Link to="/contact">Contact Us</Link>
+            <Link to="/contact" style={params === 'contact' ? { color: '#ffd975' } : {}}>
+              Contact Us
+            </Link>
           </li>
           {/* <li>
             <Button />
@@ -90,12 +98,11 @@ export const Navbar = ({ nav }) => {
                 </LinkSmooth>
               </li>
             ))}
-            <li>
-              <Link to="/how-to-buy">How To Buy</Link>
-            </li>
-            <li>
-              <Link to="/giveaway">Win $999K</Link>
-            </li>
+            {navLink.map((item, i) => (
+              <li key={i}>
+                <Link to={item.link}>{item.tittle}</Link>
+              </li>
+            ))}
             <li>
               <Link to="/contact">Contact Us</Link>
             </li>

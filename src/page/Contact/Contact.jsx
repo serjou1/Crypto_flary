@@ -3,9 +3,13 @@ import style from './Contact.module.scss'
 import { ContactForm, ContactInfo, Navbar } from '../../components'
 
 export const Contact = () => {
+  const buttonContent = [
+    { link: '/how-to-buy', tittle: 'How To Buy' },
+    { link: '/giveaway', tittle: 'Win $999K' },
+  ];
   return (
     <>
-    <Navbar nav={[]} />
+    <Navbar nav={[]}  navLink={buttonContent}/>
     <div className={style.Contact}>
     <h1 className={style.header}>Contact Us</h1>
     <div className={style.content}>

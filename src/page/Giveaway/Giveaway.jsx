@@ -3,10 +3,13 @@ import { Navbar } from '../../components'
 import style from './Giveaway.module.scss'
 
 export const Giveaway = () => {
-  const example = [];
+  const buttonContent = [
+    { link: '/how-to-buy', tittle: 'How To Buy',id: 'how-to-buy'},
+    { link: '/giveaway', tittle: 'Win $999K',id: 'giveaway'},
+  ];
   return (
     <>
-    <Navbar nav={example} />
+    <Navbar nav={[]} navLink={buttonContent} />
     <div className={style.Giveaway}>
         <h1 className={style.header}>Win $999k With Flary Finance</h1>
         <div className={style.content_wrapper}>

@@ -3,10 +3,13 @@ import { Bajan, Navbar } from '../../components';
 import style from './HowToBuy.module.scss';
 
 export const HowToBuy = () => {
-  const example = [];
+  const buttonContent = [
+    { link: '/how-to-buy', tittle: 'How To Buy',id: 'how-to-buy'},
+    { link: '/giveaway', tittle: 'Win $999K',id: 'giveaway'},
+  ];
   return (
     <>
-      <Navbar nav={example} />
+      <Navbar nav={[]} navLink={buttonContent}/>
       <div className={style.HowToBuy}>
         <h1 className={style.header}>How to Buy Flary Presale</h1>
         <div className={style.content_wrapper}>
