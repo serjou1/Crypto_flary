@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import React from 'react';
-import style from './Contact.module.scss';
+import style from './ContactInfo.module.scss';
 
 import { BsTwitterX } from 'react-icons/bs';
 import { FaDiscord } from 'react-icons/fa';

@@ -5,6 +5,7 @@ import logo from '../../assets/Flary Logo.png';
 import GitBook from '../../assets/GitBook.svg';
 import { ModalRules } from '../ModalRules/ModalRules';
 import style from './Footer.module.scss';
+import { Link } from 'react-router-dom';
 
 export const Footer = () => {
   const [modalPolicyIsOpen, setModalPolicyIsOpen] = useState(false);
@@ -429,6 +430,7 @@ export const Footer = () => {
           </ModalRules>
         </div>
         <div className={style.social}>
+          
           <div className={style.socialItem}>
             <a
               href="https://twitter.com/FlaryFinance"

@@ -5,7 +5,6 @@ import style from './Navbar.module.scss';
 
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { Button } from '../Button/Button';
 
 export const Navbar = ({ nav }) => {
   const [mobileNav, SetMobileNav] = useState(false);
@@ -46,6 +45,9 @@ export const Navbar = ({ nav }) => {
           </li>
           <li>
             <Link to="/giveaway">Win $999K</Link>
+          </li>
+          <li>
+            <Link to="/contact">Contact Us</Link>
           </li>
           {/* <li>
             <Button />
@@ -89,11 +91,14 @@ export const Navbar = ({ nav }) => {
               </li>
             ))}
             <li>
-            <Link to="/how-to-buy">How To Buy</Link>
-          </li>
-          <li>
-            <Link to="/giveaway">Win $999K</Link>
-          </li>
+              <Link to="/how-to-buy">How To Buy</Link>
+            </li>
+            <li>
+              <Link to="/giveaway">Win $999K</Link>
+            </li>
+            <li>
+              <Link to="/contact">Contact Us</Link>
+            </li>
             {/* <li>
               <Button />
             </li> */}
