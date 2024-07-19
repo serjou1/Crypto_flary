@@ -1,10 +1,12 @@
 import React from 'react';
 
-import HeaderImage from '../../assets/Heder.png';
+
 import style from './Header.module.scss';
 import { Animate } from './Animate';
 import { Link } from 'react-router-dom';
 import { HeaderNav } from '../HeaderNav/HeaderNav';
+import { BuyWindow } from '../BuyWindow/BuyWindow';
+
 
 
 
@@ -30,7 +32,7 @@ export const Header = () => {
       </div>
 
       <div className={style.img}>
-        <img src={HeaderImage} alt="HeaderImage" />
+        <BuyWindow/>
       </div>
     </div>
   );
