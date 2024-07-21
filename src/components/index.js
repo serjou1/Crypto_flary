@@ -15,4 +15,5 @@ export {Bajan } from './Bajan/Bajan';
 export {ContactInfo} from './ContactInfo/ContactInfo';
 export {ContactForm} from './ContactForm/ContactForm';
 export {Tiker} from './Tiker/Tiker';
+export {AccountOverview} from './AccountOverview/AccountOverview'
 

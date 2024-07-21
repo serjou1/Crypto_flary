@@ -1,0 +1,23 @@
+.AccountOverview {
+  position: fixed;
+  width: 30%;
+  height: 100vh;
+  
+  top: 0;
+  right: 0;
+
+  display: flex;
+}
+.arrowClose {
+  
+  
+  height: 100%;
+}
+.contentOverview {
+  width: 100%;
+  background-color: #fff;
+  height: 100%;
+  border-left: 1px solid var(--color-text-darkYellow);
+  border-bottom-left-radius: 15px;
+  border-top-left-radius: 15px;
+}

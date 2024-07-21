@@ -5,6 +5,7 @@ import style from './Navbar.module.scss';
 
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
+import { Button } from '../Button/Button';
 
 export const Navbar = ({ nav, navLink }) => {
   const params = useLocation().pathname.slice(1);
@@ -57,9 +58,9 @@ export const Navbar = ({ nav, navLink }) => {
               Contact Us
             </Link>
           </li>
-          {/* <li>
+          <li>
             <Button />
-          </li> */}
+          </li>
         </ul>
         {/* <Select /> */}
         <div className={style.mobile_button} onClick={handlerMobileNav}>
