@@ -22,7 +22,7 @@ export const Button = () => {
         onClick={!connectedAccount ? connectWallet : showOverview}>
         {!connectedAccount ? `${button}` : `${shortAddress}`}
       </button>
-      <AccountOverview />
+      {/* <AccountOverview /> */}
     </>
   );
 };
