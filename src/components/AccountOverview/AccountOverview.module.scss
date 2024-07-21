@@ -20,7 +20,7 @@
 
   display: flex;
   transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
-  transition-duration: 300ms;
+  transition-duration: 00ms;
 }
 .arrowClose {
   padding-top: 50px;
@@ -29,7 +29,7 @@
 
   cursor: pointer;
   height: 100%;
-  background: #000;
+  background:rgb(21, 21, 31);
   border-bottom-left-radius: 15px;
   border-top-left-radius: 15px;
   transition: all 0.3s ease;
@@ -44,7 +44,7 @@
   padding: 25px 10px;
   height: 100%;
   border-left: 1px solid var(--color-text-darkYellow);
-  background: #000;
+  background: rgb(21, 21, 31);
   border-bottom-left-radius: 15px;
   border-top-left-radius: 15px;
 }
