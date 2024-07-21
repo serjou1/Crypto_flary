@@ -5,7 +5,7 @@ import style from './AccountOverview.module.scss';
 
 import Avatar from '../../assets/fire.png';
 
-export const AccountOverview = ({ address,openSideBar,showOverview }) => {
+export const AccountOverview = ({ address,openSideBar,showOverview,balance }) => {
   return (
     <div className={openSideBar ? style.AccountOverview_open : style.AccountOverview_close}>
       <div className={style.arrowClose} onClick={showOverview} >

@@ -13,7 +13,7 @@ export const BuyWindow = () => {
   const [inputTittle, setInputTittle] = useState('Ethereum');
   const [dropNetwork, setDropNetwork] = useState(false);
   const [dropToken, setDropToken] = useState(false);
-  const [network, setNetwork] = useState('ERC-20');
+  const [network, setNetwork] = useState('Ethereum');
   const [token, setToken] = useState('Ethereum');
   const [networkImg, setNetworkImg] = useState(ETH);
   const [tokenImg, setTokenImg] = useState(ETH);
@@ -35,15 +35,18 @@ export const BuyWindow = () => {
     setTokenImg(argImg);
     setInputTittle(arg);
   };
+// ZazazazazaZazazazazaZazazazazaZazazazazaZazazazaza
   return (
     <div className={style.BuyWindow}>
-      <h1>Flery Presale</h1>
+      <h1>Flary Presale</h1>
       <h1>Stage 1</h1>
-      <p>1 FLA = 0,100 $</p>
-      <p>Price next Stage =0.110 $</p>
+      <p>1 FLFI = $0,100 </p>
+      <p>Price next stage = $0,110</p>
+
+      <p>Your holdings:</p>
       <Progress progress={0} />
-      <p>Collected USDT : ${collected}/$ 500 000</p>
-      <p>Sold tokens:{sellTokens}/1 000 000 000</p>
+      <p>Collected USDT : ${collected} / $500,000</p>
+      <p>Tokens sold: {sellTokens} / 1,000,000,000</p>
       <div className={style.button_group}>
         {/* <div className={style.button} >
           <img src={ETHimg} alt="" />
@@ -56,7 +59,7 @@ export const BuyWindow = () => {
           <img src={USDTimg} alt="" />
           <div className={style.button_tittle}>
             <p>USDT</p>
-            <span>ERC-20</span>
+            <span>su</span>
           </div>
         </div> */}
         <div
@@ -72,9 +75,9 @@ export const BuyWindow = () => {
             <div className={style.drop_network}>
               <div
                 className={style.button_drop}
-                onClick={() => handlerChangeNetwork('ERC-20', ETH)}>
+                onClick={() => handlerChangeNetwork('Ethereum', ETH)}>
                 <img src={ETH} alt="" />
-                <p>ERC-20</p>
+                <p>Ethereum</p>
               </div>
               <div
                 className={style.button_drop}
@@ -103,7 +106,7 @@ export const BuyWindow = () => {
           )}
           <img src={Arrow} alt="" />
 
-          {network === 'ERC-20'
+          {network === 'Ethereum'
             ? dropToken && (
                 <div className={style.drop_network}>
                   <div
@@ -124,15 +127,18 @@ export const BuyWindow = () => {
             : null}
         </div>
       </div>
+{/* // ZazazazazaZazazazazaZazazazazaZazazazazaZazazazaza       */}
       <div className={style.input_container}>
         {network === 'BNB Chain' ? (
-          <p>Sum in BNB, which you pay: </p>
+          <p>BNB to be paid: </p>
         ) : (
-          <p>Sum in {inputTittle}, which you pay: </p>
+          <p>{inputTittle} to be paid: </p>
         )}
         <input className={style.input_buy} type="text" placeholder="0.0" />
       </div>
-      <div className={style.pay_button}>Buy FLA</div>
-    </div>
+      <div className={style.pay_button}>Buy FLFI</div>
+      
+    </div>   
+    
   );
 };
