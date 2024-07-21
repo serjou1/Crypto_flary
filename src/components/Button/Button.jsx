@@ -10,9 +10,10 @@ export const Button = () => {
   const shortAddress = `${connectedAccount.slice(0, 5)}...${connectedAccount.slice(
     connectedAccount.length - 4,
   )}`;
+  const nameButton ='Profile'
 
   const showOverview = () => {
-    alert('Overview');
+    setOpenSideBar(!openSideBar)
   };
   return (
     <>
@@ -20,9 +21,9 @@ export const Button = () => {
         className={style.button}
         style={{ marginTop: '0px' }}
         onClick={!connectedAccount ? connectWallet : showOverview}>
-        {!connectedAccount ? `${button}` : `${shortAddress}`}
+        {!connectedAccount ? `${button}` : `${nameButton}`}
       </button>
-      {/* <AccountOverview /> */}
+      <AccountOverview address={shortAddress} openSideBar={openSideBar} showOverview={()=>showOverview()} />
     </>
   );
 };
