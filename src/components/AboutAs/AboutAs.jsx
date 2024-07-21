@@ -36,10 +36,10 @@ export const AboutAs = () => {
           className={style.content}>
           <div className={style.contentTitle}>One platform - multiple solution </div>
           <div className={style.contentText}>
-            Built by a team of professionals, we know how to satisfy the most demanding users. As
-            the leading cross-chain lending platform, Flary Finance has developed an advanced
-            protocol that supports a wide range of networks and tokens. Yielding, lending, borrowing
-            and bridging all in one place, Flary is the ultimate aggregator.
+            Flary bridges the gap between the familiar world of Web-2 and the exciting potential of
+            Web3. Our platform is designed to make the leap from Web-2 to Web3 seamless and
+            advantageous for all users. With Flary, you can unlock the power of your assets without the
+            usual headaches, ensuring you're always ready to seize the next big opportunity.
           </div>
           <div className={style.containerBlik}>
             <img className={style.bgBlik} src={BgBlik} alt="" />
@@ -58,6 +58,7 @@ export const AboutAs = () => {
             transition={{ duration: '1', delay: 0.25 }}
             className={style.content}>
             <div className={style.contentTitleLittle}>Problem </div>
+            <div className={style.contentTitleLittleBlur}></div>
             <div className={style.contentText}>
               <p>
                 {' '}
@@ -109,6 +110,7 @@ export const AboutAs = () => {
                 commissions and total flexibility. All in one place. All at your convenience. All is
                 Flary.
               </p>
+              <div className={style.contentTextBlur}></div>
             </div>
           </motion.div>
         </motion.div>

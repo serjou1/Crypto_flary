@@ -52,6 +52,7 @@ export const Tekenomics = () => {
               transition={{ duration: '0.5' }}>
               Total supply:
             </motion.div>
+            <div className={style.titleScheduleBlur}></div>
             <div className={style.adapt}>
               <div>
                 <motion.div variants={animationSupply} custom={1} className={style.infoData}>

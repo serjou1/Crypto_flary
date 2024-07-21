@@ -39,6 +39,17 @@
   font-size: 36px;
   font-weight: 500;
   margin-bottom: 20px;
+  position: relative;
+}
+.titleScheduleBlur{
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  background: var(--color-text-yellow);
+  z-index: -1;
+  left: -25%;
+  top: 40%;
+  filter: blur(90px);
 }
 .infoData {
   display: flex;

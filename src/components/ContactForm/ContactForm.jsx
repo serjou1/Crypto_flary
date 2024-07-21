@@ -49,20 +49,20 @@ export const ContactForm = () => {
         variants={animation}
         transition={{ duration: '1', delay: 0.25 }}>
         <input type="text" required name="name" />
-        <div className={style.labelLine}>Enter you name</div>
+        <div className={style.labelLine}>Enter your name</div>
       </motion.div>
       <motion.div className={style.entreated} variants={animation}
         transition={{ duration: '1', delay: 0.5 }}>
         <input type="email" required name="email" />
-        <div className={style.labelLine}>Enter you email</div>
+        <div className={style.labelLine}>Enter your email</div>
       </motion.div>
       <motion.div className={style.entreated} variants={animation}
         transition={{ duration: '1', delay: 0.75 }}>
         <textarea rows="2" type="text" required name="message_new"/>
-        <div className={style.labelLine}>Enter you massage...</div>
+        <div className={style.labelLine}>Enter your message...</div>
       </motion.div>
       <motion.button type="submit" variants={animation}
-        transition={{ duration: '1', delay: 0.75 }}> Send Message</motion.button>
+        transition={{ duration: '1', delay: 0.75 }}> Send message</motion.button>
     </motion.form>
   );
 };

@@ -38,7 +38,7 @@ export const ContactInfo = () => {
             className="z-10 mt-[10px] text-sm font-medium"
             target="_blank"
             rel="noreferrer">
-            Send a massage
+            Send message
           </a>
         </div>
       </motion.div>

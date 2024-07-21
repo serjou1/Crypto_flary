@@ -35,15 +35,15 @@ export const Bajan = () => {
         
           <ul style={open?{height:'auto',overflow:'visible'}:{height:'0px',overflow:'hidden'}} className={style.bajan_info}>
             <li>Buying with Ethereum (ETH)</li>
-            <li><span>Step 1:</span> Go to Retik Finance website: https://retik.com.</li>
+            <li><span>Step 1:</span> Go to Flary Finance website: https://flary.finance.</li>
             <li><span>Step 2:</span> Click on "Connect Wallet".</li>
             <li><span>Step 3:</span> Connect Your Wallet on Ethereum (ERC20) Network.</li>
             <li><span>Step 4:</span> Select the ETH button.</li>
-            <li><span>Step 5:</span> Enter the desired amount of ETH you wish to swap for RETIK Tokens.
+            <li><span>Step 5:</span> Enter the desired amount of ETH you wish to swap for $FLFI Tokens.
             Remember to leave sufficient ETH in your wallet for gas fees. We recommend not purchasing more than 0.98 ETH if you have 1 ETH in your wallet (leaving 0.02 ETH for Gas).</li>
             <li><span>Step 6</span>: Click "Buy Now".</li>
             <li><span>Step 7:</span> Confirm the transaction within your connected wallet.</li>
-            <li><span>Step 8:</span> View your RETIK tokens in "Your Holdings".</li>
+            <li><span>Step 8:</span> View your $FLFI tokens in "Your Holdings".</li>
             <li><span>Important Note:</span> Gas fees on the Ethereum network can fluctuate between $10-$25 worth of ETH. Ensure you have enough ETH in your wallet to cover these fees, leaving a sufficient buffer to complete transactions without issues.</li>
           </ul>
         
@@ -58,7 +58,7 @@ export const Bajan = () => {
         
           <ul style={open1?{display:'block'}:{display:'none'}} className={style.bajan_info}>
             <li>Buying with Ethereum (ETH)</li>
-            <li><span>Step 1:</span> Go to Retik Finance website: https://retik.com.</li>
+            <li><span>Step 1:</span> Go to Flary Finance website: https://flary.finance.</li>
             <li><span>Step 2:</span> Click on "Connect Wallet".</li>
             <li><span>Step 3:</span> Connect Your Wallet on Ethereum (ERC20) Network.</li>
             <li><span>Step 4:</span> Select the ETH button.</li>
@@ -66,7 +66,7 @@ export const Bajan = () => {
             Remember to leave sufficient ETH in your wallet for gas fees. We recommend not purchasing more than 0.98 ETH if you have 1 ETH in your wallet (leaving 0.02 ETH for Gas).</li>
             <li><span>Step 6</span>: Click "Buy Now".</li>
             <li><span>Step 7:</span> Confirm the transaction within your connected wallet.</li>
-            <li><span>Step 8:</span> View your RETIK tokens in "Your Holdings".</li>
+            <li><span>Step 8:</span> View your $FLFI tokens in "Your Holdings".</li>
             <li><span>Important Note:</span> Gas fees on the Ethereum network can fluctuate between $10-$25 worth of ETH. Ensure you have enough ETH in your wallet to cover these fees, leaving a sufficient buffer to complete transactions without issues.</li>
           </ul>
         
@@ -81,7 +81,7 @@ export const Bajan = () => {
         
           <ul style={open2?{display:'block'}:{display:'none'}} className={style.bajan_info}>
             <li>Buying with Ethereum (ETH)</li>
-            <li><span>Step 1:</span> Go to Retik Finance website: https://retik.com.</li>
+            <li><span>Step 1:</span> Go to Flary Finance website: https://flary.finance.</li>
             <li><span>Step 2:</span> Click on "Connect Wallet".</li>
             <li><span>Step 3:</span> Connect Your Wallet on Ethereum (ERC20) Network.</li>
             <li><span>Step 4:</span> Select the ETH button.</li>
@@ -89,7 +89,7 @@ export const Bajan = () => {
             Remember to leave sufficient ETH in your wallet for gas fees. We recommend not purchasing more than 0.98 ETH if you have 1 ETH in your wallet (leaving 0.02 ETH for Gas).</li>
             <li><span>Step 6</span>: Click "Buy Now".</li>
             <li><span>Step 7:</span> Confirm the transaction within your connected wallet.</li>
-            <li><span>Step 8:</span> View your RETIK tokens in "Your Holdings".</li>
+            <li><span>Step 8:</span> View your $FLFI tokens in "Your Holdings".</li>
             <li><span>Important Note:</span> Gas fees on the Ethereum network can fluctuate between $10-$25 worth of ETH. Ensure you have enough ETH in your wallet to cover these fees, leaving a sufficient buffer to complete transactions without issues.</li>
           </ul>
         
@@ -104,7 +104,7 @@ export const Bajan = () => {
         
           <ul style={open3?{display:'block'}:{display:'none'}} className={style.bajan_info}>
             <li>Buying with Ethereum (ETH)</li>
-            <li><span>Step 1:</span> Go to Retik Finance website: https://retik.com.</li>
+            <li><span>Step 1:</span> Go to Flary Finance website: https://flary.finance.</li>
             <li><span>Step 2:</span> Click on "Connect Wallet".</li>
             <li><span>Step 3:</span> Connect Your Wallet on Ethereum (ERC20) Network.</li>
             <li><span>Step 4:</span> Select the ETH button.</li>
@@ -112,7 +112,7 @@ export const Bajan = () => {
             Remember to leave sufficient ETH in your wallet for gas fees. We recommend not purchasing more than 0.98 ETH if you have 1 ETH in your wallet (leaving 0.02 ETH for Gas).</li>
             <li><span>Step 6</span>: Click "Buy Now".</li>
             <li><span>Step 7:</span> Confirm the transaction within your connected wallet.</li>
-            <li><span>Step 8:</span> View your RETIK tokens in "Your Holdings".</li>
+            <li><span>Step 8:</span> View your $FLFI tokens in "Your Holdings".</li>
             <li><span>Important Note:</span> Gas fees on the Ethereum network can fluctuate between $10-$25 worth of ETH. Ensure you have enough ETH in your wallet to cover these fees, leaving a sufficient buffer to complete transactions without issues.</li>
           </ul>
         
@@ -127,7 +127,7 @@ export const Bajan = () => {
         
           <ul style={open4?{display:'block'}:{display:'none'}} className={style.bajan_info}>
             <li>Buying with Ethereum (ETH)</li>
-            <li><span>Step 1:</span> Go to Retik Finance website: https://retik.com.</li>
+            <li><span>Step 1:</span> Go to Flary Finance website: https://flary.finance.</li>
             <li><span>Step 2:</span> Click on "Connect Wallet".</li>
             <li><span>Step 3:</span> Connect Your Wallet on Ethereum (ERC20) Network.</li>
             <li><span>Step 4:</span> Select the ETH button.</li>
@@ -135,7 +135,7 @@ export const Bajan = () => {
             Remember to leave sufficient ETH in your wallet for gas fees. We recommend not purchasing more than 0.98 ETH if you have 1 ETH in your wallet (leaving 0.02 ETH for Gas).</li>
             <li><span>Step 6</span>: Click "Buy Now".</li>
             <li><span>Step 7:</span> Confirm the transaction within your connected wallet.</li>
-            <li><span>Step 8:</span> View your RETIK tokens in "Your Holdings".</li>
+            <li><span>Step 8:</span> View your $FLFI tokens in "Your Holdings".</li>
             <li><span>Important Note:</span> Gas fees on the Ethereum network can fluctuate between $10-$25 worth of ETH. Ensure you have enough ETH in your wallet to cover these fees, leaving a sufficient buffer to complete transactions without issues.</li>
           </ul>
         

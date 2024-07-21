@@ -2,7 +2,7 @@
   // width:100vh;
   margin-top: 250px;
   margin-bottom: 150px;
-  
+
   // overflow: hidden;
 }
 .block {
@@ -49,6 +49,27 @@
   line-height: 35px;
   margin-bottom: 24px;
   color: var(--color-text-yellow);
+  position: relative;
+}
+.contentTitleLittleBlur {
+  width: 150px;
+  height: 150px;
+  position: absolute;
+  background: #d05c48;
+  z-index: -1;
+  left: -30%;
+  top: 20%;
+  filter: blur(90px);
+}
+.contentTextBlur {
+  width: 150px;
+  height: 150px;
+  position: absolute;
+  background: #ca893f;
+  z-index: -1;
+  right: -30%;
+  top: 20%;
+  filter: blur(90px);
 }
 .contentTitleSolution {
   font-weight: 500;
@@ -107,8 +128,8 @@
     }
   }
   .bgBlik {
-    top:-180px;
-    left:40px;
+    top: -180px;
+    left: 40px;
   }
 }
 

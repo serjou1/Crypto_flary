@@ -18,10 +18,10 @@ export const Header = () => {
         <h1>The First Cross-Chain Lending & Borrowing platform that really cares about you</h1></Animate>
         <Animate custom={2}>
         <p>
-          Flary Finance is an innovative cross-chain lending platform connecting EVM and non-EVM
-          networks including bitcoin ordinals, which provides its users with brand new solutions and
-          services designed to greatly simplify cross-chain transactions and help distribute
-          liquidity across different networks.
+        Say goodbye to the old ways of banking and embrace a future with Flary Finance,
+          where your assets are truly mobile and your financial needs are met with ease.
+          Apart of lending & borrowing our protocol is powered with yielding, bridging, and other
+          comprehensive solutions, all in one place. Flary is the ultimate aggregator.
         </p>
         </Animate>
         <Animate custom={3}>

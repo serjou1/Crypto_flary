@@ -35,15 +35,18 @@ export const BuyWindow = () => {
     setTokenImg(argImg);
     setInputTittle(arg);
   };
-// ZazazazazaZazazazazaZazazazazaZazazazazaZazazazaza
+  // ZazazazazaZazazazazaZazazazazaZazazazazaZazazazaza
   return (
     <div className={style.BuyWindow}>
+      <div className={style.BuyWindowBlur}></div>
       <h1>Flary Presale</h1>
       <h1>Stage 1</h1>
       <p>1 FLFI = $0,100 </p>
       <p>Price next stage = $0,110</p>
 
-      <p>Your holdings:</p>
+      <p style={{ marginTop: '15px', fontSize: '20px' }}>
+        <span style={{ fontSize: '20px' }}>Your holdings:</span>100,00
+      </p>
       <Progress progress={0} />
       <p>Collected USDT : ${collected} / $500,000</p>
       <p>Tokens sold: {sellTokens} / 1,000,000,000</p>
@@ -121,24 +124,17 @@ export const BuyWindow = () => {
                     <img src={USDT} alt="" />
                     <p>USDT</p>
                   </div>
-                  
                 </div>
               )
             : null}
         </div>
       </div>
-{/* // ZazazazazaZazazazazaZazazazazaZazazazazaZazazazaza       */}
+      {/* // ZazazazazaZazazazazaZazazazazaZazazazazaZazazazaza       */}
       <div className={style.input_container}>
-        {network === 'BNB Chain' ? (
-          <p>BNB to be paid: </p>
-        ) : (
-          <p>{inputTittle} to be paid: </p>
-        )}
+        {network === 'BNB Chain' ? <p className={style.labelLine}>BNB to be paid: </p> : <p className={style.labelLine}>{inputTittle} to be paid: </p>}
         <input className={style.input_buy} type="text" placeholder="0.0" />
       </div>
       <div className={style.pay_button}>Buy FLFI</div>
-      
-    </div>   
-    
+    </div>
   );
 };

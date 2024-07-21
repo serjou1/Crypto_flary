@@ -6,7 +6,7 @@ import style from './HeaderNav.module.scss'
 export const HeaderNav = () => {
   const buttonContent = [
     { link: '/how-to-buy', tittle: 'How To Buy' },
-    { link: '/giveaway', tittle: 'Win $999K' },
+    { link: '/giveaway', tittle: 'Win $333K' },
   ];
   return (
     <div className={style.HeaderNav}>
