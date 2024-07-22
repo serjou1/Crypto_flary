@@ -11,18 +11,36 @@
   justify-content: space-between;
   margin-bottom: 150px;
 }
-.bgBlik {
+.containerBlikDark {
+  width: 100px;
+  height: 100px;
   position: absolute;
-  top: -300px;
-  left: 0;
+  background: #117b52;;
   z-index: 1;
-  width: 100%;
-  height: auto;
-  display: block;
+  right: -20%;
+  top: 20%;
+  filter: blur(30px);
+  
 }
+.containerBlik{
+  width: 250px;
+  height: 250px;
+  position: absolute;
+  background: var(--color-text-yellow);
+  z-index: 1;
+  right: -30%;
+  top: 0%;
+  filter: blur(90px);
+  
+}
+
 .netBackground {
-  background: radial-gradient(70.71% 70.71% at 50% 50%, transparent 0, rgba(0, 0, 0, 0.5) 79%),
-    url(../../assets/bg-net.png), transparent 0 0/100% 100% no-repeat;
+  // background: radial-gradient(70.71% 70.71% at 50% 50%, transparent 0, rgba(0, 0, 0, 0.5) 79%),
+  //   url(../../assets/bg-net.png), transparent 0 0/100% 100% no-repeat;
+  background-image: url(../../assets/bg-net.png);
+  background-repeat: no-repeat;
+  background-position:center;
+  background-size:cover;
 
   padding-top: 28px;
   padding-bottom: 30px;

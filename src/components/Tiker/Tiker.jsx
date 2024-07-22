@@ -17,6 +17,7 @@ export const Tiker = () => {
           <img src={potato} alt="" />
           <img src={potato} alt="" />
           <img src={potato} alt="" />
+          <img src={potato} alt="" />
         </div>
       </div>
     </div>

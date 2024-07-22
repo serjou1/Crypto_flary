@@ -41,8 +41,11 @@ export const AboutAs = () => {
             advantageous for all users. With Flary, you can unlock the power of your assets without the
             usual headaches, ensuring you're always ready to seize the next big opportunity.
           </div>
+          <div className={style.containerBlikDark}>
+            
+          </div>
           <div className={style.containerBlik}>
-            <img className={style.bgBlik} src={BgBlik} alt="" />
+            
           </div>
         </motion.div>
       </motion.div>
