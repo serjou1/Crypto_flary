@@ -27,7 +27,7 @@
   background: var(--color-text-yellow);
   z-index: -1;
   right: -20%;
-  top: 80%;
+  top: 20%;
   filter: blur(90px);
 }
 .button_group {
@@ -84,13 +84,19 @@
     }
   }
 }
+.inputs {
+  display: flex;
+  width: 90%;
+  gap: 20px;
+}
 .input_container {
   margin-bottom: 25px;
-  width: 90%;
+
+  align-items: center;
   position: relative;
 
   p {
-    font-size: 14px;
+    font-size: 12px;
   }
   input {
     z-index: 0;
@@ -99,14 +105,14 @@
     position: relative;
   }
 }
-.labelLine{
+.labelLine {
   z-index: 1;
-  top:-3px;
+  top: -3px;
   position: absolute;
   font-size: 20px;
   color: var(--color-text-yellow);
-  padding: 0 20px;
-  margin:0 20px ;
+  padding: 0 10px;
+  margin: 0 20px;
   background: var(--color-bg);
 }
 .pay_button {

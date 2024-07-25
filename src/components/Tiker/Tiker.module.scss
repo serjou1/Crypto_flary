@@ -9,37 +9,38 @@
   text-align: center;
 }
 .ticker {
-  // max-width: 100%;
-  margin-top: 30px ;
-  // overflow: hidden;
+  width: 120%;
+  margin-top: 30px;
+  //  overflow: hidden;
   //background:#fff;
   position: relative;
-  
 }
 .ticker_wrapper {
   display: flex;
-  animation: animate 15s linear infinite;
+  align-items: center;
+  // animation: animate 15s linear infinite;
   img {
     padding: 0 30px;
     flex-shrink: 0;
 
-    height: 80px;
-    
+    height: 60px;
+    width: 220px;
   }
 }
 @keyframes animate {
-0%{
-  transform: translateX(100%);
-}
+  0% {
+    transform: translateZ(0);
+  }
   to {
-    transform: translateX(-100%);
+    transform: translate3D(-100%, 0, 0);
   }
 }
 
 @media (max-width: 768px) {
-    .ticker_wrapper {
-  img {
-    height: 50px;
-    padding: 0 15px;
-  }}
+  .ticker_wrapper {
+    img {
+      height: 50px;
+      padding: 0 15px;
+    }
+  }
 }

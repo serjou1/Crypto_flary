@@ -130,10 +130,17 @@ export const BuyWindow = () => {
         </div>
       </div>
       {/* // ZazazazazaZazazazazaZazazazazaZazazazazaZazazazaza       */}
+      <div className={style.inputs}>
       <div className={style.input_container}>
         {network === 'BNB Chain' ? <p className={style.labelLine}>BNB to be paid: </p> : <p className={style.labelLine}>{inputTittle} to be paid: </p>}
         <input className={style.input_buy} type="text" placeholder="0.0" />
       </div>
+      <div className={style.input_container}>
+        <p className={style.labelLine}>FLFI to be received: </p> 
+        <input className={style.input_buy} type="text" placeholder="0.0" />
+      </div>
+      </div>
+      
       <div className={style.pay_button}>Buy FLFI</div>
     </div>
   );
