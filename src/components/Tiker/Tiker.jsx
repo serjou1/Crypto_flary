@@ -8,7 +8,7 @@ import Featuret4 from '../../assets/Featured/CoinPedia-Logo.png'
 import Featuret5 from '../../assets/Featured/Coinmarketcap_svg_logo.svg.png'
 import Featuret6 from '../../assets/Featured/Cointelegraph.webp'
 import Featuret7 from '../../assets/Featured/The_Financial_Express_logo.png'
-import Featuret8 from '../../assets/Featured/beincrypto_the_latest_high_quality_blockchain_and_cryptocurrency.png'
+import Featuret8 from '../../assets/Featured/forbes-seeklogo.com (1).svg'
 import Featuret9 from '../../assets/Featured/coinsniper.png'
 import Featuret10 from '../../assets/Featured/CoinGApe.png'
 import Featuret11 from '../../assets/Featured/crypto-news-flash-logo-2x.webp'
@@ -36,6 +36,7 @@ export const Tiker = () => {
             <img src={Featuret9} alt="" style={{width:'380px',height:'70px'}}/>
             <img src={Featuret10} alt=""  style={{height:'70px',width:'315px'}} />
             <img src={Featuret11} alt=""  style={{height:'70px',width:'246px'}} />
+            <img src={Featuret8} alt=""  style={{height:'70px',width:'246px'}} />
             
           </div>
         </Marquee>
