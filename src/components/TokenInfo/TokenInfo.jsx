@@ -4,6 +4,7 @@ import React from 'react';
 import { BsQuestionDiamondFill } from 'react-icons/bs';
 import { Link as LinkSmooth } from 'react-scroll';
 import style from './TokenInfo.module.scss';
+import { Diagram } from './Diagram';
 
 export const TokenInfo = () => {
   const animation = {
@@ -79,7 +80,8 @@ export const TokenInfo = () => {
             <p>Detailed Info</p>
           </LinkSmooth>
         </motion.div>
-        <motion.div
+        <Diagram/>
+        {/* <motion.div
           className={style.content}
           initial="hidden"
           whileInView="visible"
@@ -105,7 +107,7 @@ export const TokenInfo = () => {
             <motion.li variants={animationSupply} custom={7}>No institutional selling pressure </motion.li>
             <motion.li variants={animationSupply} custom={8}>Governance</motion.li>
           </ol>
-        </motion.div>
+        </motion.div> */}
       </div>
     </div>
   );

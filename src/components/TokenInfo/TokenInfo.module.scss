@@ -1,5 +1,5 @@
 .TokenInfo {
-  margin-bottom: 150px;
+  margin-bottom: 350px;
 }
 .header {
   font-size: 48px;
@@ -9,7 +9,7 @@
 .TokenInfo_content {
   margin-top: 75px;
   display: flex;
-  align-items: center;
+
   justify-content: space-between;
 }
 .block {
@@ -43,31 +43,92 @@
   border-radius: 10px;
   cursor: pointer;
 }
-.content {
-  width: 45%;
-  
-
-  li {
-    color: var(--color-text-yellow);
-    font-size: 28px;
-    font-weight: 500;
-    list-style-type: auto;
-    margin-bottom: 15px;
+.Diagram {
+  .Tittle {
+    color:#d2d4d8;
+    // background: linear-gradient(90deg, #ffa957, #ffd975);
+    background-image:url(../../assets/bg-card.webp);
+    border: 0.2px solid 
+    #ea512fcc;
+    border-radius: 15px;
+    padding: 5px 20px;
+    position: relative;
+    font-size: 68px;
+    font-weight: 600;
+    
   }
-  ul{
-    display: flex;
+  .line5 {
+    position: absolute;
+    content: ' ';
+    height: 70px;
+    width: 1px;
+    background-color:#ea512fcc;
+    top: 100%;
+    left: 5%;
+  }
+  .line1 {
+    position: absolute;
+    content: ' ';
+    height: 70px;
+    width: 1px;
+    background-color: #ea512fcc;
+    top: 100%;
+    left: 27%;
+  }
+  .line2 {
+    position: absolute;
+    content: ' ';
+    height: 220px;
+    width: 1px;
+    background: linear-gradient(180deg,#ea512fcc, #ffa957 );;
+    top: 100%;
+    left: 50%;
+  }
+  .line3 {
+    position: absolute;
+    content: ' ';
+    height: 70px;
+    width: 1px;
+    background-color: #ea512fcc;
+    top: 100%;
+    left: 73%;
+  }
+  .line4 {
+    position: absolute;
+    content: ' ';
+    height: 70px;
+    width: 1px;
+    background-color: #ea512fcc;
+    top: 100%;
+    left: 95%;
+  }
+  .Diagram_1level {
+    color:#8c8f94;
     align-items: center;
-    gap: 10px;
-    margin-left: 15px;
-    color: #fff;
     font-size: 16px;
-    font-weight: 400;
-    margin-bottom: 10px;
-    .dot{
-      width:7px;
-      height: 7px;
-      border-radius:50%;
-      background: var(--color-text-yellow);
-    }
+    position: absolute;
+    top: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+    width: 120px;
+    padding-top: 10px;
+ 
+    right: -60px;
+  }
+  .Diagram_tittle {
+    
+    font-size: 50px;
+    position: absolute;
+    top: 100%;
+    text-wrap: nowrap;
+    left: -267px;
+    gap: 10px;
+
+    padding-top: 10px;
+    border: 1px solid var(--color-text-darkYellow);
+    border-radius: 15px;
+    padding: 5px 20px;
   }
 }

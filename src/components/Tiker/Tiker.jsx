@@ -24,7 +24,7 @@ export const Tiker = () => {
       </Animate>
 
       <div className={style.ticker}>
-        <Marquee gradient={true} gradientColor='black'>
+        <Marquee gradient={true} gradientColor='#05090f'>
           <div className={style.ticker_wrapper}>
             <img src={Featuret1} alt=""  style={{width:'300px'}} />
             
