@@ -38,7 +38,7 @@ export const BuyWindow = () => {
   // ZazazazazaZazazazazaZazazazazaZazazazazaZazazazaza
   return (
     <div className={style.BuyWindow}>
-      <div className={style.BuyWindowBlur}></div>
+      {/* <div className={style.BuyWindowBlur}></div> */}
       <h1>Flary Presale</h1>
       <h1>Stage 1</h1>
       <p>1 FLFI = $0,100 </p>

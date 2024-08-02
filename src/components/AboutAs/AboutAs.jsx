@@ -41,12 +41,12 @@ export const AboutAs = () => {
             advantageous for all users. With Flary, you can unlock the power of your assets without the
             usual headaches, ensuring you're always ready to seize the next big opportunity.
           </div>
-          <div className={style.containerBlikDark}>
+          {/* <div className={style.containerBlikDark}>
             
           </div>
           <div className={style.containerBlik}>
             
-          </div>
+          </div> */}
         </motion.div>
       </motion.div>
 
@@ -113,7 +113,7 @@ export const AboutAs = () => {
                 commissions and total flexibility. All in one place. All at your convenience. All is
                 Flary.
               </p>
-              <div className={style.contentTextBlur}></div>
+              {/* <div className={style.contentTextBlur}></div> */}
             </div>
           </motion.div>
         </motion.div>
