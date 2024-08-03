@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { AboutAs, Header, Navbar, Roadmap, Tekenomics, Tiker, TokenInfo } from '../../components';
+import { AboutAs, Blocks, Header, Navbar, Roadmap, Tekenomics, Tiker, TokenInfo } from '../../components';
 
 import style from './Home.module.scss';
 
@@ -20,6 +20,7 @@ export const Home = () => {
       <div className={style.Home}>
         <Header />
         {/* <Tiker/> */}
+        <Blocks/>
         <AboutAs />
         <TokenInfo/>
         <Tekenomics />
