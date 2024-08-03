@@ -9,7 +9,12 @@
   height: 140px;
   padding: 0 120px;
   margin: 0 auto;
+  &::before{
+    content: " ";
+
+  }
 }
+
 .logo {
   display: flex;
   flex-direction: column;

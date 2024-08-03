@@ -19,7 +19,7 @@ export const Home = () => {
       <Navbar nav={example} navLink={[]} />
       <div className={style.Home}>
         <Header />
-        <Tiker/>
+        {/* <Tiker/> */}
         <AboutAs />
         <TokenInfo/>
         <Tekenomics />

@@ -5,7 +5,6 @@ import logo from '../../assets/Flary Logo.png';
 import GitBook from '../../assets/GitBook.svg';
 import { ModalRules } from '../ModalRules/ModalRules';
 import style from './Footer.module.scss';
-import { Link } from 'react-router-dom';
 
 export const Footer = () => {
   const [modalPolicyIsOpen, setModalPolicyIsOpen] = useState(false);
@@ -13,6 +12,7 @@ export const Footer = () => {
   return (
     <>
       <div className={style.Footer}>
+        
         <div className="logo">
           <img src={logo} alt="Logo" />
           <div className={style.rules}>
@@ -27,7 +27,9 @@ export const Footer = () => {
           <ModalRules
             isOpen={modalPolicyIsOpen}
             onClose={() => setModalPolicyIsOpen(false)}
-            title={<h2 style={{ paddingTop: '60px',paddingBottom:'40px' }}>PRIVACY POLICY FOR SITE</h2>}>
+            title={
+              <h2 style={{ paddingTop: '60px', paddingBottom: '40px' }}>PRIVACY POLICY FOR SITE</h2>
+            }>
             <p>
               The platform's collection, use, and sharing of personal information are governed by
               its Privacy Policy, which is incorporated into these Terms by reference. By using the
@@ -44,7 +46,9 @@ export const Footer = () => {
           <ModalRules
             isOpen={modalTermsIsOpen}
             onClose={() => setModalTermsIsOpen(false)}
-            title={<h2 style={{ paddingTop: '60px',paddingBottom:'40px' }}>TERMS OF USE FOR SITE</h2>}>
+            title={
+              <h2 style={{ paddingTop: '60px', paddingBottom: '40px' }}>TERMS OF USE FOR SITE</h2>
+            }>
             <p>
               Flary Finance is an innovative cross-chain lending platform connecting EVM and non-EVM
               networks including bitcoin ordinals, FlaryFinance (“we”, “our”, or “us”). provides its
@@ -430,7 +434,6 @@ export const Footer = () => {
           </ModalRules>
         </div>
         <div className={style.social}>
-          
           <div className={style.socialItem}>
             <a
               href="https://twitter.com/FlaryFinance"

@@ -17,8 +17,7 @@ export const Diagram = () => {
             {' '}
             <GrStakeholder
               size={35}
-              color="
-#ea512f"
+              color="#ea512f" className={style.icon_1level}
             />
             Enhanced staking
           </div>
@@ -29,28 +28,28 @@ export const Diagram = () => {
             <div className={style.line1} style={{ left: '35%', backgroundColor: '#ffa957' }}>
               <div className={style.Diagram_1level} style={{ textWrap: 'wrap' }}>
                 {' '}
-                <GiBurningEmbers size={35} color="#ffa957" />
+                <GiBurningEmbers size={35} className={style.icon_2level} color="#ffa957"   />
                 Deflationary
               </div>
             </div>
             <div className={style.line3} style={{ left: '65%', backgroundColor: '#ffa957' }}>
               <div className={style.Diagram_1level} style={{ textWrap: 'wrap' }}>
                 {' '}
-                <MdToken size={35} color="#ffa957" />
+                <MdToken size={35} color="#ffa957" className={style.icon_2level}  />
                 Perfectly designed tokenomics
               </div>
             </div>
             <div className={style.line4} style={{ backgroundColor: '#ffa957' }}>
               <div className={style.Diagram_1level} style={{ textWrap: 'wrap' }}>
                 {' '}
-                <TbBuildingBank size={35} color="#ffa957" />
+                <TbBuildingBank size={35} color="#ffa957" className={style.icon_2level}  />
                 Governance
               </div>
             </div>
             <div className={style.line5} style={{ backgroundColor: '#ffa957' }}>
               <div className={style.Diagram_1level} style={{ textWrap: 'wrap' }}>
                 {' '}
-                <MdMoneyOff size={35} color="#ffa957" />
+                <MdMoneyOff size={35} color="#ffa957" className={style.icon_2level}  />
                 No institutional selling pressure
               </div>
             </div>
@@ -60,8 +59,7 @@ export const Diagram = () => {
           <div className={style.Diagram_1level}>
             <GiReceiveMoney
               size={35}
-              color="
-#ea512f"
+              color="#ea512f" className={style.icon_1level}
             />
             Cheapened borrow
           </div>
@@ -71,8 +69,7 @@ export const Diagram = () => {
             {' '}
             <FaGift
               size={28}
-              color="
-#ea512f"
+              color="#ea512f" className={style.icon_1level}
             />
             Special offers
           </div>
@@ -82,8 +79,7 @@ export const Diagram = () => {
             {' '}
             <GiTakeMyMoney
               size={35}
-              color="
-#ea512f"
+              color="#ea512f" className={style.icon_1level}
             />
             Empowered lend
           </div>
