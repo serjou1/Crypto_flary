@@ -53,6 +53,12 @@
 }
 
 @media (max-width: 480px) {
+    .Blocks {
+       
+        h1 {
+         font-size: 30px;
+        }
+      }
   .blocks_grid {
     grid-template-rows: auto;
     grid-template-columns: 1fr;

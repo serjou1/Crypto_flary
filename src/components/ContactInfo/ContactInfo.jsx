@@ -17,6 +17,7 @@ export const ContactInfo = () => {
     visible: {
       x: 0,
       opacity: 1,
+      
     },
   };
   return (

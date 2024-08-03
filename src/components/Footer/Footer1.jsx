@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import React, { useState } from 'react';
 import { BsTwitterX } from 'react-icons/bs';
 import { FaDiscord } from 'react-icons/fa';
@@ -6,7 +7,6 @@ import logo from '../../assets/Flary Logo.png';
 import GitBook from '../../assets/GitBook.svg';
 import { ModalRules } from '../ModalRules/ModalRules';
 import style from './Footer1.module.scss';
-import topBorder from '../../assets/down-cut-2.png'
 
 export const Footer1 = () => {
   const [modalPolicyIsOpen, setModalPolicyIsOpen] = useState(false);
@@ -16,18 +16,61 @@ export const Footer1 = () => {
     { to: 'tekenomics', offset: -150, name: 'Tokenomics' },
     { to: 'roadmap', offset: -200, name: 'Roadmap' },
   ];
+
+  const animation = {
+    hidden: {
+      y: 75,
+      opacity: 0,
+    },
+    visible: {
+      y: 0,
+      opacity: 1,
+    },
+  };
+  const animation1 = {
+    hidden: {
+      x: 75,
+      opacity: 0,
+    },
+    visible: {
+      x: 0,
+      opacity: 1,
+    },
+  };
+  const animation2 = {
+    hidden: {
+      x: -75,
+      opacity: 0,
+    },
+    visible: {
+      x: 0,
+      opacity: 1,
+    },
+  };
   return (
     <div className={style.Footer}>
       <div className={style.top}>
-        <div className={style.left}>
+        <motion.div
+          className={style.left}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={animation2}
+          transition={{ duration: '1' }}>
           <img src={logo} alt="Logo" />
           <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis, blanditiis!</p>
-        </div>
-        <div className={style.right}>
+        </motion.div>
+        <motion.div
+          className={style.right}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}>
           <div className={style.nav}>
-            <p>Company</p>
+            <motion.p variants={animation} transition={{ duration: '1' }}>
+              Company
+            </motion.p>
             <ul>
-              <li>
+              <motion.li variants={animation1} transition={{ duration: '1', delay: 0.25 }}>
                 <Link
                   onClick={() => {
                     window.scrollTo({
@@ -38,20 +81,28 @@ export const Footer1 = () => {
                   to="/">
                   Home
                 </Link>
-              </li>
-              {navLink.map((item) => (
-                <li key={item.name}>
+              </motion.li>
+              {navLink.map((item, i) => (
+                <motion.li
+                  key={item.name}
+                  variants={animation1}
+                  transition={{ duration: '1', delay: 0.5 + i }}>
                   <LinkSmooth to={item.to} offset={item.offset} smooth={true} duration={500}>
                     {item.name}
                   </LinkSmooth>
-                </li>
+                </motion.li>
               ))}
             </ul>
           </div>
           <div className={style.socialBlock}>
-            <p>Follow us:</p>
+            <motion.p variants={animation} transition={{ duration: '1' }}>
+              Follow us:
+            </motion.p>
             <div className={style.social}>
-              <div className={style.socialItem}>
+              <motion.div
+                variants={animation1}
+                transition={{ duration: '1', delay: 0.5 }}
+                className={style.socialItem}>
                 <a
                   href="https://twitter.com/FlaryFinance"
                   target="_blank"
@@ -60,8 +111,11 @@ export const Footer1 = () => {
                   <BsTwitterX size={24} style={{ color: '#ffa957' }} />
                   <span>X</span>
                 </a>
-              </div>
-              <div className={style.socialItem}>
+              </motion.div>
+              <motion.div
+                className={style.socialItem}
+                variants={animation1}
+                transition={{ duration: '1', delay: 1 }}>
                 <a
                   className={style.socialLink}
                   href="https://flary-finance.gitbook.io/"
@@ -70,8 +124,11 @@ export const Footer1 = () => {
                   <img src={GitBook} alt="GitBook" />
                   <span>GitBook</span>
                 </a>
-              </div>
-              <div className={style.socialItem}>
+              </motion.div>
+              <motion.div
+                className={style.socialItem}
+                variants={animation1}
+                transition={{ duration: '1', delay: 1.5 }}>
                 <a
                   className={style.socialLink}
                   href="https://discord.gg/vQtzREsQ6k"
@@ -80,10 +137,10 @@ export const Footer1 = () => {
                   <FaDiscord size={24} style={{ color: '#ffa957' }} />
                   <span>Discord</span>
                 </a>
-              </div>
+              </motion.div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
       <div className={style.middle}></div>
       <div className={style.bottom}>
@@ -92,7 +149,7 @@ export const Footer1 = () => {
           <div onClick={() => setModalPolicyIsOpen(true)} className={style.copy}>
             Privacy policy
           </div>
-          <span/>
+          <span />
           <div onClick={() => setModalTermsIsOpen(true)} className={style.copy}>
             Terms of use
           </div>

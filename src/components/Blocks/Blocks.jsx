@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import React from 'react';
 
 import icon10 from '../../assets/Blocks/Benefit icon10.svg';
@@ -13,6 +14,26 @@ import icon from '../../assets/Blocks/icon.svg';
 import style from './Blocks.module.scss';
 
 export const Blocks = () => {
+  const animationScale = {
+    hidden: {
+      opacity: 0,
+      scale: 0.1,
+    },
+    visible: {
+      opacity: 1,
+      scale: 1,
+    },
+  };
+  const animation = {
+    hidden: {
+      y: 75,
+      opacity: 0,
+    },
+    visible: {
+      y: 0,
+      opacity: 1,
+    },
+  };
   const blockInner = [
     {
       img: icon,
@@ -69,21 +90,31 @@ export const Blocks = () => {
   ];
   return (
     <div className={style.Blocks}>
-      <h1>
+      <motion.h1 initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={animationScale}
+            transition={{ duration: '1' }}>
         Ultimate aggregator powered with Lending & Borrowing, powerful functionality and modular
         architecture.{' '}
-      </h1>
+      </motion.h1>
       <div className={style.blocks_grid}>
-        {blockInner.map((block) => (
-          <div className={block.tittle ? style.block : ''}>
-            <div className={block.tittle ? style.block_outer:''}>
-              <div className={block.tittle ?style.block_inner:''}>
+        {blockInner.map((block,i) => (
+          <motion.div
+            className={block.tittle ? style.block : ''}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={animation}
+            transition={{ duration: '1', delay:i/4  }}>
+            <div className={block.tittle ? style.block_outer : ''}>
+              <div className={block.tittle ? style.block_inner : ''}>
                 <img src={block.img} alt="" />
                 <h4>{block.tittle}</h4>
                 <p>{block.text}</p>
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>
