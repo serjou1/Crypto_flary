@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import style from './HeaderNav.module.scss'
+import style from './HeaderNav.module.scss';
 
 export const HeaderNav = () => {
   const buttonContent = [
@@ -12,7 +12,8 @@ export const HeaderNav = () => {
     <div className={style.HeaderNav}>
       {buttonContent.map((content, i) => (
         <Link key={i} to={content.link} className={style.button}>
-          {content.tittle}
+          <span>{content.tittle}</span>
+          
         </Link>
       ))}
     </div>

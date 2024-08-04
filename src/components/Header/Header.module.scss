@@ -11,8 +11,8 @@
   & h1 {
     background-position: -200%;
     background-size: 200%;
-    animation:bg-animation 4s infinite alternate-reverse;
-    background-image: linear-gradient(90deg, #ffa957, #ffd975);
+    animation: bg-animation 4s infinite alternate-reverse;
+    background-image: linear-gradient(90deg, #ff7948, #fe9452);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     -moz-background-clip: text;
@@ -32,8 +32,8 @@
     margin-right: 100px;
   }
 }
-@keyframes bg-animation{
-  100%{
+@keyframes bg-animation {
+  100% {
     background-position: 200%;
   }
 }
@@ -44,7 +44,6 @@
   justify-content: center;
 
   & .button {
-    
     background: linear-gradient(90deg, #ffa957, #ffd975);
 
     color: #000;
@@ -64,21 +63,19 @@
   // background-repeat: no-repeat;
   // background-position:center;
   // background-size:cover;
-  
+
   width: 45%;
-  
+
   & img {
     width: 100%;
     height: auto;
     display: block;
-    
   }
 }
 
-
-
-@media (max-width: 950px) {
+@media (max-width: 970px) {
   .description {
+  width: 100%;
     & h1 {
       font-size: 40px;
     }
@@ -86,7 +83,14 @@
       font-size: 16px;
     }
   }
+  .Header {
+  flex-direction: column;
+  gap: 30px;
 }
+.img{
+width:80%;
+}}
+
 @media (max-width: 850px) {
   .description {
     width: 100%;
@@ -99,9 +103,6 @@
       margin-right: 0px;
     }
   }
-  .img {
-    display: none;
-  }
 }
 @media (max-width: 500px) {
   .description {
@@ -113,7 +114,7 @@
       font-size: 14px;
     }
   }
-  .img {
-    display: none;
-  }
+  .img{
+    width:100%;
+    }
 }

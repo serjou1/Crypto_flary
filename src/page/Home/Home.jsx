@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react';
-import { AboutAs, Blocks, Header, Navbar, Roadmap, Tekenomics, Tiker, TokenInfo } from '../../components';
+import { AboutAs, AdditionalFeatures, Blocks, Header, Navbar, Roadmap, Tekenomics, Tiker, TokenInfo } from '../../components';
 
 import style from './Home.module.scss';
 
 export const Home = () => {
-  const example = [
-    { to: 'about', offset: -150, name: 'About Us' },
-    { to: 'tekenomics', offset: -150, name: 'Tokenomics' },
-    { to: 'roadmap', offset: -200, name: 'Roadmap' },
+  const navLink = [
+    { link: '/how-to-buy', tittle: 'How To Buy',id: 'how-to-buy'},
+    { link: '/giveaway', tittle: 'Win $333K',id: 'giveaway'},
   ];
   useEffect(()=>{
     window.scrollTo({
@@ -16,12 +15,13 @@ export const Home = () => {
   })
   return (
     <>
-      <Navbar nav={example} navLink={[]} />
+      <Navbar  navLink={navLink} />
       <div className={style.Home}>
         <Header />
         {/* <Tiker/> */}
         <Blocks/>
         <AboutAs />
+        <AdditionalFeatures/>
         <TokenInfo/>
         <Tekenomics />
         <Roadmap />

@@ -1,24 +1,41 @@
 .HeaderNav {
-    display: flex;
-    margin-top: 40px;
-    text-align: center;
-    justify-content: start;
-   gap: 30px;
-    & .button {
-     
-      background: linear-gradient(90deg, #ffa957, #ffd975);
-      background-position: -200%;
-      background-size: 200%;
-      color: #000;
-      border-radius: 8px;
-      padding: 12px;
-      width: 186px;
-      font-weight: 700;
-      line-height: 26px;
-      transition: 1s;
-      &:hover {
-        filter: brightness(120%);
-        background-position: 100%;
-      }
+  display: flex;
+  margin-top: 40px;
+  text-align: center;
+  justify-content: start;
+  gap: 30px;
+  & .button {
+    border: 1px solid transparent;
+    background: linear-gradient(var(--color-bg), var(--color-bg)) padding-box,
+    linear-gradient(90deg,#ea512fcc, #ffa957) border-box;
+    background-position: -200%;
+    background-size: 200%;
+    color: #000;
+    border-radius: 8px;
+    padding: 12px;
+    width: 186px;
+    font-weight: 700;
+    line-height: 26px;
+    transition: 1s;
+    span{
+      background-image: linear-gradient(90deg, #ea512fcc, #ffa957);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    &:hover {
+      filter: brightness(120%);
+      background-position: 100%;
     }
   }
+}
+
+@media (max-width: 420px) {
+  .HeaderNav {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 40px;
+   align-items: center;
+    gap: 30px;
+  }
+}

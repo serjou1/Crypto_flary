@@ -16,21 +16,22 @@
   width: 35%;
   border: 1px solid transparent;
   position: relative;
-  border-image-slice: 1;
+  // border-image-slice: 1;
   border-radius: 15px;
   padding: 25px;
-  background: var(--color-bg);
-  &::after {
-    content: ' ';
-    position: absolute;
-    top: -3px;
-    left: -3px;
-    bottom: -3px;
-    right: -3px;
-    background: linear-gradient(#ea512fcc, #ffa957);
-    border-radius: 15px;
-    z-index: -1;
-  }
+  background: linear-gradient(var(--color-bg), var(--color-bg)) padding-box,
+    linear-gradient(#ea512fcc, #ffa957) border-box;
+  // &::after {
+  //   content: ' ';
+  //   position: absolute;
+  //   top: -3px;
+  //   left: -3px;
+  //   bottom: -3px;
+  //   right: -3px;
+  //   background: linear-gradient(#ea512fcc, #ffa957);
+  //   border-radius: 15px;
+  //   z-index: -1;
+  // }
 }
 .block_header {
   text-align: center;
@@ -53,9 +54,13 @@
   gap: 10px;
   text-align: center;
   padding: 5px 15px;
-  background: var(--color-text-darkYellow);
+  background: #fe9452;
   border-radius: 10px;
   cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  &:hover{
+    transform: scale(1.05);
+  }
 }
 .Diagram {
   .Tittle {
@@ -229,7 +234,19 @@
       height: 25px;
     }
   }
-  
-   p{font-size: 14px;}
-  
+
+  p {
+    font-size: 14px;
+  }
+}
+@media (max-width: 420px) {
+  .Diagram {
+    .Tittle {
+      font-size: 30px;
+    }
+    .Diagram_tittle {
+      font-size: 20px;
+      left: -125px;
+    }
+  }
 }

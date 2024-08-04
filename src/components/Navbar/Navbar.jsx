@@ -7,7 +7,7 @@ import { FaBars, FaTimes } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '../Button/Button';
 
-export const Navbar = ({ nav, navLink }) => {
+export const Navbar = ({  navLink }) => {
   const params = useLocation().pathname.slice(1);
 
   const [mobileNav, SetMobileNav] = useState(false);
@@ -37,13 +37,7 @@ export const Navbar = ({ nav, navLink }) => {
               Home
             </Link>
           </li>
-          {nav.map((item) => (
-            <li key={item.name}>
-              <LinkSmooth to={item.to} spy={true} offset={item.offset} smooth={true} duration={500}>
-                {item.name}
-              </LinkSmooth>
-            </li>
-          ))}
+          
           {navLink.map((item, i) => (
             // console.log(item.tittle.toLowerCase())
             <li key={i}>
@@ -86,19 +80,6 @@ export const Navbar = ({ nav, navLink }) => {
                 Home
               </Link>
             </li>
-            {nav.map((item) => (
-              <li key={item.name}>
-                <LinkSmooth
-                  to={item.to}
-                  spy={true}
-                  offset={item.offset}
-                  smooth={true}
-                  duration={500}
-                  onClick={handlerMobileNav}>
-                  {item.name}
-                </LinkSmooth>
-              </li>
-            ))}
             {navLink.map((item, i) => (
               <li key={i}>
                 <Link to={item.link}>{item.tittle}</Link>
