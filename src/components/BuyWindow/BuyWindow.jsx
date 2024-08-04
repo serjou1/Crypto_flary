@@ -96,17 +96,26 @@ export const BuyWindow = () => {
           className={style.button}
           onClick={handlerClickToken}
           style={dropToken ? { borderBottomLeftRadius: '0', borderBottomRightRadius: '0' } : {}}>
-          {network === 'BNB Chain' ? (
             <div className={style.button_tittle}>
-              <img src={BNB} alt="" />
-              <p>BNB</p>
-            </div>
-          ) : (
-            <div className={style.button_tittle}>
-              <img src={tokenImg} alt="" />
-              <p>{token}</p>
-            </div>
-          )}
+            <img src={tokenImg} alt="" />
+            <p>{token}</p>
+          </div>
+          {network === 'BNB Chain'
+            ? dropToken && (
+                <div className={style.drop_network}>
+                  <div className={style.button_drop} onClick={() => handlerChangeToken('BNB', BNB)}>
+                    <img src={BNB} alt="" />
+                    <p>BNB</p>
+                  </div>
+                  <div
+                    className={style.button_drop}
+                    onClick={() => handlerChangeToken('USDT', USDT)}>
+                    <img src={USDT} alt="" />
+                    <p>USDT</p>
+                  </div>
+                </div>
+              )
+            : null}
           <img src={Arrow} alt="" />
 
           {network === 'Ethereum'
@@ -131,16 +140,18 @@ export const BuyWindow = () => {
       </div>
       {/* // ZazazazazaZazazazazaZazazazazaZazazazazaZazazazaza       */}
       <div className={style.inputs}>
-      <div className={style.input_container}>
-        {network === 'BNB Chain' ? <p className={style.labelLine}>BNB to be paid: </p> : <p className={style.labelLine}>{inputTittle} to be paid: </p>}
-        <input className={style.input_buy} type="text" placeholder="0.0" />
+        <div className={style.input_container}>
+         
+            <p className={style.labelLine}>{inputTittle} to be paid: </p>
+          
+          <input className={style.input_buy} type="text" placeholder="0.0" />
+        </div>
+        <div className={style.input_container}>
+          <p className={style.labelLine}>FLFI to be received: </p>
+          <input className={style.input_buy} type="text" placeholder="0.0" />
+        </div>
       </div>
-      <div className={style.input_container}>
-        <p className={style.labelLine}>FLFI to be received: </p> 
-        <input className={style.input_buy} type="text" placeholder="0.0" />
-      </div>
-      </div>
-      
+
       <div className={style.pay_button}>Buy FLFI</div>
     </div>
   );
