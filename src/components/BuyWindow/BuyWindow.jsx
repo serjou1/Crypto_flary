@@ -35,7 +35,7 @@ export const BuyWindow = () => {
     setTokenImg(argImg);
     setInputTittle(arg);
   };
-  // ZazazazazaZazazazazaZazazazazaZazazazazaZazazazaza
+  
   return (
     <div className={style.BuyWindow}>
       {/* <div className={style.BuyWindowBlur}></div> */}
@@ -152,7 +152,7 @@ export const BuyWindow = () => {
         </div>
       </div>
 
-      <div className={style.pay_button}>Buy FLFI</div>
+      <div className={style.pay_button} >Buy FLFI</div>
     </div>
   );
 };
