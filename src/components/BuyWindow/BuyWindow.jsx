@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Progress } from '../FairLaunch/Progress/Progress';
 import style from './BuyWindow.module.scss';
 
@@ -16,7 +16,9 @@ const {
   ETH_CONTRACT_ADDRESS,
   BSC_CONTRACT_ADDRESS,
   ETH_USDT_ADDRESS,
-  BSC_USDT_ADDRESS
+  BSC_USDT_ADDRESS,
+  RPC_ETH,
+  RPC_BSC
 } = config;
 
 const NETWORK_ETHEREUM = 'Ethereum';
@@ -25,6 +27,21 @@ const NETWORK_BSC = 'BNB Chain';
 const TOKEN_ETHEREUM = 'Ethereum';
 const TOKEN_USDT = 'USDT';
 const TOKEN_BNB = 'BNB';
+
+const stages = [
+  {
+    amount: 1_000_000_000,
+    price: 0.1
+  },
+  {
+    amount: 1_000_000_000,
+    price: 0.11
+  },
+  {
+    amount: 1_000_000_000,
+    price: 0.12
+  }
+]
 
 export const BuyWindow = () => {
   const [collected, setCollected] = useState(0);
@@ -36,6 +53,12 @@ export const BuyWindow = () => {
   const [token, setToken] = useState(TOKEN_ETHEREUM);
   const [networkImg, setNetworkImg] = useState(ETH);
   const [tokenImg, setTokenImg] = useState(ETH);
+
+  const [tokenHoldings, setTokenHoldings] = useState('0');
+
+  useEffect(() => {
+    updateTokenHoldings();
+  }, []);
 
   // TODO: validate invalid input
   const [inputAmount, setInputAmount] = useState('0');
@@ -71,17 +94,88 @@ export const BuyWindow = () => {
     }
   };
 
+  const getContract = (network, provider) => {
+    const contractAddress = network === NETWORK_ETHEREUM
+      ? ETH_CONTRACT_ADDRESS
+      : BSC_CONTRACT_ADDRESS;
+
+    const contract = new ethers.Contract(contractAddress, FLARY_PRESALE_ABI, provider);
+
+    return contract;
+  };
+
+  const getBoughtTokens = async (network, address) => {
+    const providerRpc = network === NETWORK_ETHEREUM
+     ? RPC_ETH
+     : RPC_BSC;
+
+    // TODO: remove this
+    if (network === NETWORK_BSC) {
+      return 0;
+    }
+
+    const provider = new ethers.JsonRpcProvider(providerRpc);
+    const contract = getContract(network, provider);
+
+    const balance = await contract.s_investemetByAddress(address);
+    return Number(ethers.formatEther(balance));
+  }
+
+  const getTokensSold = async (network) => {
+    const providerRpc = network === NETWORK_ETHEREUM
+     ? RPC_ETH
+     : RPC_BSC;
+
+    // TODO: remove this
+    if (network === NETWORK_BSC) {
+      return 0;
+    }
+
+    const provider = new ethers.JsonRpcProvider(providerRpc);
+    const contract = getContract(network, provider);
+
+    const tokensSold = await contract.s_tokenSold();
+
+    return Number(ethers.formatEther(tokensSold));
+  };
+
+  const updateTokenHoldings = async () => {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+
+    const boughtTokensEth = await getBoughtTokens(NETWORK_ETHEREUM, signer.address);
+    const boughtTokensBsc = await getBoughtTokens(NETWORK_BSC, signer.address);
+
+    const tokensSoldEth = await getTokensSold(NETWORK_ETHEREUM);
+    const tokensSoldBsc = await getTokensSold(NETWORK_BSC);
+
+    const totalAmount = tokensSoldBsc + tokensSoldEth;
+    setSellTokens(Number(totalAmount.toFixed(2)));
+
+    let totalUsd = 0;
+    let tokensLeft = totalAmount;
+    for (const stage of stages) {
+      if (tokensLeft < stage.amount) {
+        totalUsd += tokensLeft * stage.price;
+        break;
+      }
+
+      totalUsd += stage.amount * stage.price;
+      tokensLeft -= stage.amount;
+    }
+
+    setCollected(Number(totalUsd.toFixed(2)));
+
+    setTokenHoldings(`${(boughtTokensEth + boughtTokensBsc).toFixed(2)} (${(boughtTokensEth).toFixed(2)} on ETH + ${(boughtTokensBsc).toFixed(2)} on BSC)`);
+  };
+
   const buyTokensNative = async (network) => {
     const amount = ethers.parseEther(Number(inputAmount).toFixed(18));
 
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
 
-    const contractAddress = network === NETWORK_ETHEREUM
-      ? ETH_CONTRACT_ADDRESS
-      : BSC_CONTRACT_ADDRESS;
-
-    const contract = new ethers.Contract(contractAddress, FLARY_PRESALE_ABI, signer);
+    const contract = getContract(network, signer);
 
     const paused = await contract.paused();
     if (paused) {
@@ -95,6 +189,7 @@ export const BuyWindow = () => {
     // TODO: disable front
 
     await tx.wait();
+    await updateTokenHoldings();
 
     // TODO: enable front
   }
@@ -106,11 +201,7 @@ export const BuyWindow = () => {
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
 
-    const contractAddress = network === NETWORK_ETHEREUM
-      ? ETH_CONTRACT_ADDRESS
-      : BSC_CONTRACT_ADDRESS;
-
-    const contract = new ethers.Contract(contractAddress, FLARY_PRESALE_ABI, signer);
+    const contract = getContract(network, signer);
 
     const usdtAddress = network === NETWORK_ETHEREUM
       ? ETH_USDT_ADDRESS
@@ -124,17 +215,18 @@ export const BuyWindow = () => {
       return;
     }
 
-    const allowance = await usdt.allowance(signer.address, contractAddress);
+    const allowance = await usdt.allowance(signer.address, await contract.getAddress());
 
     // TODO: disable front
 
     if (allowance < amount) {
-      const approveTx = await usdt.approve(contractAddress, amount);
+      const approveTx = await usdt.approve(await contract.getAddress(), amount);
       await approveTx.wait();
     }
 
     const tx = await contract.buyTokensUSDT(amount);
     await tx.wait();
+    await updateTokenHoldings();
 
     // TODO: enable front
   }
@@ -148,7 +240,7 @@ export const BuyWindow = () => {
       <p>Price next stage = $0,110</p>
 
       <p style={{ marginTop: '15px', fontSize: '20px' }}>
-        <span style={{ fontSize: '20px' }}>Your holdings:</span>100,00
+        <span style={{ fontSize: '20px' }}>Your holdings:</span> {tokenHoldings}
       </p>
       <Progress progress={0} />
       <p>Collected USDT : ${collected} / $500,000</p>
