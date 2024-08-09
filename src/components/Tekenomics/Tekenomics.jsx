@@ -30,7 +30,7 @@ const animationSupply = {
 export const Tekenomics = () => {
   return (
     <div className={style.Tekenomics} id="tekenomics">
-      <img src={BgImage} alt="BgImage" />
+     
       <motion.p
         initial="hidden"
         whileInView="visible"
