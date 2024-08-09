@@ -5,7 +5,7 @@ import style from './Button.module.scss';
 
 export const Button = () => {
   const [openSideBar, setOpenSideBar] = useState(false);
-  const { connectWallet, connectedAccount ,balance} = useContext(TransactionContext);
+  const { connectWallet, connectedAccount, balance} = useContext(TransactionContext);
   const button = 'Connect Wallet';
   const shortAddress = `${connectedAccount.slice(0, 5)}...${connectedAccount.slice(
     connectedAccount.length - 4,
@@ -15,6 +15,7 @@ export const Button = () => {
   const showOverview = () => {
     setOpenSideBar(!openSideBar)
   };
+  
   return (
     <>
       <button
