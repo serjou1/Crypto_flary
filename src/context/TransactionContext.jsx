@@ -26,6 +26,7 @@ export const TransactionProvider = ({ children }) => {
       console.log(error);
     }
   };
+
   const getBalance = async (account) => {
     const balance = await ethereum.request({
       method: 'eth_getBalance',
@@ -33,6 +34,7 @@ export const TransactionProvider = ({ children }) => {
     });
     setBalance(ethers.formatEther(balance));
   };
+
   const connectWallet = async () => {
     try {
       if (!ethereum) return alert('Please install metamask');
@@ -43,11 +45,13 @@ export const TransactionProvider = ({ children }) => {
       throw new Error('No ethereum object.');
     }
   };
+
   useEffect(() => {
     checkIfWalletIsConnected();
   }, []);
+
   return (
-    <TransactionContext.Provider value={{ connectWallet, connectedAccount, balance }}>
+    <TransactionContext.Provider value={{ connectWallet, connectedAccount, balance, setConnectedAccount }}>
       {children}
     </TransactionContext.Provider>
   );
