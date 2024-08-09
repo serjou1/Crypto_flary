@@ -18,4 +18,4 @@ export {Tiker} from './Tiker/Tiker';
 export {AccountOverview} from './AccountOverview/AccountOverview'
 export {TokenInfo} from './TokenInfo/TokenInfo';
 export {Blocks} from './Blocks/Blocks'
-export {AdditionalFeatures} from './AdditionalFeatures/AdditionalFeatures'
+export {Modularity} from './Modularity/Modularity'
