@@ -82,6 +82,7 @@ export const BuyWindow = () => {
     setInputTittle(arg);
   };
   
+
   const buyCoins = async () => {
     if (network === NETWORK_ETHEREUM && token === TOKEN_ETHEREUM) {
       await buyTokensNative(NETWORK_ETHEREUM);
@@ -231,6 +232,7 @@ export const BuyWindow = () => {
     // TODO: enable front
   }
 
+
   return (
     <div className={style.BuyWindow}>
       {/* <div className={style.BuyWindowBlur}></div> */}
@@ -345,7 +347,10 @@ export const BuyWindow = () => {
         </div>
       </div>
 
+
       <div className={style.pay_button} onClick={() => buyCoins()}>Buy FLFI</div>
+
+
     </div>
   );
 };

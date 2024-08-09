@@ -6,6 +6,7 @@ import style from './AccountOverview.module.scss';
 import Avatar from '../../assets/fire.png';
 import { TransactionContext } from '../../context/TransactionContext';
 
+
 export const AccountOverview = ({ address,openSideBar,showOverview,balance }) => {
   const { setConnectedAccount } = useContext(TransactionContext);
 
@@ -13,6 +14,7 @@ export const AccountOverview = ({ address,openSideBar,showOverview,balance }) =>
     setConnectedAccount("");
     showOverview();
   }
+
 
   return (
     <div className={openSideBar ? style.AccountOverview_open : style.AccountOverview_close}>
@@ -25,7 +27,10 @@ export const AccountOverview = ({ address,openSideBar,showOverview,balance }) =>
             <img src={Avatar} alt="" className={style.avatarOverview} />
             <p style={{ fontSize: '16px', fontWeight: '400' }}>{address}</p>
           </div>
+
           <FaPowerOff size={20} color="#fff" style={{ cursor: 'pointer' }} onClick={() => disconnect()} />
+
+
         </div>
         <div className={style.price}>
           <p style={{ fontSize: '16px', fontWeight: '400' }}>Price on launch:</p>

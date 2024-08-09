@@ -41,6 +41,9 @@
 
     padding: 32px 24px 24px;
     display: flex;
+    img {
+      mix-blend-mode: difference;
+    }
     p {
       color: #787a7e;
       letter-spacing: 0.25px;
@@ -53,19 +56,17 @@
 }
 
 @media (max-width: 480px) {
-    .Blocks {
-       
-        h1 {
-         font-size: 30px;
-         margin: 50px 0;
-        }
-      }
+  .Blocks {
+    h1 {
+      font-size: 30px;
+      margin: 50px 0;
+    }
+  }
   .blocks_grid {
     grid-template-rows: auto;
     grid-template-columns: 1fr;
-    .block_inner{
-        height: 200px;
-      }
+    .block_inner {
+      height: 200px;
+    }
   }
-  
 }

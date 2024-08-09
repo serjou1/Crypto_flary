@@ -90,23 +90,24 @@ export const Blocks = () => {
   ];
   return (
     <div className={style.Blocks}>
-      <motion.h1 initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={animationScale}
-            transition={{ duration: '1' }}>
+      <motion.h1
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={animationScale}
+        transition={{ duration: '1' }}>
         Ultimate aggregator powered with Lending & Borrowing, powerful functionality and modular
         architecture.{' '}
       </motion.h1>
       <div className={style.blocks_grid}>
-        {blockInner.map((block,i) => (
+        {blockInner.map((block, i) => (
           <motion.div
             className={block.tittle ? style.block : ''}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={animation}
-            transition={{ duration: '1', delay:i/4  }}>
+            transition={{ duration: '1', delay: i / 4 }}>
             <div className={block.tittle ? style.block_outer : ''}>
               <div className={block.tittle ? style.block_inner : ''}>
                 <img src={block.img} alt="" />
