@@ -7,10 +7,10 @@ import BNB from '../../assets/bnb logo.webp';
 import ETH from '../../assets/ETH.svg';
 import USDT from '../../assets/USDT.svg';
 
-import {ethers} from 'ethers';
-import { FLARY_PRESALE_ABI } from './flary-contract-abi';
-import { ERC_20_ABI } from './erc-20-abi';
+import { ethers } from 'ethers';
 import { config } from '../../config';
+import { ERC_20_ABI } from './erc-20-abi';
+import { FLARY_PRESALE_ABI } from './flary-contract-abi';
 
 const {
   ETH_CONTRACT_ADDRESS,
@@ -18,9 +18,9 @@ const {
   ETH_USDT_ADDRESS,
   BSC_USDT_ADDRESS,
   RPC_ETH,
-  RPC_BSC
+  RPC_BSC,
 } = config;
-const Amount_FOR_STAGE = 500000
+const Amount_FOR_STAGE = 500000;
 
 const NETWORK_ETHEREUM = 'Ethereum';
 const NETWORK_BSC = 'BNB Chain';
@@ -32,17 +32,17 @@ const TOKEN_BNB = 'BNB';
 const stages = [
   {
     amount: 1_000_000_000,
-    price: 0.1
+    price: 0.1,
   },
   {
     amount: 1_000_000_000,
-    price: 0.11
+    price: 0.11,
   },
   {
     amount: 1_000_000_000,
-    price: 0.12
-  }
-]
+    price: 0.12,
+  },
+];
 
 export const BuyWindow = () => {
   const [collected, setCollected] = useState(0);
@@ -59,12 +59,11 @@ export const BuyWindow = () => {
   const [tokenHoldings, setTokenHoldings] = useState('0');
 
   useEffect(() => {
-
     const progressInPercent = (collected / Amount_FOR_STAGE) * 100;
-      
-      setProgress( progressInPercent);
+
+    setProgress(progressInPercent);
     updateTokenHoldings();
-  }, []);
+  }, [collected]);
 
   // TODO: validate invalid input
   const [inputAmount, setInputAmount] = useState('0');
@@ -87,27 +86,26 @@ export const BuyWindow = () => {
     setTokenImg(argImg);
     setInputTittle(arg);
   };
-  
 
   const buyCoins = async () => {
-    if(inputAmount > 0){
-    if (network === NETWORK_ETHEREUM && token === TOKEN_ETHEREUM) {
-      await buyTokensNative(NETWORK_ETHEREUM);
-    } else if (network === NETWORK_BSC && token === TOKEN_BNB) {
-      await buyTokensNative(NETWORK_BSC);
-    } else if (network === NETWORK_ETHEREUM) {
-      await buyTokensUsdt(NETWORK_ETHEREUM);
+    if (inputAmount > 0) {
+      if (network === NETWORK_ETHEREUM && token === TOKEN_ETHEREUM) {
+        await buyTokensNative(NETWORK_ETHEREUM);
+      } else if (network === NETWORK_BSC && token === TOKEN_BNB) {
+        await buyTokensNative(NETWORK_BSC);
+      } else if (network === NETWORK_ETHEREUM) {
+        await buyTokensUsdt(NETWORK_ETHEREUM);
+      } else {
+        await buyTokensUsdt(NETWORK_BSC);
+      }
     } else {
-      await buyTokensUsdt(NETWORK_BSC);
-    }}else{
-      alert ('Please enter value more than 0')
+      alert('Please enter value more than 0');
     }
   };
 
   const getContract = (network, provider) => {
-    const contractAddress = network === NETWORK_ETHEREUM
-      ? ETH_CONTRACT_ADDRESS
-      : BSC_CONTRACT_ADDRESS;
+    const contractAddress =
+      network === NETWORK_ETHEREUM ? ETH_CONTRACT_ADDRESS : BSC_CONTRACT_ADDRESS;
 
     const contract = new ethers.Contract(contractAddress, FLARY_PRESALE_ABI, provider);
 
@@ -115,9 +113,7 @@ export const BuyWindow = () => {
   };
 
   const getBoughtTokens = async (network, address) => {
-    const providerRpc = network === NETWORK_ETHEREUM
-     ? RPC_ETH
-     : RPC_BSC;
+    const providerRpc = network === NETWORK_ETHEREUM ? RPC_ETH : RPC_BSC;
 
     // TODO: remove this
     if (network === NETWORK_BSC) {
@@ -129,12 +125,10 @@ export const BuyWindow = () => {
 
     const balance = await contract.s_investemetByAddress(address);
     return Number(ethers.formatEther(balance));
-  }
+  };
 
   const getTokensSold = async (network) => {
-    const providerRpc = network === NETWORK_ETHEREUM
-     ? RPC_ETH
-     : RPC_BSC;
+    const providerRpc = network === NETWORK_ETHEREUM ? RPC_ETH : RPC_BSC;
 
     // TODO: remove this
     if (network === NETWORK_BSC) {
@@ -176,7 +170,11 @@ export const BuyWindow = () => {
 
     setCollected(Number(totalUsd.toFixed(2)));
 
-    setTokenHoldings(`${(boughtTokensEth + boughtTokensBsc).toFixed(2)} (${(boughtTokensEth).toFixed(2)} on ETH + ${(boughtTokensBsc).toFixed(2)} on BSC)`);
+    setTokenHoldings(
+      `${(boughtTokensEth + boughtTokensBsc).toFixed(2)} (${boughtTokensEth.toFixed(
+        2,
+      )} on ETH + ${boughtTokensBsc.toFixed(2)} on BSC)`,
+    );
   };
 
   const buyTokensNative = async (network) => {
@@ -201,12 +199,8 @@ export const BuyWindow = () => {
     await tx.wait();
     await updateTokenHoldings();
 
-    const progressInPercent = ((parseFloat(inputAmount)) / Amount_FOR_STAGE) * 100;
-      
-      setProgress((prevProgress) => prevProgress + progressInPercent);
-
     // TODO: enable front
-  }
+  };
 
   const buyTokensUsdt = async (network) => {
     const decimals = network === NETWORK_ETHEREUM ? 6 : 18;
@@ -217,9 +211,7 @@ export const BuyWindow = () => {
 
     const contract = getContract(network, signer);
 
-    const usdtAddress = network === NETWORK_ETHEREUM
-      ? ETH_USDT_ADDRESS
-      : BSC_USDT_ADDRESS;
+    const usdtAddress = network === NETWORK_ETHEREUM ? ETH_USDT_ADDRESS : BSC_USDT_ADDRESS;
 
     const usdt = new ethers.Contract(usdtAddress, ERC_20_ABI, signer);
 
@@ -243,11 +235,10 @@ export const BuyWindow = () => {
     await updateTokenHoldings();
 
     // TODO: enable front
-    const progressInPercent = ((parseFloat(inputAmount)) / Amount_FOR_STAGE) * 100;
-      
-    setProgress((prevProgress) => prevProgress + progressInPercent);
-  }
+    const progressInPercent = (parseFloat(inputAmount) / Amount_FOR_STAGE) * 100;
 
+    setProgress((prevProgress) => prevProgress + progressInPercent);
+  };
 
   return (
     <div className={style.BuyWindow}>
@@ -264,7 +255,6 @@ export const BuyWindow = () => {
       <p>Collected USDT : ${collected} / $500,000</p>
       <p>Tokens sold: {sellTokens} / 1,000,000,000</p>
       <div className={style.button_group}>
-      
         <div
           className={style.button}
           onClick={handlerClickNetwork}
@@ -296,14 +286,16 @@ export const BuyWindow = () => {
           className={style.button}
           onClick={handlerClickToken}
           style={dropToken ? { borderBottomLeftRadius: '0', borderBottomRightRadius: '0' } : {}}>
-            <div className={style.button_tittle}>
+          <div className={style.button_tittle}>
             <img src={tokenImg} alt="" />
             <p>{token}</p>
           </div>
           {network === NETWORK_BSC
             ? dropToken && (
                 <div className={style.drop_network}>
-                  <div className={style.button_drop} onClick={() => handlerChangeToken(TOKEN_BNB, BNB)}>
+                  <div
+                    className={style.button_drop}
+                    onClick={() => handlerChangeToken(TOKEN_BNB, BNB)}>
                     <img src={BNB} alt="" />
                     <p>BNB</p>
                   </div>
@@ -338,11 +330,16 @@ export const BuyWindow = () => {
             : null}
         </div>
       </div>
-      
+
       <div className={style.inputs}>
         <div className={style.input_container}>
           <p className={style.labelLine}>{inputTittle} to be paid: </p>
-          <input className={style.input_buy} type="text" placeholder="0.0" onChange={(e) => setInputAmount(e.target.value)} />
+          <input
+            className={style.input_buy}
+            type="text"
+            placeholder="0.0"
+            onChange={(e) => setInputAmount(e.target.value)}
+          />
         </div>
         <div className={style.input_container}>
           <p className={style.labelLine}>FLFI to be received: </p>
@@ -350,10 +347,9 @@ export const BuyWindow = () => {
         </div>
       </div>
 
-
-      <div className={style.pay_button} onClick={() => buyCoins()}>Buy FLFI</div>
-
-
+      <div className={style.pay_button} onClick={() => buyCoins()}>
+        Buy FLFI
+      </div>
     </div>
   );
 };
