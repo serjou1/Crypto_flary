@@ -20,6 +20,7 @@ const {
   RPC_ETH,
   RPC_BSC
 } = config;
+const Amount_FOR_STAGE = 500000
 
 const NETWORK_ETHEREUM = 'Ethereum';
 const NETWORK_BSC = 'BNB Chain';
@@ -46,6 +47,7 @@ const stages = [
 export const BuyWindow = () => {
   const [collected, setCollected] = useState(0);
   const [sellTokens, setSellTokens] = useState(0);
+  const [progress, setProgress] = useState(0);
   const [inputTittle, setInputTittle] = useState('Ethereum');
   const [dropNetwork, setDropNetwork] = useState(false);
   const [dropToken, setDropToken] = useState(false);
@@ -57,6 +59,10 @@ export const BuyWindow = () => {
   const [tokenHoldings, setTokenHoldings] = useState('0');
 
   useEffect(() => {
+
+    const progressInPercent = (collected / Amount_FOR_STAGE) * 100;
+      
+      setProgress( progressInPercent);
     updateTokenHoldings();
   }, []);
 
@@ -84,6 +90,7 @@ export const BuyWindow = () => {
   
 
   const buyCoins = async () => {
+    if(inputAmount > 0){
     if (network === NETWORK_ETHEREUM && token === TOKEN_ETHEREUM) {
       await buyTokensNative(NETWORK_ETHEREUM);
     } else if (network === NETWORK_BSC && token === TOKEN_BNB) {
@@ -92,6 +99,8 @@ export const BuyWindow = () => {
       await buyTokensUsdt(NETWORK_ETHEREUM);
     } else {
       await buyTokensUsdt(NETWORK_BSC);
+    }}else{
+      alert ('Please enter value more than 0')
     }
   };
 
@@ -192,6 +201,10 @@ export const BuyWindow = () => {
     await tx.wait();
     await updateTokenHoldings();
 
+    const progressInPercent = ((parseFloat(inputAmount)) / Amount_FOR_STAGE) * 100;
+      
+      setProgress((prevProgress) => prevProgress + progressInPercent);
+
     // TODO: enable front
   }
 
@@ -230,6 +243,9 @@ export const BuyWindow = () => {
     await updateTokenHoldings();
 
     // TODO: enable front
+    const progressInPercent = ((parseFloat(inputAmount)) / Amount_FOR_STAGE) * 100;
+      
+    setProgress((prevProgress) => prevProgress + progressInPercent);
   }
 
 
@@ -244,24 +260,11 @@ export const BuyWindow = () => {
       <p style={{ marginTop: '15px', fontSize: '20px' }}>
         <span style={{ fontSize: '20px' }}>Your holdings:</span> {tokenHoldings}
       </p>
-      <Progress progress={0} />
+      <Progress progress={progress.toFixed(2)} />
       <p>Collected USDT : ${collected} / $500,000</p>
       <p>Tokens sold: {sellTokens} / 1,000,000,000</p>
       <div className={style.button_group}>
-        {/* <div className={style.button} >
-          <img src={ETHimg} alt="" />
-          <div className={style.button_tittle}>
-            <p>ETH</p>
-            <span>ERC-20</span>
-          </div>
-        </div>
-        <div className={style.button}>
-          <img src={USDTimg} alt="" />
-          <div className={style.button_tittle}>
-            <p>USDT</p>
-            <span>su</span>
-          </div>
-        </div> */}
+      
         <div
           className={style.button}
           onClick={handlerClickNetwork}
@@ -335,7 +338,7 @@ export const BuyWindow = () => {
             : null}
         </div>
       </div>
-      {/* // ZazazazazaZazazazazaZazazazazaZazazazazaZazazazaza       */}
+      
       <div className={style.inputs}>
         <div className={style.input_container}>
           <p className={style.labelLine}>{inputTittle} to be paid: </p>
