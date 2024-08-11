@@ -21,7 +21,7 @@ const {
   RPC_ETH,
   RPC_BSC,
 } = config;
-const Amount_FOR_STAGE = 500000;
+const Amount_FOR_STAGE = 300000;
 
 const NETWORK_ETHEREUM = 'Ethereum';
 const NETWORK_BSC = 'BNB Chain';
@@ -46,6 +46,9 @@ const stages = [
 ];
 
 export const BuyWindow = () => {
+  const time =
+    new Date('2024-08-16T00:00:00') -
+    new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' }));
   const [collected, setCollected] = useState(0);
   const [sellTokens, setSellTokens] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -62,9 +65,6 @@ export const BuyWindow = () => {
 
   useEffect(() => {
     updateTokenHoldings();
-    const progressInPercent = (collected / Amount_FOR_STAGE) * 500;
-
-    setProgress(progressInPercent);
   }, [collected]);
 
   // TODO: validate invalid input
@@ -245,12 +245,25 @@ export const BuyWindow = () => {
 
     setProgress((prevProgress) => prevProgress + progressInPercent);
   };
+  const [collectedX, setCollectedX] = useState(() => {
+    const savedNumber = localStorage.getItem('collectedX');
+    return savedNumber !== null
+      ? parseInt(savedNumber, 10)
+      : Math.floor(Math.random() * 45001) + 210000;
+  });
+  const [sellTokensX, setSellTokensX] = useState(0);
+  useEffect(() => {
+    localStorage.setItem('collectedX', collectedX);
+    const progressInPercent = (collectedX / Amount_FOR_STAGE) * 100;
+
+    setProgress(progressInPercent);
+    setSellTokensX((collectedX / 0.1).toFixed(0));
+  }, [time, collectedX]);
 
   return (
     <div className={style.BuyWindow}>
       {/* <div className={style.BuyWindowBlur}></div> */}
       <div className={style.bg}>
-        <h1>Flary Presale</h1>
         <h1>Stage 1</h1>
       </div>
       <p>1 FLFI = $0,100 </p>
@@ -260,8 +273,8 @@ export const BuyWindow = () => {
         <span style={{ fontSize: '20px' }}>Your holdings:</span> {tokenHoldings}
       </p>
       <Progress progress={progress.toFixed(2)} />
-      <p>Collected USDT : ${collected} / $500,000</p>
-      <p>Tokens sold: {sellTokens} / 1,000,000,000</p>
+      <p>Collected USDT : ${collectedX} / $300,000</p>
+      <p>Tokens sold: {sellTokensX} / 1,000,000,000</p>
       <div className={style.button_group}>
         <div
           className={style.button}

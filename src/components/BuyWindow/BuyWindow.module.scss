@@ -8,25 +8,31 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  
-  background: linear-gradient(4deg,rgb(24, 22, 22), rgb(0, 0, 0)) padding-box,
-    linear-gradient(rgb(99,94,94), #736c6c) border-box;
+
+  background: linear-gradient(4deg, rgb(24, 22, 22), rgb(0, 0, 0)) padding-box,
+    linear-gradient(rgb(99, 94, 94), #736c6c) border-box;
   // backdrop-filter: blur(35px);
   // -webkit-backdrop-filter: blur(15px);
-  .bg{width: 100%;
+  .bg {display: flex;
+    justify-content: center;
+    padding-top: 35px;
+    padding-bottom: 35px;
+    width: 100%;
     text-align: center;
     background-image: url(../../assets/hell_background_hd_8k_wallpaper_stock_photographic_853645_63610.avif);
-    
-  background-repeat: no-repeat;
-  background-position: bottom;
-  background-size: cover;
-  margin-bottom: 10px;
 
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-size: cover;
+    margin-bottom: 10px;
   }
   h1 {
-    padding-bottom: 20px;
     
-    color: var(--color-text-yellow);
+    width: fit-content;
+    background:rgb(24, 22, 22,0.7);
+    border-radius:15px;
+     padding: 7px 15px;
+    color: rgb(212, 209, 209);
   }
   p {
     font-weight: 600;
@@ -133,10 +139,10 @@
 .pay_button {
   width: 90%;
   text-align: center;
-  background: linear-gradient(90deg, #FF5748, #fe9452);
+  background: linear-gradient(90deg, #ff5748, #fe9452);
   cursor: pointer;
   color: #000;
-  border-radius:16px;
+  border-radius: 16px;
   padding: 12px;
   font-weight: 700;
   line-height: 26px;
@@ -149,19 +155,18 @@
 @media (max-width: 1024px) {
   .input_container {
     margin-bottom: 25px;
-  
+
     align-items: center;
     position: relative;
-  
+
     p {
       font-size: 9px;
-    }}
+    }
+  }
 }
 @media (max-width: 970px) {
   .inputs {
-    
-    width:auto;
-    
+    width: auto;
   }
 }
 @media (max-width: 500px) {
@@ -173,19 +178,12 @@
     gap: 30px;
     align-items: center;
     .button {
-      width: 100%;}
-    
+      width: 100%;
+    }
   }
   .inputs {
-    
-   display: block;
-    
-  }
-  .pay_button {
-    width: 100%;
-    text-align: center;
+    display: block;
   }
 }
 @media (max-width: 440px) {
-
 }

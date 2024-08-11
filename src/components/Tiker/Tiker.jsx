@@ -1,4 +1,5 @@
 import React from 'react';
+
 import AMB from '../../assets/Featured/AMB.png';
 import Analytics from '../../assets/Featured/analytics insight.png';
 import beIn from '../../assets/Featured/be in crypto.png';
@@ -17,6 +18,7 @@ import newsCripto from '../../assets/Featured/the news crypto.png';
 import timesIndia from '../../assets/Featured/the times of india.png';
 import WBS from '../../assets/Featured/wbs.png';
 
+import { motion } from 'framer-motion';
 import { Animate } from '../Header/Animate';
 import style from './Tiker.module.scss';
 
@@ -28,7 +30,10 @@ export const Tiker = () => {
       </Animate>
 
       <div className={style.ticker_container}>
-        <div className={style.ticker}>
+        <motion.div
+          className={style.ticker}
+          animate={{ translateX: '-50%' }}
+          transition={{ duration: 20, repeat: Infinity, ease: 'linear', repeatType: 'loop' }}>
           <img src={AMB} alt={AMB} />
           <img src={Analytics} alt={Analytics} />
           <img src={beIn} alt={beIn} />
@@ -46,7 +51,7 @@ export const Tiker = () => {
           <img src={newsCripto} alt={newsCripto} />
           <img src={timesIndia} alt={timesIndia} />
           <img src={WBS} alt={WBS} />
-        </div>
+        </motion.div>
       </div>
     </div>
   );
