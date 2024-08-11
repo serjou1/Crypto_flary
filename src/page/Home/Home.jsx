@@ -7,6 +7,7 @@ import {
   Navbar,
   Roadmap,
   Tekenomics,
+  Tiker,
   TokenInfo,
 } from '../../components';
 
@@ -27,7 +28,7 @@ export const Home = () => {
       <Navbar navLink={navLink} />
       <div className={style.Home}>
         <Header />
-        {/* <Tiker/> */}
+        <Tiker/>
 
         <AboutAs />
         <Modularity />

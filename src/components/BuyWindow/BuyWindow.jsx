@@ -56,13 +56,13 @@ export const BuyWindow = () => {
   const [token, setToken] = useState(TOKEN_ETHEREUM);
   const [networkImg, setNetworkImg] = useState(ETH);
   const [tokenImg, setTokenImg] = useState(ETH);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const [tokenHoldings, setTokenHoldings] = useState('0');
 
   useEffect(() => {
     updateTokenHoldings();
-    const progressInPercent = (collected / Amount_FOR_STAGE) * 100;
+    const progressInPercent = (collected / Amount_FOR_STAGE) * 500;
 
     setProgress(progressInPercent);
   }, [collected]);
