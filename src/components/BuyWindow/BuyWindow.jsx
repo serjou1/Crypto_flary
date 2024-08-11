@@ -9,6 +9,7 @@ import USDT from '../../assets/USDT.svg';
 
 import { ethers } from 'ethers';
 import { config } from '../../config';
+import { Loader } from '../FairLaunch/Form/Loader';
 import { ERC_20_ABI } from './erc-20-abi';
 import { FLARY_PRESALE_ABI } from './flary-contract-abi';
 
@@ -55,14 +56,15 @@ export const BuyWindow = () => {
   const [token, setToken] = useState(TOKEN_ETHEREUM);
   const [networkImg, setNetworkImg] = useState(ETH);
   const [tokenImg, setTokenImg] = useState(ETH);
+  const [loading, setLoading] = useState(true);
 
   const [tokenHoldings, setTokenHoldings] = useState('0');
 
   useEffect(() => {
+    updateTokenHoldings();
     const progressInPercent = (collected / Amount_FOR_STAGE) * 100;
 
     setProgress(progressInPercent);
-    updateTokenHoldings();
   }, [collected]);
 
   // TODO: validate invalid input
@@ -171,9 +173,10 @@ export const BuyWindow = () => {
     setCollected(Number(totalUsd.toFixed(2)));
 
     setTokenHoldings(
-      `${(boughtTokensEth + boughtTokensBsc).toFixed(2)} (${boughtTokensEth.toFixed(
-        2,
-      )} on ETH + ${boughtTokensBsc.toFixed(2)} on BSC)`,
+      `${(boughtTokensEth + boughtTokensBsc).toFixed(2)}`,
+      // (${boughtTokensEth.toFixed(
+      //   2,
+      // )} on ETH + ${boughtTokensBsc.toFixed(2)} on BSC)`,
     );
   };
 
@@ -195,9 +198,11 @@ export const BuyWindow = () => {
     const tx = await contract.buyTokensNative({ value: amount });
 
     // TODO: disable front
+    setLoading(true);
 
     await tx.wait();
     await updateTokenHoldings();
+    setLoading(false);
 
     // TODO: enable front
   };
@@ -224,6 +229,7 @@ export const BuyWindow = () => {
     const allowance = await usdt.allowance(signer.address, await contract.getAddress());
 
     // TODO: disable front
+    setLoading(true);
 
     if (allowance < amount) {
       const approveTx = await usdt.approve(await contract.getAddress(), amount);
@@ -233,7 +239,7 @@ export const BuyWindow = () => {
     const tx = await contract.buyTokensUSDT(amount);
     await tx.wait();
     await updateTokenHoldings();
-
+    setLoading(false);
     // TODO: enable front
     const progressInPercent = (parseFloat(inputAmount) / Amount_FOR_STAGE) * 100;
 
@@ -243,8 +249,10 @@ export const BuyWindow = () => {
   return (
     <div className={style.BuyWindow}>
       {/* <div className={style.BuyWindowBlur}></div> */}
-      <h1>Flary Presale</h1>
-      <h1>Stage 1</h1>
+      <div className={style.bg}>
+        <h1>Flary Presale</h1>
+        <h1>Stage 1</h1>
+      </div>
       <p>1 FLFI = $0,100 </p>
       <p>Price next stage = $0,110</p>
 
@@ -347,9 +355,13 @@ export const BuyWindow = () => {
         </div>
       </div>
 
-      <div className={style.pay_button} onClick={() => buyCoins()}>
-        Buy FLFI
-      </div>
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className={style.pay_button} onClick={() => buyCoins()}>
+          Buy FLFI
+        </div>
+      )}
     </div>
   );
 };

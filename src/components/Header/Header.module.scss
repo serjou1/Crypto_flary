@@ -1,13 +1,13 @@
 .Header {
   display: flex;
   // gap: 30px;
-  //justify-content: space-between;
-  align-items: center;
+  justify-content: space-between;
+  align-items: start;
   //height: 100vh;
 }
 .description {
   width: 55%;
-  padding: 40px 30px 0 30px;
+  padding: 10px 30px 0 30px;
   & h1 {
     background-position: -200%;
     background-size: 200%;
@@ -64,7 +64,7 @@
   // background-position:center;
   // background-size:cover;
 
-  width: 45%;
+  width: 37%;
 
   & img {
     width: 100%;

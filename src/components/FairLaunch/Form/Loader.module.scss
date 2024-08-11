@@ -2,13 +2,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 50px ;
+    padding-top: 10px ;
 }
 .spin{
     animation: spin 1s linear infinite;
     border-radius: 9999px;
-    height:100px;
-    width: 100px;
+    height:60px;
+    width: 60px;
     border-bottom: 2px solid var(--color-text-darkYellow);
 
 @keyframes spin {
