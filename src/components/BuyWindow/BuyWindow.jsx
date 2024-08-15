@@ -7,11 +7,12 @@ import BNB from '../../assets/bnb logo.webp';
 import ETH from '../../assets/ETH.svg';
 import USDT from '../../assets/USDT.svg';
 
-import { ethers } from 'ethers';
+import { Contract, ethers, formatUnits } from 'ethers';
 import { config } from '../../config';
 import { Loader } from '../FairLaunch/Form/Loader';
 import { ERC_20_ABI } from './erc-20-abi';
 import { FLARY_PRESALE_ABI } from './flary-contract-abi';
+import { PRICE_FEED_ABI } from './price-feed-abi';
 
 const {
   ETH_CONTRACT_ADDRESS,
@@ -60,15 +61,18 @@ export const BuyWindow = () => {
   const [networkImg, setNetworkImg] = useState(ETH);
   const [tokenImg, setTokenImg] = useState(ETH);
   const [loading, setLoading] = useState(false);
-
+  const [tokensFromAmount, setTokensFromAmount] = useState(0);
+  const [tokensToAmount, setTokensToAmount] = useState(0);
   const [tokenHoldings, setTokenHoldings] = useState('0');
+  const [networkPrices, setNetworkPrices] = useState({});
+  const [tokenPrice, setTokenPrice] = useState(0);
 
   useEffect(() => {
     updateTokenHoldings();
   }, [collected]);
 
   // TODO: validate invalid input
-  const [inputAmount, setInputAmount] = useState('0');
+  // const [inputAmount, setInputAmount] = useState('0');
   // const [outputA]
 
   const handlerClickNetwork = () => {
@@ -90,7 +94,7 @@ export const BuyWindow = () => {
   };
 
   const buyCoins = async () => {
-    if (inputAmount > 0) {
+    if (tokensFromAmount > 0) {
       if (network === NETWORK_ETHEREUM && token === TOKEN_ETHEREUM) {
         await buyTokensNative(NETWORK_ETHEREUM);
       } else if (network === NETWORK_BSC && token === TOKEN_BNB) {
@@ -113,6 +117,27 @@ export const BuyWindow = () => {
 
     return contract;
   };
+
+  const initializeNativeCurrencyPrice = async (network) => {
+    const providerRpc = network === NETWORK_ETHEREUM ? RPC_ETH : RPC_BSC;
+
+    const provider = new ethers.JsonRpcProvider(providerRpc);
+
+    const contract = getContract(network, provider);
+
+    const priceFeedAddress = await contract.s_native_usd_priceFeed();
+
+    const priceFeed = new Contract(priceFeedAddress, PRICE_FEED_ABI, provider);
+
+    const priceLatest = await priceFeed.latestAnswer();
+    const decimals = await priceFeed.decimals();
+
+    networkPrices[network] = Number(formatUnits(priceLatest, decimals));
+
+    setNetworkPrices(networkPrices);
+
+    console.log(`${network} price is ${networkPrices[network]}`)
+  }
 
   const getBoughtTokens = async (network, address) => {
     const providerRpc = network === NETWORK_ETHEREUM ? RPC_ETH : RPC_BSC;
@@ -146,6 +171,15 @@ export const BuyWindow = () => {
   };
 
   const updateTokenHoldings = async () => {
+    await initializeNativeCurrencyPrice(NETWORK_ETHEREUM);
+    // TODO: uncomment later
+    // await initializeNativeCurrencyPrice(NETWORK_BSC);
+
+    const providerEth = new ethers.JsonRpcProvider(RPC_ETH);
+    const contract = getContract(NETWORK_ETHEREUM, providerEth);
+    const tp = Number(formatUnits(await contract.i_tokensPriceInUsdt(), 6));
+    setTokenPrice(tp);
+
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
 
@@ -181,7 +215,7 @@ export const BuyWindow = () => {
   };
 
   const buyTokensNative = async (network) => {
-    const amount = ethers.parseEther(Number(inputAmount).toFixed(18));
+    const amount = ethers.parseEther(Number(tokensFromAmount).toFixed(18));
 
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
@@ -209,7 +243,7 @@ export const BuyWindow = () => {
 
   const buyTokensUsdt = async (network) => {
     const decimals = network === NETWORK_ETHEREUM ? 6 : 18;
-    const amount = ethers.parseUnits(Number(inputAmount).toFixed(decimals), decimals);
+    const amount = ethers.parseUnits(Number(tokensFromAmount).toFixed(decimals), decimals);
 
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
@@ -241,7 +275,7 @@ export const BuyWindow = () => {
     await updateTokenHoldings();
     setLoading(false);
     // TODO: enable front
-    const progressInPercent = (parseFloat(inputAmount) / Amount_FOR_STAGE) * 100;
+    const progressInPercent = (parseFloat(tokensFromAmount) / Amount_FOR_STAGE) * 100;
 
     setProgress((prevProgress) => prevProgress + progressInPercent);
   };
@@ -259,6 +293,15 @@ export const BuyWindow = () => {
     setProgress(progressInPercent);
     setSellTokensX((collectedX / 0.1).toFixed(0));
   }, [time, collectedX]);
+
+  const isBaseCoinSelected = () => token !== TOKEN_USDT;
+  const getBaseCoinPrice = () => {
+    console.log("network", network);
+    console.log(networkPrices);
+
+
+    return networkPrices[network];
+  }
 
   return (
     <div className={style.BuyWindow}>
@@ -313,41 +356,41 @@ export const BuyWindow = () => {
           </div>
           {network === NETWORK_BSC
             ? dropToken && (
-                <div className={style.drop_network}>
-                  <div
-                    className={style.button_drop}
-                    onClick={() => handlerChangeToken(TOKEN_BNB, BNB)}>
-                    <img src={BNB} alt="" />
-                    <p>BNB</p>
-                  </div>
-                  <div
-                    className={style.button_drop}
-                    onClick={() => handlerChangeToken(TOKEN_USDT, USDT)}>
-                    <img src={USDT} alt="" />
-                    <p>USDT</p>
-                  </div>
+              <div className={style.drop_network}>
+                <div
+                  className={style.button_drop}
+                  onClick={() => handlerChangeToken(TOKEN_BNB, BNB)}>
+                  <img src={BNB} alt="" />
+                  <p>BNB</p>
                 </div>
-              )
+                <div
+                  className={style.button_drop}
+                  onClick={() => handlerChangeToken(TOKEN_USDT, USDT)}>
+                  <img src={USDT} alt="" />
+                  <p>USDT</p>
+                </div>
+              </div>
+            )
             : null}
           <img src={Arrow} alt="" />
 
           {network === NETWORK_ETHEREUM
             ? dropToken && (
-                <div className={style.drop_network}>
-                  <div
-                    className={style.button_drop}
-                    onClick={() => handlerChangeToken(TOKEN_ETHEREUM, ETH)}>
-                    <img src={ETH} alt="" />
-                    <p>Ethereum</p>
-                  </div>
-                  <div
-                    className={style.button_drop}
-                    onClick={() => handlerChangeToken(TOKEN_USDT, USDT)}>
-                    <img src={USDT} alt="" />
-                    <p>USDT</p>
-                  </div>
+              <div className={style.drop_network}>
+                <div
+                  className={style.button_drop}
+                  onClick={() => handlerChangeToken(TOKEN_ETHEREUM, ETH)}>
+                  <img src={ETH} alt="" />
+                  <p>Ethereum</p>
                 </div>
-              )
+                <div
+                  className={style.button_drop}
+                  onClick={() => handlerChangeToken(TOKEN_USDT, USDT)}>
+                  <img src={USDT} alt="" />
+                  <p>USDT</p>
+                </div>
+              </div>
+            )
             : null}
         </div>
       </div>
@@ -359,12 +402,56 @@ export const BuyWindow = () => {
             className={style.input_buy}
             type="text"
             placeholder="0.0"
-            onChange={(e) => setInputAmount(e.target.value)}
+            value={tokensFromAmount}
+            onChange={(e) => {
+
+              const value = parseFloat(e.target.value);
+
+              if (value === NaN) {
+                return;
+              }
+              console.log("value intial:", e.target.value)
+              console.log("value:", value)
+              setTokensFromAmount(value);
+              console.log("actual amount:", tokensFromAmount)
+              const tokensToAmountNew = value * (
+                isBaseCoinSelected()
+                  ? getBaseCoinPrice()
+                  : 1
+              )
+                / tokenPrice;
+              console.log("isBaseCoinSelected", isBaseCoinSelected());
+              console.log("getBaseCoinPrice", getBaseCoinPrice());
+              console.log("new tokens to amount:", tokensToAmountNew);
+
+              setTokensToAmount(tokensToAmountNew);
+
+
+              console.log("actual tokens to amount:", tokensToAmount);
+            }}
           />
         </div>
         <div className={style.input_container}>
           <p className={style.labelLine}>FLFI to be received: </p>
-          <input className={style.input_buy} type="text" placeholder="0.0" />
+          <input
+            className={style.input_buy}
+            type="text"
+            placeholder="0.0"
+            value={tokensToAmount}
+            onChange={(e) => {
+              const value = parseFloat(e.target.value);
+
+              if (value === NaN) {
+                return;
+              }
+              setTokensToAmount(value);
+              const tokensFromAmountNew = value * tokenPrice / (
+                isBaseCoinSelected()
+                  ? getBaseCoinPrice()
+                  : 1
+              );
+              setTokensFromAmount(tokensFromAmountNew);
+            }} />
         </div>
       </div>
 
