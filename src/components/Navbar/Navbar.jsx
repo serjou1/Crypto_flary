@@ -1,14 +1,12 @@
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import React, { useState } from 'react';
-import { Link as LinkSmooth } from 'react-scroll';
 import logo from '../../assets/Flary Logo.png';
 import style from './Navbar.module.scss';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
-import { Button } from '../Button/Button';
 
-export const Navbar = ({  navLink }) => {
+export const Navbar = ({ navLink }) => {
   const params = useLocation().pathname.slice(1);
 
   const [mobileNav, SetMobileNav] = useState(false);
@@ -38,7 +36,7 @@ export const Navbar = ({  navLink }) => {
               Home
             </Link>
           </li>
-          
+
           {navLink.map((item, i) => (
             // console.log(item.tittle.toLowerCase())
             <li key={i}>
@@ -53,7 +51,10 @@ export const Navbar = ({  navLink }) => {
               Contact Us
             </Link>
           </li>
-          <ConnectButton/>
+          <li>
+            <ConnectButton accountStatus="address" label="Connect Wallet" />
+          </li>
+
           {/* <li>
             <Button />
           </li> */}
@@ -69,6 +70,9 @@ export const Navbar = ({  navLink }) => {
 
         <div className={mobileNav ? style.mobile_open : style.mobile_close}>
           <ul className={style.mobile_list}>
+          <li>
+              <ConnectButton accountStatus="address" chainStatus="none" label="Connect Wallet" />
+            </li>
             <li>
               <Link
                 to="/"
@@ -90,6 +94,7 @@ export const Navbar = ({  navLink }) => {
             <li>
               <Link to="/contact">Contact Us</Link>
             </li>
+            
             {/* <li>
               <Button />
             </li> */}

@@ -144,7 +144,10 @@ export const Footer1 = () => {
       </div>
       <div className={style.middle}></div>
       <div className={style.bottom}>
-        <p>© 2024 Flary. All rights reserved.</p>
+        <div className={style.address}>
+          <p>Al Sila Tower - 24th - Al Maryah Island - Abu Dhabi, UAE</p>
+          <p>© 2024 Flary. All rights reserved.</p>
+        </div>
         <div className={style.rules}>
           <div onClick={() => setModalPolicyIsOpen(true)} className={style.copy}>
             Privacy policy
