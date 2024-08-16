@@ -47,7 +47,6 @@ const stages = [
 ];
 
 export const BuyWindow = () => {
-  
   const [collected, setCollected] = useState(0);
   const [sellTokens, setSellTokens] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -59,8 +58,8 @@ export const BuyWindow = () => {
   const [networkImg, setNetworkImg] = useState(ETH);
   const [tokenImg, setTokenImg] = useState(ETH);
   const [loading, setLoading] = useState(false);
-  const [tokensFromAmount, setTokensFromAmount] = useState(0);
-  const [tokensToAmount, setTokensToAmount] = useState(0);
+  const [tokensFromAmount, setTokensFromAmount] = useState();
+  const [tokensToAmount, setTokensToAmount] = useState();
   const [tokenHoldings, setTokenHoldings] = useState('0');
   const [networkPrices, setNetworkPrices] = useState({});
   const [tokenPrice, setTokenPrice] = useState(0);
@@ -134,8 +133,8 @@ export const BuyWindow = () => {
 
     setNetworkPrices(networkPrices);
 
-    console.log(`${network} price is ${networkPrices[network]}`)
-  }
+    console.log(`${network} price is ${networkPrices[network]}`);
+  };
 
   const getBoughtTokens = async (network, address) => {
     const providerRpc = network === NETWORK_ETHEREUM ? RPC_ETH : RPC_BSC;
@@ -290,16 +289,15 @@ export const BuyWindow = () => {
 
     setProgress(progressInPercent);
     setSellTokensX((collectedX / 0.1).toFixed(0));
-  }, [ collectedX]);
+  }, [collectedX]);
 
   const isBaseCoinSelected = () => token !== TOKEN_USDT;
   const getBaseCoinPrice = () => {
-    console.log("network", network);
+    console.log('network', network);
     console.log(networkPrices);
 
-
     return networkPrices[network];
-  }
+  };
 
   return (
     <div className={style.BuyWindow}>
@@ -354,41 +352,41 @@ export const BuyWindow = () => {
           </div>
           {network === NETWORK_BSC
             ? dropToken && (
-              <div className={style.drop_network}>
-                <div
-                  className={style.button_drop}
-                  onClick={() => handlerChangeToken(TOKEN_BNB, BNB)}>
-                  <img src={BNB} alt="" />
-                  <p>BNB</p>
+                <div className={style.drop_network}>
+                  <div
+                    className={style.button_drop}
+                    onClick={() => handlerChangeToken(TOKEN_BNB, BNB)}>
+                    <img src={BNB} alt="" />
+                    <p>BNB</p>
+                  </div>
+                  <div
+                    className={style.button_drop}
+                    onClick={() => handlerChangeToken(TOKEN_USDT, USDT)}>
+                    <img src={USDT} alt="" />
+                    <p>USDT</p>
+                  </div>
                 </div>
-                <div
-                  className={style.button_drop}
-                  onClick={() => handlerChangeToken(TOKEN_USDT, USDT)}>
-                  <img src={USDT} alt="" />
-                  <p>USDT</p>
-                </div>
-              </div>
-            )
+              )
             : null}
           <img src={Arrow} alt="" />
 
           {network === NETWORK_ETHEREUM
             ? dropToken && (
-              <div className={style.drop_network}>
-                <div
-                  className={style.button_drop}
-                  onClick={() => handlerChangeToken(TOKEN_ETHEREUM, ETH)}>
-                  <img src={ETH} alt="" />
-                  <p>Ethereum</p>
+                <div className={style.drop_network}>
+                  <div
+                    className={style.button_drop}
+                    onClick={() => handlerChangeToken(TOKEN_ETHEREUM, ETH)}>
+                    <img src={ETH} alt="" />
+                    <p>Ethereum</p>
+                  </div>
+                  <div
+                    className={style.button_drop}
+                    onClick={() => handlerChangeToken(TOKEN_USDT, USDT)}>
+                    <img src={USDT} alt="" />
+                    <p>USDT</p>
+                  </div>
                 </div>
-                <div
-                  className={style.button_drop}
-                  onClick={() => handlerChangeToken(TOKEN_USDT, USDT)}>
-                  <img src={USDT} alt="" />
-                  <p>USDT</p>
-                </div>
-              </div>
-            )
+              )
             : null}
         </div>
       </div>
@@ -402,30 +400,24 @@ export const BuyWindow = () => {
             placeholder="0.0"
             value={tokensFromAmount}
             onChange={(e) => {
+              const value = e.target.value;
 
-              const value = parseFloat(e.target.value);
-
-              if (value === NaN) {
-                return;
+              if (value === '') {
+                setTokensFromAmount();
               }
-              console.log("value intial:", e.target.value)
-              console.log("value:", value)
+              console.log('value intial:', e.target.value);
+              console.log('value:', value);
               setTokensFromAmount(value);
-              console.log("actual amount:", tokensFromAmount)
-              const tokensToAmountNew = value * (
-                isBaseCoinSelected()
-                  ? getBaseCoinPrice()
-                  : 1
-              )
-                / tokenPrice;
-              console.log("isBaseCoinSelected", isBaseCoinSelected());
-              console.log("getBaseCoinPrice", getBaseCoinPrice());
-              console.log("new tokens to amount:", tokensToAmountNew);
+              console.log('actual amount:', tokensFromAmount);
+              const tokensToAmountNew =
+                (value * (isBaseCoinSelected() ? getBaseCoinPrice() : 1)) / tokenPrice;
+              console.log('isBaseCoinSelected', isBaseCoinSelected());
+              console.log('getBaseCoinPrice', getBaseCoinPrice());
+              console.log('new tokens to amount:', tokensToAmountNew);
 
               setTokensToAmount(tokensToAmountNew);
 
-
-              console.log("actual tokens to amount:", tokensToAmount);
+              console.log('actual tokens to amount:', tokensToAmount);
             }}
           />
         </div>
@@ -437,19 +429,17 @@ export const BuyWindow = () => {
             placeholder="0.0"
             value={tokensToAmount}
             onChange={(e) => {
-              const value = parseFloat(e.target.value);
+              const value = e.target.value;
 
-              if (value === NaN) {
-                return;
+              if (value === '') {
+                setTokensToAmount();
               }
               setTokensToAmount(value);
-              const tokensFromAmountNew = value * tokenPrice / (
-                isBaseCoinSelected()
-                  ? getBaseCoinPrice()
-                  : 1
-              );
+              const tokensFromAmountNew =
+                (value * tokenPrice) / (isBaseCoinSelected() ? getBaseCoinPrice() : 1);
               setTokensFromAmount(tokensFromAmountNew);
-            }} />
+            }}
+          />
         </div>
       </div>
 

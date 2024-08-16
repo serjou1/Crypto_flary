@@ -22,7 +22,7 @@ export const Button = () => {
         className={style.button}
         style={{ marginTop: '0px' }}
         // onClick={()=>connectWallet()}
-        onClick={!connectedAccount ? connectWallet : showOverview}
+        onClick={!connectedAccount ? ()=>connectWallet() : showOverview}
         >
         {!connectedAccount ? `${button}` : `${nameButton}`}
       </button>
