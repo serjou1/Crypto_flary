@@ -396,15 +396,16 @@ export const BuyWindow = () => {
           <p className={style.labelLine}>{inputTittle} to be paid: </p>
           <input
             className={style.input_buy}
-            type="text"
+            type="number"
+            step='any'
             placeholder="0.0"
             value={tokensFromAmount}
             onChange={(e) => {
               const value = e.target.value;
 
-              if (value === '') {
-                setTokensFromAmount();
-              }
+              // if (value === '') {
+              //   setTokensFromAmount();
+              // }
               console.log('value intial:', e.target.value);
               console.log('value:', value);
               setTokensFromAmount(value);
@@ -425,15 +426,16 @@ export const BuyWindow = () => {
           <p className={style.labelLine}>FLFI to be received: </p>
           <input
             className={style.input_buy}
-            type="text"
+            type="number"
+            step='any'
             placeholder="0.0"
             value={tokensToAmount}
             onChange={(e) => {
               const value = e.target.value;
 
-              if (value === '') {
-                setTokensToAmount();
-              }
+              // if (value === '') {
+              //   setTokensToAmount();
+              // }
               setTokensToAmount(value);
               const tokensFromAmountNew =
                 (value * tokenPrice) / (isBaseCoinSelected() ? getBaseCoinPrice() : 1);

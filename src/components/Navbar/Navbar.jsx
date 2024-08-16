@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link as LinkSmooth } from 'react-scroll';
 import logo from '../../assets/Flary Logo.png';
 import style from './Navbar.module.scss';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
@@ -52,9 +53,10 @@ export const Navbar = ({  navLink }) => {
               Contact Us
             </Link>
           </li>
-          <li>
+          <ConnectButton/>
+          {/* <li>
             <Button />
-          </li>
+          </li> */}
         </ul>
         {/* <Select /> */}
         <div className={style.mobile_button} onClick={handlerMobileNav}>
