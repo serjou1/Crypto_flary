@@ -47,9 +47,7 @@ const stages = [
 ];
 
 export const BuyWindow = () => {
-  const time =
-    new Date('2024-08-16T00:00:00') -
-    new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' }));
+  
   const [collected, setCollected] = useState(0);
   const [sellTokens, setSellTokens] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -292,7 +290,7 @@ export const BuyWindow = () => {
 
     setProgress(progressInPercent);
     setSellTokensX((collectedX / 0.1).toFixed(0));
-  }, [time, collectedX]);
+  }, [ collectedX]);
 
   const isBaseCoinSelected = () => token !== TOKEN_USDT;
   const getBaseCoinPrice = () => {

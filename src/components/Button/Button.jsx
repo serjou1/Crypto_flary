@@ -21,9 +21,10 @@ export const Button = () => {
       <button
         className={style.button}
         style={{ marginTop: '0px' }}
-        // onClick={!connectedAccount ? connectWallet : showOverview}
+        // onClick={()=>connectWallet()}
+        onClick={!connectedAccount ? connectWallet : showOverview}
         >
-        {!connectedAccount ? `${button}` : `${shortAddress}`}
+        {!connectedAccount ? `${button}` : `${nameButton}`}
       </button>
       <AccountOverview address={shortAddress} openSideBar={openSideBar} showOverview={()=>showOverview()} balance={balance} />
     </>

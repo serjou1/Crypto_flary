@@ -33,7 +33,7 @@ export const Tiker = () => {
         <motion.div
           className={style.ticker}
           animate={{ translateX: '-50%' }}
-          transition={{ duration: 20, repeat: Infinity, ease: 'linear', repeatType: 'loop' }}>
+          transition={{ duration: 30, repeat: Infinity, ease: 'linear', repeatType: 'loop' }}>
           <img src={AMB} alt={AMB} />
           <img src={Analytics} alt={Analytics} />
           <img src={beIn} alt={beIn} />
