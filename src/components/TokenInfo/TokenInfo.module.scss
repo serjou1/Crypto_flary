@@ -81,7 +81,7 @@
     width: 1px;
     background-color: #ea512fcc;
     top: 100%;
-    left: 5%;
+    left: 7%;
   }
   .line1 {
     position: absolute;
@@ -90,7 +90,7 @@
     width: 1px;
     background-color: #ea512fcc;
     top: 100%;
-    left: 27%;
+    left: 33%;
   }
   .line2 {
     position: absolute;
@@ -108,7 +108,7 @@
     width: 1px;
     background-color: #ea512fcc;
     top: 100%;
-    left: 73%;
+    left: 67%;
   }
   .line4 {
     position: absolute;
@@ -117,7 +117,7 @@
     width: 1px;
     background-color: #ea512fcc;
     top: 100%;
-    left: 95%;
+    left: 93%;
   }
   .Diagram_1level {
     color: #8c8f94;
@@ -135,12 +135,14 @@
     right: -60px;
   }
   .Diagram_tittle {
+    min-width: 670px;
     font-size: 50px;
     position: absolute;
     top: 100%;
     white-space: nowrap;
-    left: -267px;
+    left: -335px;
     gap: 10px;
+    text-align: center;
 
     padding-top: 10px;
     border: 1px solid var(--color-text-darkYellow);
@@ -152,12 +154,13 @@
 @media (max-width: 1150px) {
   .Diagram {
     .Tittle {
+      text-align: center;
       font-size: 58px;
     }
 
     .Diagram_tittle {
       font-size: 35px;
-      left: -196px;
+      
     }
   }
   .header {
@@ -239,14 +242,16 @@
     font-size: 14px;
   }
 }
-@media (max-width: 420px) {
+@media (max-width: 430px) {
   .Diagram {
     .Tittle {
-      font-size: 30px;
+      min-width: 316px;
+      font-size: 25px;
     }
     .Diagram_tittle {
+      min-width: 320px;
       font-size: 20px;
-      left: -125px;
+      left: -160px;
     }
   }
 }

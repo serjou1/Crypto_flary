@@ -123,6 +123,7 @@
         width: 100%;
       }
       .right {
+        overflow: hidden;
         width: 100%;
       }
     }
@@ -163,7 +164,7 @@
         text-align: center;
         p{
           margin-bottom: 15px;
-          
+
         }
       }
         .rules {
