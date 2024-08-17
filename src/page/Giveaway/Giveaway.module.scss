@@ -15,7 +15,7 @@
   line-height: 120%;
 }
 .content_wrapper {
-    height: 80vh;
+  overflow: hidden;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -36,7 +36,7 @@
   }
   h4 {
     margin-top: 25px;
-    background-image: linear-gradient(90deg, #ffa957, #ffd975);
+    background-image: linear-gradient(90deg, #ffa957, #fe976e);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     -moz-background-clip: text;
@@ -47,27 +47,34 @@
     font-size: 15px;
     font-weight: 400;
   }
-  
 }
 .button {
-    
-      margin-top: 40px;
-    background: linear-gradient(90deg, #ffa957, #ffd975);
-    font-size: 18px;
-    color: #000;
-    border-radius: 8px;
-    padding: 12px;
-    width: fit-content;
-    font-weight: 700;
-    line-height: 26px;
-    transition: 0.5s;
-    cursor: pointer;
-    &:hover {
-      filter: brightness(120%);
-    }
+  margin-bottom: 30px;
+
+  margin-top: 40px;
+  background: linear-gradient(180deg, #ff6e48, #fe9452);
+  font-size: 18px;
+  color: #000;
+  border-radius: 8px;
+  padding: 12px;
+  width: fit-content;
+  font-weight: 700;
+  line-height: 26px;
+  transition: 0.5s;
+  cursor: pointer;
+  &:hover {
+    filter: brightness(120%);
   }
-  @media (max-width: 768px) {
-   .header{
+}
+iframe{height: 1740px;}
+@media (max-width: 768px) {
+  .header {
     font-size: 34px;
-   }
   }
+  .button {
+    font-size: 14px;
+  }
+  iframe {
+    height: 1840px;
+  }
+}

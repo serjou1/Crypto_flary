@@ -25,7 +25,7 @@ export const Navbar = ({ navLink }) => {
         <ul className={style.list}>
           <li>
             <Link
-              style={params === '' ? { color: '#ffd975' } : {}}
+              style={params === '' ? { color: '#ffc837' } : {}}
               onClick={() => {
                 window.scrollTo({
                   top: 0,
@@ -40,19 +40,19 @@ export const Navbar = ({ navLink }) => {
           {navLink.map((item, i) => (
             // console.log(item.tittle.toLowerCase())
             <li key={i}>
-              <Link to={item.link} style={params === item.id ? { color: '#ffd975' } : {}}>
+              <Link to={item.link} style={params === item.id ? { color: '#ffc837' } : {}}>
                 {item.tittle}
               </Link>
             </li>
           ))}
 
           <li>
-            <Link to="/contact" style={params === 'contact' ? { color: '#ffd975' } : {}}>
+            <Link to="/contact" style={params === 'contact' ? { color: '#ffc837' } : {}}>
               Contact Us
             </Link>
           </li>
           <li>
-            <ConnectButton accountStatus="address" label="Connect Wallet" />
+            <ConnectButton accountStatus="address" showBalance={false} label="Connect Wallet" />
           </li>
 
           {/* <li>

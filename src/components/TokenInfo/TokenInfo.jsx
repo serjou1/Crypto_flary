@@ -76,7 +76,6 @@ export const TokenInfo = () => {
             smooth={true}
             duration={500}
             className={style.block_button}>
-            <BsQuestionDiamondFill size={20} />
             <p>Detailed Info</p>
           </LinkSmooth>
         </motion.div>

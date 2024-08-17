@@ -58,7 +58,11 @@ export const Footer1 = () => {
           variants={animation2}
           transition={{ duration: '1' }}>
           <img src={logo} alt="Logo" />
-          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis, blanditiis!</p>
+          <p>
+            Unleash a true power of your assets with FlaryFinance. Lending & borrowing, yielding,
+            bridging, and other comprehensive solutions, all in one place. Flary is the ultimate
+            aggregator.
+          </p>
         </motion.div>
         <motion.div
           className={style.right}
@@ -145,8 +149,8 @@ export const Footer1 = () => {
       <div className={style.middle}></div>
       <div className={style.bottom}>
         <div className={style.address}>
-          <p>Al Sila Tower - 24th - Al Maryah Island - Abu Dhabi, UAE</p>
           <p>© 2024 Flary. All rights reserved.</p>
+          <p>Al Sila Tower - 24th - Al Maryah Island - Abu Dhabi, UAE</p>
         </div>
         <div className={style.rules}>
           <div onClick={() => setModalPolicyIsOpen(true)} className={style.copy}>
