@@ -226,6 +226,13 @@ export const BuyWindow = () => {
       return;
     }
 
+    const balance = await provider.getBalance(signer.address);
+    if (balance <= amount) {
+      // TODO: show popup
+
+      return;
+    }
+
     const tx = await contract.buyTokensNative({ value: amount });
 
     // TODO: disable front
@@ -254,6 +261,13 @@ export const BuyWindow = () => {
     const paused = await contract.paused();
     if (paused) {
       console.log('Token presale is PAUSED!!!');
+      return;
+    }
+
+    const balance = await usdt.balanceOf(signer.address);
+    if (balance < amount) {
+      // TODO: show popup
+
       return;
     }
 
@@ -352,41 +366,41 @@ export const BuyWindow = () => {
           </div>
           {network === NETWORK_BSC
             ? dropToken && (
-                <div className={style.drop_network}>
-                  <div
-                    className={style.button_drop}
-                    onClick={() => handlerChangeToken(TOKEN_BNB, BNB)}>
-                    <img src={BNB} alt="" />
-                    <p>BNB</p>
-                  </div>
-                  <div
-                    className={style.button_drop}
-                    onClick={() => handlerChangeToken(TOKEN_USDT, USDT)}>
-                    <img src={USDT} alt="" />
-                    <p>USDT</p>
-                  </div>
+              <div className={style.drop_network}>
+                <div
+                  className={style.button_drop}
+                  onClick={() => handlerChangeToken(TOKEN_BNB, BNB)}>
+                  <img src={BNB} alt="" />
+                  <p>BNB</p>
                 </div>
-              )
+                <div
+                  className={style.button_drop}
+                  onClick={() => handlerChangeToken(TOKEN_USDT, USDT)}>
+                  <img src={USDT} alt="" />
+                  <p>USDT</p>
+                </div>
+              </div>
+            )
             : null}
           <img src={Arrow} alt="" />
 
           {network === NETWORK_ETHEREUM
             ? dropToken && (
-                <div className={style.drop_network}>
-                  <div
-                    className={style.button_drop}
-                    onClick={() => handlerChangeToken(TOKEN_ETHEREUM, ETH)}>
-                    <img src={ETH} alt="" />
-                    <p>Ethereum</p>
-                  </div>
-                  <div
-                    className={style.button_drop}
-                    onClick={() => handlerChangeToken(TOKEN_USDT, USDT)}>
-                    <img src={USDT} alt="" />
-                    <p>USDT</p>
-                  </div>
+              <div className={style.drop_network}>
+                <div
+                  className={style.button_drop}
+                  onClick={() => handlerChangeToken(TOKEN_ETHEREUM, ETH)}>
+                  <img src={ETH} alt="" />
+                  <p>Ethereum</p>
                 </div>
-              )
+                <div
+                  className={style.button_drop}
+                  onClick={() => handlerChangeToken(TOKEN_USDT, USDT)}>
+                  <img src={USDT} alt="" />
+                  <p>USDT</p>
+                </div>
+              </div>
+            )
             : null}
         </div>
       </div>
