@@ -26,7 +26,7 @@ export const Button = () => {
         >
         {!connectedAccount ? `${button}` : `${nameButton}`}
       </button>
-      <AccountOverview address={shortAddress} openSideBar={openSideBar} showOverview={()=>showOverview()} balance={balance} />
+      <AccountOverview  openSideBar={openSideBar} showOverview={()=>showOverview()}  />
     </>
   );
 };

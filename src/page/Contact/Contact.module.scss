@@ -24,8 +24,14 @@
   }
 
   @media (max-width:768px){
+    .Contact{
+      margin-top: 100px;
+        margin-bottom: 100px;
+        height: 100%;
+    }
     .content{
         flex-direction: column;
         align-items: center;
+        
     }
   }

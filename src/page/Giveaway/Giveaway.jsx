@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navbar } from '../../components';
 import style from './Giveaway.module.scss';
+import IframeScrollHandler from './Iframe';
 
 export const Giveaway = () => {
   const buttonContent = [
@@ -31,7 +32,12 @@ export const Giveaway = () => {
             rel="nofollow">
             Open competition in new tab
           </a>
-          <iframe style={{width:'110%'}} src="https://gleam.io/49RhQ/win-333k-win-flaryfinance" allow='storage-access *; attribution-reporting *; autoplay *; fullscreen *' fullscreen='true'  title='FlaryGleam' allowfullscreen></iframe>
+          <IframeScrollHandler
+        src="https://gleam.io/49RhQ/win-333k-win-flaryfinance"
+        className={style.iframe}
+        style={{  height: '1780px' }}
+      />
+          {/* <iframe style={{width:'110%'}} src="https://gleam.io/49RhQ/win-333k-win-flaryfinance"   fullscreen='true' scrolling='yes' title='FlaryGleam' allowfullscreen></iframe> */}
 
         </div>
       </div>

@@ -2,13 +2,17 @@ import { motion } from 'framer-motion';
 import React, { useState } from 'react';
 import { BsTwitterX } from 'react-icons/bs';
 import { FaDiscord } from 'react-icons/fa';
-import { Link, Link as LinkSmooth } from 'react-scroll';
+import { Link, useLocation } from 'react-router-dom';
+
+import {  Link as LinkSmooth } from 'react-scroll';
 import logo from '../../assets/Flary Logo.png';
 import GitBook from '../../assets/GitBook.svg';
 import { ModalRules } from '../ModalRules/ModalRules';
 import style from './Footer1.module.scss';
 
 export const Footer1 = () => {
+  
+  const params = useLocation().pathname.slice(1);
   const [modalPolicyIsOpen, setModalPolicyIsOpen] = useState(false);
   const [modalTermsIsOpen, setModalTermsIsOpen] = useState(false);
   const navLink = [
@@ -16,6 +20,7 @@ export const Footer1 = () => {
     { to: 'tekenomics', offset: -150, name: 'Tokenomics' },
     { to: 'roadmap', offset: -200, name: 'Roadmap' },
   ];
+  
 
   const animation = {
     hidden: {
@@ -73,30 +78,57 @@ export const Footer1 = () => {
             <motion.p variants={animation} transition={{ duration: '1' }}>
               Company
             </motion.p>
-            <ul>
-              <motion.li variants={animation1} transition={{ duration: '1', delay: 0.25 }}>
-                <Link
-                  onClick={() => {
-                    window.scrollTo({
-                      top: 0,
-                      behavior: 'smooth',
-                    });
-                  }}
-                  to="/">
-                  Home
-                </Link>
-              </motion.li>
-              {navLink.map((item, i) => (
-                <motion.li
-                  key={item.name}
-                  variants={animation1}
-                  transition={{ duration: '1', delay: 0.5 + i }}>
-                  <LinkSmooth to={item.to} offset={item.offset} smooth={true} duration={500}>
-                    {item.name}
-                  </LinkSmooth>
+            {params === '' ? (
+              <ul>
+                <motion.li variants={animation1} transition={{ duration: '1', delay: 0.25 }}>
+                  <Link
+                    onClick={() => {
+                      window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth',
+                      });
+                    }}
+                    to="/">
+                    Home
+                  </Link>
                 </motion.li>
-              ))}
-            </ul>
+                {navLink.map((item, i) => (
+                  <motion.li
+                    key={item.name}
+                    variants={animation1}
+                    transition={{ duration: '1', delay: 0.5 + i }}>
+                    <LinkSmooth to={item.to} offset={item.offset} smooth={true} duration={500}>
+                      {item.name}
+                    </LinkSmooth>
+                  </motion.li>
+                ))}
+              </ul>
+            ) : (
+              <ul>
+                <motion.li variants={animation1} transition={{ duration: '1', delay: 0.25 }}>
+                  <Link
+                    onClick={() => {
+                      window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth',
+                      });
+                    }}
+                    to="/">
+                    Home
+                  </Link>
+                </motion.li>
+                {navLink.map((item, i) => (
+                  <motion.li
+                    key={item.name}
+                    variants={animation1}
+                    transition={{ duration: '1', delay: 0.5 + i }}>
+                    <LinkSmooth to={item.to} offset={item.offset} smooth={true} duration={500}>
+                      {item.name}
+                    </LinkSmooth>
+                  </motion.li>
+                ))}
+              </ul>
+            )}
           </div>
           <div className={style.socialBlock}>
             <motion.p variants={animation} transition={{ duration: '1' }}>

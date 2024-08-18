@@ -1,4 +1,5 @@
 .ContactForm{
+    overflow: hidden;
     width: 55%;
     display: flex;
     flex-direction: column;
@@ -21,7 +22,7 @@ input, textarea{
     border: 2px solid #ffa957;
     background:transparent ;
     transition: 0.1s ease;
-    z-index: 11;
+    z-index: 9;
     color: #ffa957;
     
 }
@@ -43,7 +44,7 @@ input:focus + .labelLine,input:valid + .labelLine,textarea + .labelLine,textarea
     height: 30px;
     line-height: 30px;
     transform: translate(-15px,-16px) scale(0.85);
-     z-index: 11;
+     z-index: 9;
 }
 button {
     

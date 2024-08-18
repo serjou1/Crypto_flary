@@ -105,6 +105,11 @@ width:80%;
   }
 }
 @media (max-width: 500px) {
+  .Header {
+  
+  align-items: center;
+ 
+}
   .description {
     & h1 {
       font-size: 30px;

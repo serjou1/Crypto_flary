@@ -102,6 +102,7 @@ export const Blocks = () => {
       <div className={style.blocks_grid}>
         {blockInner.map((block, i) => (
           <motion.div
+          kay={i}
             className={block.tittle ? style.block : style.false_block}
             initial="hidden"
             whileInView="visible"
