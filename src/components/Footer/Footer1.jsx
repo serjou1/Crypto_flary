@@ -1,17 +1,17 @@
 import { motion } from 'framer-motion';
 import React, { useState } from 'react';
 import { BsTwitterX } from 'react-icons/bs';
-import { FaDiscord } from 'react-icons/fa';
+import { PiTelegramLogoBold } from 'react-icons/pi';
 import { Link, useLocation } from 'react-router-dom';
 
-import {  Link as LinkSmooth } from 'react-scroll';
+import { Link as LinkSmooth } from 'react-scroll';
 import logo from '../../assets/Flary Logo.png';
 import GitBook from '../../assets/GitBook.svg';
 import { ModalRules } from '../ModalRules/ModalRules';
 import style from './Footer1.module.scss';
 
 export const Footer1 = () => {
-  
+
   const params = useLocation().pathname.slice(1);
   const [modalPolicyIsOpen, setModalPolicyIsOpen] = useState(false);
   const [modalTermsIsOpen, setModalTermsIsOpen] = useState(false);
@@ -20,7 +20,7 @@ export const Footer1 = () => {
     { to: 'tekenomics', offset: -150, name: 'Tokenomics' },
     { to: 'roadmap', offset: -200, name: 'Roadmap' },
   ];
-  
+
 
   const animation = {
     hidden: {
@@ -167,11 +167,11 @@ export const Footer1 = () => {
                 transition={{ duration: '1', delay: 1.5 }}>
                 <a
                   className={style.socialLink}
-                  href="https://discord.gg/vQtzREsQ6k"
+                  href="https://t.me/+6B4CPcSet9VlZDA0"
                   target="_blank"
                   rel="noreferrer">
-                  <FaDiscord size={24} style={{ color: '#ffa957' }} />
-                  <span>Discord</span>
+                  <PiTelegramLogoBold size={24} style={{ color: '#ffa957' }} />
+                  <span>Telegram</span>
                 </a>
               </motion.div>
             </div>
