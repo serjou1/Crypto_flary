@@ -52,7 +52,12 @@ export const Navbar = ({ navLink }) => {
             </Link>
           </li>
           <li>
-            <ConnectButton accountStatus="address" showBalance={false} label="Connect Wallet" />
+            <ConnectButton
+              accountStatus="address"
+              chainStatus="none"
+              showBalance={false}
+              label="Connect Wallet"
+            />
           </li>
 
           {/* <li>
@@ -70,7 +75,7 @@ export const Navbar = ({ navLink }) => {
 
         <div className={mobileNav ? style.mobile_open : style.mobile_close}>
           <ul className={style.mobile_list}>
-          <li>
+            <li>
               <ConnectButton accountStatus="address" chainStatus="none" label="Connect Wallet" />
             </li>
             <li>
@@ -94,7 +99,7 @@ export const Navbar = ({ navLink }) => {
             <li>
               <Link to="/contact">Contact Us</Link>
             </li>
-            
+
             {/* <li>
               <Button />
             </li> */}

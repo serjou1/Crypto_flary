@@ -11,10 +11,9 @@ import { Contract, ethers, formatUnits } from 'ethers';
 import { config } from '../../config';
 import { Loader } from '../FairLaunch/Form/Loader';
 import { ERC_20_ABI } from './erc-20-abi';
+import { Error } from './Error';
 import { FLARY_PRESALE_ABI } from './flary-contract-abi';
 import { PRICE_FEED_ABI } from './price-feed-abi';
-import { FALSE } from 'sass';
-import { Error } from './Error';
 
 const {
   ETH_CONTRACT_ADDRESS,
@@ -65,13 +64,11 @@ export const BuyWindow = () => {
   const [tokenHoldings, setTokenHoldings] = useState('0');
   const [networkPrices, setNetworkPrices] = useState({});
   const [tokenPrice, setTokenPrice] = useState(0);
-  const [error,setError] = useState(false)
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     updateTokenHoldings();
   }, [collected]);
-
-
 
   const handlerClickNetwork = () => {
     setDropNetwork(!dropNetwork);
@@ -80,17 +77,17 @@ export const BuyWindow = () => {
     setDropToken(!dropToken);
   };
   const handlerChangeNetwork = async (arg, argImg) => {
-    // if (arg === NETWORK_ETHEREUM) {
-    //   await window.ethereum.request({
-    //     method: 'wallet_switchEthereumChain',
-    //     params: [{ chainId: '0x1' }],
-    //   });
-    // } else {
-    //   await window.ethereum.request({
-    //     method: 'wallet_switchEthereumChain',
-    //     params: [{ chainId: '0x38' }],
-    //   });
-    // }
+    if (arg === NETWORK_ETHEREUM) {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x1' }],
+      });
+    } else {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x38' }],
+      });
+    }
 
     setDropNetwork(!dropNetwork);
     setNetwork(arg);
@@ -104,8 +101,6 @@ export const BuyWindow = () => {
   };
 
   const buyCoins = async () => {
-   
-
     if (tokensFromAmount > 0) {
       if (network === NETWORK_ETHEREUM && token === TOKEN_ETHEREUM) {
         await buyTokensNative(NETWORK_ETHEREUM);
@@ -243,9 +238,8 @@ export const BuyWindow = () => {
 
     const balance = await provider.getBalance(signer.address);
     if (balance <= amount) {
-      alert('malo');
       // TODO: show popup
-      setError(true)
+      setError(true);
 
       return;
     }
@@ -283,9 +277,8 @@ export const BuyWindow = () => {
 
     const balance = await usdt.balanceOf(signer.address);
     if (balance < amount) {
-      alert('malo');
       // TODO: show popup
-      setError(true)
+      setError(true);
 
       return;
     }
@@ -334,9 +327,6 @@ export const BuyWindow = () => {
 
   return (
     <div className={style.BuyWindow}>
-      
-      
-
       {/* <div className={style.BuyWindowBlur}></div> */}
       <div className={style.bg}>
         <h1>Stage 1</h1>
@@ -480,16 +470,19 @@ export const BuyWindow = () => {
           />
         </div>
       </div>
-      {error && <Error setError= {setError}/>}
+      {error && <Error setError={setError} />}
 
       {loading ? (
         <Loader />
       ) : (
-        <div className={style.pay_button} onClick={() => buyCoins() } style={
-          error
-            ? { opacity: '0.3', pointerEvents: 'none', cursor: 'not-allowed' }
-            : { opacity: '1' }
-        }>
+        <div
+          className={style.pay_button}
+          onClick={() => buyCoins()}
+          style={
+            error
+              ? { opacity: '0.3', pointerEvents: 'none', cursor: 'not-allowed' }
+              : { opacity: '1' }
+          }>
           Buy FLFI
         </div>
       )}
