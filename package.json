@@ -25,6 +25,7 @@
     "react-scroll": "^1.9.0",
     "remove": "^0.1.5",
     "sass": "^1.69.7",
+    "superstruct": "^2.0.2",
     "viem": "^2.19.6",
     "wagmi": "^2.12.5",
     "web-vitals": "^2.1.4"

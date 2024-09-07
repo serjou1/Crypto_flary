@@ -36,6 +36,7 @@ const IframeScrollHandler = ({ src, ...props }) => {
 
   return (
     <iframe
+    title='giveaway'
       ref={iframeRef}
       src={src}
       {...props}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Progress } from '../FairLaunch/Progress/Progress';
+import { Progress } from './Progress/Progress';
 import style from './BuyWindow.module.scss';
 
 import Arrow from '../../assets/arrow_down.svg';
@@ -11,7 +11,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Contract, ethers, formatUnits } from 'ethers';
 import { useAccount } from 'wagmi';
 import { config } from '../../config';
-import { Loader } from '../FairLaunch/Form/Loader';
+import { Loader } from './Loader/Loader';
 import { ERC_20_ABI } from './erc-20-abi';
 import { Error } from './Error';
 import { FLARY_PRESALE_ABI } from './flary-contract-abi';
@@ -68,7 +68,7 @@ export const BuyWindow = () => {
   const [tokenPrice, setTokenPrice] = useState(0);
   const [error, setError] = useState(false);
 
-  const { isConnecting, isDisconnected } = useAccount();
+  const { isDisconnected } = useAccount();
 
   useEffect(() => {
     updateTokenHoldings();

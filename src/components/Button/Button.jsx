@@ -1,15 +1,13 @@
-import React, { useContext, useState } from 'react';
-import { TransactionContext } from '../../context/TransactionContext';
+import React, {  useState } from 'react';
+
 import { AccountOverview } from '../AccountOverview/AccountOverview';
 import style from './Button.module.scss';
 
 export const Button = () => {
   const [openSideBar, setOpenSideBar] = useState(false);
-  const { connectWallet, connectedAccount, balance} = useContext(TransactionContext);
-  const button = 'Connect Wallet';
-  const shortAddress = `${connectedAccount.slice(0, 5)}...${connectedAccount.slice(
-    connectedAccount.length - 4,
-  )}`;
+ 
+  
+ 
   const nameButton ='Profile'
 
   const showOverview = () => {
@@ -22,9 +20,9 @@ export const Button = () => {
         className={style.button}
         style={{ marginTop: '0px' }}
         // onClick={()=>connectWallet()}
-        onClick={!connectedAccount ? ()=>connectWallet() : showOverview}
+        onClick={ showOverview}
         >
-        {!connectedAccount ? `${button}` : `${nameButton}`}
+        {nameButton}
       </button>
       <AccountOverview  openSideBar={openSideBar} showOverview={()=>showOverview()}  />
     </>

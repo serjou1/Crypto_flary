@@ -1,9 +1,10 @@
 .Footer {
-  border-top: 1px solid rgba(128, 128, 128, 0.652);
+  border-top: 1px solid var(--color-text-darkYellow);
   //margin: 0 65px;
   padding: 40px 85px;
   display: flex;
   flex-direction: column;
+  background-color: #22222280;
   .top {
     display: flex;
     justify-content: space-between;

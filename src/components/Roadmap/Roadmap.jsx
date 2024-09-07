@@ -49,23 +49,47 @@ export const Roadmap = () => {
               </div>
               <div className={style.infoData}>
                 <div className={style.dotGreen}></div>
-                <div className={style.infoLine}>Start of development</div>
+                <div className={style.infoLine}>Market Analysis</div>
               </div>
               <div className={style.infoData}>
                 <div className={style.dotGreen}></div>
-                <div className={style.infoLine}>Launch social medias</div>
+                <div className={style.infoLine}>Complete development of Business Model</div>
               </div>
               <div className={style.infoData}>
                 <div className={style.dotGreen}></div>
-                <div className={style.infoLine}>Website development</div>
+                <div className={style.infoLine}> Protocol architecture design</div>
               </div>
               <div className={style.infoData}>
                 <div className={style.dotGreen}></div>
-                <div className={style.infoLine}>Community building</div>
+                <div className={style.infoLine}>Launch Social Media</div>
+              </div>
+              <div className={style.infoData}>
+                <div className={style.dotGreen}></div>
+                <div className={style.infoLine}>Initial infrastructure setup</div>
+              </div>
+              <div className={style.infoData}>
+                <div className={style.dotGreen}></div>
+                <div className={style.infoLine}>Website Development</div>
+              </div>
+              <div className={style.infoData}>
+                <div className={style.dotGreen}></div>
+                <div className={style.infoLine}>Community Building</div>
+              </div>
+              <div className={style.infoData}>
+                <div className={style.dotGreen}></div>
+                <div className={style.infoLine}>Marketing Strategy Setup</div>
+              </div>
+              <div className={style.infoData}>
+                <div className={style.dotGreen}></div>
+                <div className={style.infoLine}>Core modules development</div>
+              </div>
+              <div className={style.infoData}>
+                <div className={style.dotGreen}></div>
+                <div className={style.infoLine}>Introduction to Potential Partners</div>
               </div>
               <div className={style.infoData}>
                 <div className={style.dotYellow}></div>
-                <div className={style.infoLine}>Active marketing campaign</div>
+                <div className={style.infoLine}> Active Marketing Campaign</div>
               </div>
             </div>
             <div className={style.tileLineBlok}>
@@ -80,8 +104,16 @@ export const Roadmap = () => {
                 <div className={style.infoLine}>TGE</div>
               </div>
               <div className={style.infoData}>
+                <div className={style.dotYellow}></div>
+                <div className={style.infoLine}>Release Technical Documentation </div>
+              </div>
+              <div className={style.infoData}>
                 <div className={style.dotWhite}></div>
-                <div className={style.infoLine}>Closed Beta test </div>
+                <div className={style.infoLine}>Governance Model Implementation</div>
+              </div>
+              <div className={style.infoData}>
+                <div className={style.dotWhite}></div>
+                <div className={style.infoLine}>Closed Beta Test</div>
               </div>
               <div className={style.infoData}>
                 <div className={style.dotWhite}></div>
@@ -102,6 +134,10 @@ export const Roadmap = () => {
               <div className={style.infoData}>
                 <div className={style.dotWhite}></div>
                 <div className={style.infoLine}>Mainnet Launch</div>
+              </div>
+              <div className={style.infoData}>
+                <div className={style.dotWhite}></div>
+                <div className={style.infoLine}>Integration with DeFi Protocols</div>
               </div>
               <div className={style.infoData}>
                 <div className={style.dotWhite}></div>

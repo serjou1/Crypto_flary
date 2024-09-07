@@ -108,7 +108,7 @@ export const Blocks = () => {
             whileInView="visible"
             viewport={{ once: true }}
             variants={animation}
-            transition={{ duration: '1', delay: i / 4 }}>
+            transition={{ duration: '1', delay: i / 6 }}>
             <div className={block.tittle ? style.block_outer : ''}>
               <div className={block.tittle ? style.block_inner : ''}>
                 <img src={block.img} alt="" />

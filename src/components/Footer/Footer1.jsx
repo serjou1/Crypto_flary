@@ -64,9 +64,7 @@ export const Footer1 = () => {
           transition={{ duration: '1' }}>
           <img src={logo} alt="Logo" />
           <p>
-            Unleash a true power of your assets with FlaryFinance. Lending & borrowing, yielding,
-            bridging, and other comprehensive solutions, all in one place. Flary is the ultimate
-            aggregator.
+          Enter Flary, a game-changer in the world of DeFI.
           </p>
         </motion.div>
         <motion.div
@@ -76,7 +74,7 @@ export const Footer1 = () => {
           viewport={{ once: true }}>
           <div className={style.nav}>
             <motion.p variants={animation} transition={{ duration: '1' }}>
-              Company
+            Navigation
             </motion.p>
             {params === '' ? (
               <ul>
