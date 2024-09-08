@@ -1,8 +1,6 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 
-import { BsQuestionDiamondFill } from 'react-icons/bs';
-import { Link as LinkSmooth } from 'react-scroll';
 import { Diagram } from './Diagram';
 import style from './TokenInfo.module.scss';
 
@@ -16,18 +14,6 @@ export const TokenInfo = () => {
       opacity: 1,
       scale: 1,
     },
-  };
-
-  const animationSupply = {
-    hidden: {
-      x: 200,
-      opacity: 0,
-    },
-    visible: (custom) => ({
-      x: 0,
-      opacity: 1,
-      transition: { delay: custom * 0.2 },
-    }),
   };
   return (
     <div className={style.TokenInfo}>
@@ -69,15 +55,11 @@ export const TokenInfo = () => {
             <p>CONTRACT ADDRESS</p>
             <p>--</p>
           </div>
-          <LinkSmooth
-            to={'tekenomics'}
-            offset={-150}
-            spy={true}
-            smooth={true}
-            duration={500}
+          <a
+            href="https://docs.google.com/spreadsheets/d/1Z2hgw8ZQ7TDD4f8IEDFU7KoZgZ-S3PUEycSTUyJGzok/edit?gid=427940397#gid=427940397"
             className={style.block_button}>
             <p>Detailed Info</p>
-          </LinkSmooth>
+          </a>
         </motion.div>
         <Diagram />
         {/* <motion.div
