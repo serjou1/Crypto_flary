@@ -55,7 +55,7 @@ export const Navbar = ({ navLink }) => {
             <ConnectButton
               accountStatus="address"
               chainStatus="none"
-              showBalance={false}
+              showBalance={true}
               label="Connect Wallet"
             />
           </li>

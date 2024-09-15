@@ -52,13 +52,14 @@
   filter: blur(90px);
 }
 .button_group {
+  width: 90%;
   margin-top: 20px;
   margin-bottom: 20px;
   display: flex;
+  flex-direction: column;
   gap: 30px;
-  align-items: center;
+  // align-items: center;
   .button {
-    width: 200px;
     position: relative;
     cursor: pointer;
     display: flex;
@@ -74,6 +75,15 @@
     }
   }
 }
+.down_button {
+  display: flex;
+  
+  justify-content: space-between;
+  align-items: center;
+  .button{
+    min-width:212px ;
+  }
+}
 .button_tittle {
   display: flex;
   gap: 10px;
@@ -83,6 +93,7 @@
   }
 }
 .drop_network {
+  width: 100.5%;
   z-index: 11;
   position: absolute;
   top: 50px;
@@ -96,7 +107,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    width: 198px;
+    width: 100%;
     cursor: pointer;
     padding: 10px 0px 10px 15px;
     &:hover {

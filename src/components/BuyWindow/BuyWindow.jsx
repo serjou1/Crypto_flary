@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Progress } from './Progress/Progress';
 import style from './BuyWindow.module.scss';
+import { Progress } from './Progress/Progress';
 
 import Arrow from '../../assets/arrow_down.svg';
 import BNB from '../../assets/bnb logo.webp';
 import ETH from '../../assets/ETH.svg';
 import USDT from '../../assets/USDT.svg';
+import FLFI from '../../assets/flary_coin.png'
 
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Contract, ethers, formatUnits } from 'ethers';
 import { useAccount } from 'wagmi';
 import { config } from '../../config';
-import { Loader } from './Loader/Loader';
 import { ERC_20_ABI } from './erc-20-abi';
 import { Error } from './Error';
 import { FLARY_PRESALE_ABI } from './flary-contract-abi';
+import { Loader } from './Loader/Loader';
 import { PRICE_FEED_ABI } from './price-feed-abi';
 
 const {
@@ -67,7 +68,7 @@ export const BuyWindow = () => {
   const [networkPrices, setNetworkPrices] = useState({});
   const [tokenPrice, setTokenPrice] = useState(0);
   const [error, setError] = useState(false);
-
+ const buyLimit = tokensToAmount * 0.1
   const { isDisconnected } = useAccount();
 
   useEffect(() => {
@@ -313,7 +314,7 @@ export const BuyWindow = () => {
   const isBaseCoinSelected = () => token !== TOKEN_USDT;
   const getBaseCoinPrice = () => {
     console.log('network', network);
-    console.log(networkPrices);
+    console.log(networkPrices.Ethereum);
 
     return networkPrices[network];
   };
@@ -360,59 +361,67 @@ export const BuyWindow = () => {
             </div>
           )}
         </div>
+        <div className={style.down_button}>
+          <div
+            className={style.button}
+            onClick={handlerClickToken}
+            style={dropToken ? { borderBottomLeftRadius: '0', borderBottomRightRadius: '0' } : {}}>
+            <div className={style.button_tittle}>
+              <img src={tokenImg} alt="" />
+              <p>{token}</p>
+            </div>
+            {network === NETWORK_BSC
+              ? dropToken && (
+                  <div className={style.drop_network}>
+                    <div
+                      className={style.button_drop}
+                      onClick={() => handlerChangeToken(TOKEN_BNB, BNB)}>
+                      <img src={BNB} alt="" />
+                      <p>BNB</p>
+                    </div>
+                    <div
+                      className={style.button_drop}
+                      onClick={() => handlerChangeToken(TOKEN_USDT, USDT)}>
+                      <img src={USDT} alt="" />
+                      <p>USDT</p>
+                    </div>
+                  </div>
+                )
+              : null}
+            <img src={Arrow} alt="" />
 
-        <div
-          className={style.button}
-          onClick={handlerClickToken}
-          style={dropToken ? { borderBottomLeftRadius: '0', borderBottomRightRadius: '0' } : {}}>
-          <div className={style.button_tittle}>
-            <img src={tokenImg} alt="" />
-            <p>{token}</p>
+            {network === NETWORK_ETHEREUM
+              ? dropToken && (
+                  <div className={style.drop_network}>
+                    <div
+                      className={style.button_drop}
+                      onClick={() => handlerChangeToken(TOKEN_ETHEREUM, ETH)}>
+                      <img src={ETH} alt="" />
+                      <p>Ethereum</p>
+                    </div>
+                    <div
+                      className={style.button_drop}
+                      onClick={() => handlerChangeToken(TOKEN_USDT, USDT)}>
+                      <img src={USDT} alt="" />
+                      <p>USDT</p>
+                    </div>
+                  </div>
+                )
+              : null}
           </div>
-          {network === NETWORK_BSC
-            ? dropToken && (
-                <div className={style.drop_network}>
-                  <div
-                    className={style.button_drop}
-                    onClick={() => handlerChangeToken(TOKEN_BNB, BNB)}>
-                    <img src={BNB} alt="" />
-                    <p>BNB</p>
-                  </div>
-                  <div
-                    className={style.button_drop}
-                    onClick={() => handlerChangeToken(TOKEN_USDT, USDT)}>
-                    <img src={USDT} alt="" />
-                    <p>USDT</p>
-                  </div>
-                </div>
-              )
-            : null}
-          <img src={Arrow} alt="" />
 
-          {network === NETWORK_ETHEREUM
-            ? dropToken && (
-                <div className={style.drop_network}>
-                  <div
-                    className={style.button_drop}
-                    onClick={() => handlerChangeToken(TOKEN_ETHEREUM, ETH)}>
-                    <img src={ETH} alt="" />
-                    <p>Ethereum</p>
-                  </div>
-                  <div
-                    className={style.button_drop}
-                    onClick={() => handlerChangeToken(TOKEN_USDT, USDT)}>
-                    <img src={USDT} alt="" />
-                    <p>USDT</p>
-                  </div>
-                </div>
-              )
-            : null}
+          <div className={style.button}>
+            <div className={style.button_tittle}>
+              <img src={FLFI} alt="" />
+              <p>$FLFI</p>
+            </div>
+          </div>
         </div>
       </div>
 
       <div className={style.inputs}>
         <div className={style.input_container}>
-          <p className={style.labelLine}>{inputTittle} to be paid: </p>
+          <p className={style.labelLine}>You paid: </p>
           <input
             className={style.input_buy}
             type="number"
@@ -436,7 +445,7 @@ export const BuyWindow = () => {
               console.log('new tokens to amount:', tokensToAmountNew);
 
               setTokensToAmount(tokensToAmountNew);
-
+              console.log(getBaseCoinPrice()*2)
               console.log('actual tokens to amount:', tokensToAmount);
             }}
           />
@@ -463,8 +472,14 @@ export const BuyWindow = () => {
           />
         </div>
       </div>
-      {error && <Error setError={setError} setTokensFromAmount={setTokensFromAmount} setTokensToAmount={setTokensToAmount} />}
-      
+      {error && (
+        <Error
+          setError={setError}
+          setTokensFromAmount={setTokensFromAmount}
+          setTokensToAmount={setTokensToAmount}
+        />
+      )}
+
       {loading ? (
         <Loader />
       ) : (
@@ -472,16 +487,21 @@ export const BuyWindow = () => {
           className={style.pay_button}
           onClick={() => buyCoins()}
           style={
-            error || isDisconnected
-              ? { opacity: '0.3', pointerEvents: 'none', cursor: 'not-allowed',marginBottom:'30px' }
+            error || isDisconnected || buyLimit < 50
+              ? {
+                  opacity: '0.3',
+                  pointerEvents: 'none',
+                  cursor: 'not-allowed',
+                }
               : { opacity: '1' }
           }>
-          Buy FLFI
+            {buyLimit < 50 ? 'Minimum purchase is $50' :'Buy FLFI'}
+          
         </div>
       )}
       {isDisconnected && (
         <ConnectButton
-        style = {{marginBottom:'20px'}}
+          style={{ marginBottom: '20px' }}
           accountStatus="address"
           chainStatus="none"
           showBalance={false}
