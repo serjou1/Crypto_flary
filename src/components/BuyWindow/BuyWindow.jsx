@@ -54,7 +54,6 @@ export const BuyWindow = () => {
   const [collected, setCollected] = useState(0);
   const [sellTokens, setSellTokens] = useState(0);
   const [progress, setProgress] = useState(0);
-  const [inputTittle, setInputTittle] = useState('Ethereum');
   const [dropNetwork, setDropNetwork] = useState(false);
   const [dropToken, setDropToken] = useState(false);
   const [network, setNetwork] = useState(NETWORK_ETHEREUM);
@@ -102,7 +101,6 @@ export const BuyWindow = () => {
     setDropNetwork(!dropToken);
     setToken(arg);
     setTokenImg(argImg);
-    setInputTittle(arg);
   };
 
   const buyCoins = async () => {
