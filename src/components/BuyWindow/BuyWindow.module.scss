@@ -66,7 +66,7 @@
     align-items: center;
     justify-content: space-between;
     border: 1px solid var(--color-text-darkYellow);
-    padding: 10px 15px;
+    padding: 5px 15px;
     border-radius: 10px;
 
     img {
@@ -75,13 +75,54 @@
     }
   }
 }
+.balanceValue {
+  font-weight: 300;
+  font-size: 14px;
+}
 .down_button {
   display: flex;
-  
+  gap: 15px;
   justify-content: space-between;
   align-items: center;
-  .button{
-    min-width:212px ;
+  .button {
+    min-width: 188px;
+    min-height: 54px;
+    margin: 20px 12px 0 12px;
+  }
+}
+.max_input {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .max {
+    margin-right: 12px;
+    font-weight: 400;
+    font-size: 12px;
+    padding: 2px;
+    border-radius: 4px;
+    background: #ff5748;
+    cursor: pointer;
+  }
+}
+
+.block_input {
+  //border: 1px solid #fff;
+  background: rgba(26, 22, 61, 0.48);
+  //border: 2px solid var(--color-text-yellow);
+  border-radius: 15px;
+  position: relative;
+
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input {
+    border: none;
+    z-index: 0;
+
+    line-height: 55px;
+    position: relative;
   }
 }
 .button_tittle {
@@ -96,61 +137,55 @@
   width: 100.5%;
   z-index: 11;
   position: absolute;
-  top: 50px;
+  top: 40px;
   left: -1px;
   border: 1px solid var(--color-text-darkYellow);
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
   background: #000;
-
-  .button_drop {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    cursor: pointer;
-    padding: 10px 0px 10px 15px;
-    &:hover {
-      background: #fff;
-      color: #000;
-    }
-  }
+  overflow: hidden;
 }
-.inputs {
+.drop_token {
+  width: 101%;
+  z-index: 11;
+  position: absolute;
+  top: 52px;
+  left: -1px;
+  border: 1px solid var(--color-text-darkYellow);
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  background: #000;
+  overflow: hidden;
+}
+.button_drop {
   display: flex;
-  width: 90%;
-  gap: 20px;
-}
-.input_container {
-  margin-bottom: 25px;
-
   align-items: center;
-  position: relative;
-
-  p {
-    font-size: 12px;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  cursor: pointer;
+  padding: 15px 10px 10px 15px;
+  &:hover {
+    background: #fff;
+    color: #000;
   }
-  input[type='number']::-webkit-inner-spin-button,
-  input[type='number']::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  input {
-    z-index: 0;
-    margin-top: 5px;
-    line-height: 55px;
-    position: relative;
-  }
+}
+.button_drop_left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.button_drop_right {
+  text-align: end;
 }
 .labelLine {
   z-index: 1;
-  top: -3px;
+  top: -9px;
   position: absolute;
-  font-size: 20px;
+  font-size: 12px;
   color: var(--color-text-yellow);
   padding: 0 10px;
   margin: 0 20px;
-  background: var(--color-bg);
 }
 .pay_button {
   width: 90%;
