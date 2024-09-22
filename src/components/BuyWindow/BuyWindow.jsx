@@ -21,6 +21,7 @@ import { Successful } from './Successful/Successful';
 import { useIsMounted } from './useIsMounted';
 
 const {
+  ETH_CONTRACT_SEPOLIA_ADDRESS,
   ETH_CONTRACT_ADDRESS,
   BSC_CONTRACT_ADDRESS,
   ETH_USDT_ADDRESS,
@@ -73,7 +74,7 @@ export const BuyWindow = () => {
   const [balanceValue, setBalanceValue] = useState(0);
   const [balanceValueFiat, setBalanceValueFiat] = useState(0);
 
-  const buyLimit = tokensToAmount * 0.1;
+  const buyLimit = tokensToAmount * 4;
 
   const { isDisconnected, address } = useAccount();
 
@@ -111,6 +112,9 @@ export const BuyWindow = () => {
 
   const maxValue = () => {
     setTokensFromAmount(balanceValue);
+    const tokensToAmountNew =
+      (balanceValue * (isBaseCoinSelected() ? getBaseCoinPrice() : 1)) / tokenPrice;
+    setTokensToAmount(tokensToAmountNew);
   };
 
   const handlerClickNetwork = () => {
@@ -136,15 +140,66 @@ export const BuyWindow = () => {
     setNetwork(arg);
     setNetworkImg(argImg);
   };
-  const handlerChangeToken = (arg, argImg, balance,balanceFiat) => {
+  const handlerChangeToken = (arg, argImg, balance, balanceFiat) => {
     setDropNetwork(!dropToken);
     setToken(arg);
     setTokenImg(argImg);
     setTokensFromAmount('');
     setTokensToAmount('');
     setBalanceValue(balance);
-    setBalanceValueFiat(balanceFiat)
+    setBalanceValueFiat(balanceFiat);
   };
+  // const buyCoinsSepolia = async () => {
+  //   if (tokensFromAmount > 0) {
+  //     if (network === NETWORK_ETHEREUM && token === TOKEN_ETHEREUM) {
+  //       await buyTokensNativeS(NETWORK_ETHEREUM);
+  //     } else if (network === NETWORK_BSC && token === TOKEN_BNB) {
+  //       await buyTokensNativeS(NETWORK_BSC);
+  //     } else if (network === NETWORK_ETHEREUM) {
+  //       await buyTokensUsdt(NETWORK_ETHEREUM);
+  //     } else {
+  //       await buyTokensUsdt(NETWORK_BSC);
+  //     }
+  //   } else {
+  //     alert('Please enter value more than 0');
+  //   }
+  
+  // }
+    
+  //   const getContractS = (network, provider) => {
+  //     const contractAddress = ETH_CONTRACT_SEPOLIA_ADDRESS;
+
+  //     const contract = new ethers.Contract(contractAddress, FLARY_PRESALE_ABI, provider);
+
+  //     return contract;
+  //   };
+  //   const buyTokensNativeS = async (network) => {
+  //     const amount = ethers.parseEther(Number(tokensFromAmount).toFixed(18));
+
+  //     const provider = new ethers.BrowserProvider(window.ethereum);
+  //     const signer = await provider.getSigner();
+
+  //     const contract = getContractS(network, signer);
+
+  //     const paused = await contract.paused();
+  //     if (paused) {
+  //       console.log('Token presale is PAUSED!!!');
+  //       // alert("token presale is PAUSED!!!")
+  //       return;
+  //     }
+  //     const tx = await contract.buyTokensNativeS({ value: amount });
+
+  //     // TODO: disable front
+  //     setLoading(true);
+
+  //     await tx.wait();
+  //     await updateTokenHoldings();
+  //     setLoading(false);
+  //     setSuccessful(true);
+
+  //     // TODO: enable front
+  //   };
+  
 
   const buyCoins = async () => {
     if (tokensFromAmount > 0) {
@@ -356,8 +411,8 @@ export const BuyWindow = () => {
 
   const isBaseCoinSelected = () => token !== TOKEN_USDT;
   const getBaseCoinPrice = () => {
-    console.log('network', network);
-    console.log(networkPrices.Ethereum);
+    // console.log('network', network);
+    // console.log(networkPrices.Ethereum);
 
     return networkPrices[network];
   };
@@ -381,12 +436,16 @@ export const BuyWindow = () => {
       </p>
       <Progress progress={progress.toFixed(2)} />
       <p>Collected USDT : ${collectedX} / $300,000</p>
-      <p>Tokens sold: {sellTokensX} / 1,000,000,000</p>
+
       <div className={style.button_group}>
         <div
           className={style.button}
           onClick={handlerClickNetwork}
-          style={dropNetwork ? { borderBottomLeftRadius: '0', borderBottomRightRadius: '0' } : {}}>
+          style={
+            dropNetwork
+              ? { borderBottomLeftRadius: '0', borderBottomRightRadius: '0', padding: '10px 15px' }
+              : { padding: '10px 15px' }
+          }>
           <div className={style.button_tittle}>
             <img src={networkImg} alt="" />
             <p>{network}</p>
@@ -416,28 +475,39 @@ export const BuyWindow = () => {
             <p className={style.labelLine}>You paid: </p>
             <div
               className={style.button}
-              onClick={handlerClickToken}
+              onClick={isDisconnected ? null : handlerClickToken}
               style={
                 dropToken ? { borderBottomLeftRadius: '0', borderBottomRightRadius: '0' } : {}
               }>
               <div className={style.button_tittle}>
                 <img src={tokenImg} alt="" />
                 <p>{token}</p>
-                <img src={Arrow} alt="" />
+
+                {isDisconnected ? '' : <img src={Arrow} alt="" />}
               </div>
-              <div>
-                <p className={style.balanceValue} style={{ textAlign:'end' }}>{balanceValue > 0.001 ? balanceValue : 0}</p>
-                <p className={style.balanceValue} style={{ color: 'gray', fontWeight: '300',textAlign:'end' }}>
-                  ${balanceValueFiat}
-                </p>
-              </div>
+              {isDisconnected ? (
+                ''
+              ) : (
+                <div>
+                  <p className={style.balanceValue} style={{ textAlign: 'end' }}>
+                    {balanceValue > 0.001 ? balanceValue : 0}
+                  </p>
+                  <p
+                    className={style.balanceValue}
+                    style={{ color: 'gray', fontWeight: '300', textAlign: 'end' }}>
+                    ${balanceValueFiat}
+                  </p>
+                </div>
+              )}
 
               {network === NETWORK_BSC
                 ? dropToken && (
                     <div className={style.drop_token}>
                       <div
                         className={style.button_drop}
-                        onClick={() => handlerChangeToken(TOKEN_BNB, BNB, bnbBNBValue,bnbBNBValueFiat)}>
+                        onClick={() =>
+                          handlerChangeToken(TOKEN_BNB, BNB, bnbBNBValue, bnbBNBValueFiat)
+                        }>
                         <div className={style.button_drop_left}>
                           <img src={BNB} alt="" />
                           <p>BNB</p>
@@ -453,7 +523,9 @@ export const BuyWindow = () => {
                       </div>
                       <div
                         className={style.button_drop}
-                        onClick={() => handlerChangeToken(TOKEN_USDT, USDT, bnbUsdtValue,bnbUsdtValueFiat)}>
+                        onClick={() =>
+                          handlerChangeToken(TOKEN_USDT, USDT, bnbUsdtValue, bnbUsdtValueFiat)
+                        }>
                         <div className={style.button_drop_left}>
                           <img src={USDT} alt="" />
                           <p>USDT</p>
@@ -478,7 +550,9 @@ export const BuyWindow = () => {
                     <div className={style.drop_token}>
                       <div
                         className={style.button_drop}
-                        onClick={() => handlerChangeToken(TOKEN_ETHEREUM, ETH, ethEthValue,ethEthValueFiat)}>
+                        onClick={() =>
+                          handlerChangeToken(TOKEN_ETHEREUM, ETH, ethEthValue, ethEthValueFiat)
+                        }>
                         <div className={style.button_drop_left}>
                           <img src={ETH} alt="" />
                           <p>ETH</p>
@@ -496,7 +570,9 @@ export const BuyWindow = () => {
                       </div>
                       <div
                         className={style.button_drop}
-                        onClick={() => handlerChangeToken(TOKEN_USDT, USDT, ethUsdtValue,ethUsdtValueFiat)}>
+                        onClick={() =>
+                          handlerChangeToken(TOKEN_USDT, USDT, ethUsdtValue, ethUsdtValueFiat)
+                        }>
                         <div className={style.button_drop_left}>
                           <img src={USDT} alt="" />
                           <p>USDT</p>
@@ -521,7 +597,7 @@ export const BuyWindow = () => {
                 className={style.input_buy}
                 type="number"
                 step="any"
-                placeholder="0.0"
+                placeholder="Enter Amount"
                 value={tokensFromAmount}
                 onChange={(e) => {
                   const value = e.target.value;
@@ -532,21 +608,25 @@ export const BuyWindow = () => {
                   console.log('value intial:', e.target.value);
                   console.log('value:', value);
                   setTokensFromAmount(value);
-                  console.log('actual amount:', tokensFromAmount);
+                  // console.log('actual amount:', tokensFromAmount);
                   const tokensToAmountNew =
                     (value * (isBaseCoinSelected() ? getBaseCoinPrice() : 1)) / tokenPrice;
-                  console.log('isBaseCoinSelected', isBaseCoinSelected());
-                  console.log('getBaseCoinPrice', getBaseCoinPrice());
-                  console.log('new tokens to amount:', tokensToAmountNew);
+                  // console.log('isBaseCoinSelected', isBaseCoinSelected());
+                  // console.log('getBaseCoinPrice', getBaseCoinPrice());
+                  // console.log('new tokens to amount:', tokensToAmountNew);
 
                   setTokensToAmount(tokensToAmountNew);
-                  console.log(getBaseCoinPrice() * 2);
-                  console.log('actual tokens to amount:', tokensToAmount);
+                  // console.log(getBaseCoinPrice() * 2);
+                  // console.log('actual tokens to amount:', tokensToAmount);
                 }}
               />
-              <p className={style.max} onClick={maxValue}>
-                MAX
-              </p>
+              {mounted
+                ? !isDisconnected && (
+                    <p className={style.max} onClick={maxValue}>
+                      MAX
+                    </p>
+                  )
+                : null}
             </div>
           </div>
           <div className={style.block_input}>
@@ -592,32 +672,50 @@ export const BuyWindow = () => {
       ) : successful ? (
         <Successful />
       ) : (
-        <div
-          className={style.pay_button}
-          onClick={() => buyCoins()}
-          style={
-            error || isDisconnected || buyLimit < 50
-              ? {
-                  opacity: '0.3',
-                  pointerEvents: 'none',
-                  cursor: 'not-allowed',
-                }
-              : { opacity: '1' }
-          }>
-          {buyLimit < 50 ? 'Minimum purchase is $50' : 'Buy FLFI'}
-        </div>
+        !isDisconnected && (
+          <div
+            className={style.pay_button}
+            onClick={() => buyCoins()}
+            style={
+              error || isDisconnected || buyLimit < 50
+                ? {
+                    opacity: '0.3',
+                    pointerEvents: 'none',
+                    cursor: 'not-allowed',
+                  }
+                : { opacity: '1' }
+            }>
+            {buyLimit < 50 ? 'Minimum purchase is $50' : 'Buy FLFI'}
+          </div>
+        )
       )}
-      {mounted
-        ? isDisconnected && (
-            <ConnectButton
-              style={{ marginBottom: '20px', marginTop: '20px' }}
-              accountStatus="address"
-              chainStatus="none"
-              showBalance={false}
-              label="Connect Wallet"
-            />
-          )
-        : null}
+      {/* <div
+            className={style.pay_button}
+            
+            style={
+              error 
+                ? {
+                    opacity: '0.3',
+                    pointerEvents: 'none',
+                    cursor: 'not-allowed',
+                  }
+                : { opacity: '1' }
+            }>
+            Buy Sepolia
+          </div> */}
+      <div className={style.ConnectButton}>
+        {mounted
+          ? isDisconnected && (
+              <ConnectButton
+                style={{ marginBottom: '20px', marginTop: '20px' }}
+                accountStatus="address"
+                chainStatus="none"
+                showBalance={false}
+                label="Connect Wallet"
+              />
+            )
+          : null}
+      </div>
     </div>
   );
 };

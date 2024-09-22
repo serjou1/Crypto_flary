@@ -57,7 +57,7 @@
   margin-bottom: 20px;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 35px;
   // align-items: center;
   .button {
     position: relative;
@@ -87,7 +87,7 @@
   .button {
     min-width: 188px;
     min-height: 54px;
-    margin: 20px 12px 0 12px;
+    margin: 15px 12px 0 12px;
   }
 }
 .max_input {
@@ -120,7 +120,7 @@
   input {
     border: none;
     z-index: 0;
-
+    padding-left: 15px;
     line-height: 55px;
     position: relative;
   }
@@ -137,7 +137,7 @@
   width: 100.5%;
   z-index: 11;
   position: absolute;
-  top: 40px;
+  top: 50px;
   left: -1px;
   border: 1px solid var(--color-text-darkYellow);
   border-bottom-left-radius: 15px;
@@ -180,7 +180,8 @@
 }
 .labelLine {
   z-index: 1;
-  top: -9px;
+  top: -22px;
+  left: -15px;
   position: absolute;
   font-size: 12px;
   color: var(--color-text-yellow);
@@ -201,6 +202,11 @@
   &:hover {
     filter: brightness(120%);
   }
+}
+.ConnectButton {
+  font-weight: 700;
+  line-height: 26px;
+  font-size: 20px;
 }
 
 @media (max-width: 1024px) {
