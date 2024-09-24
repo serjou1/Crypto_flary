@@ -163,9 +163,9 @@ export const BuyWindow = () => {
   //   } else {
   //     alert('Please enter value more than 0');
   //   }
-  
+
   // }
-    
+
   //   const getContractS = (network, provider) => {
   //     const contractAddress = ETH_CONTRACT_SEPOLIA_ADDRESS;
 
@@ -199,7 +199,7 @@ export const BuyWindow = () => {
 
   //     // TODO: enable front
   //   };
-  
+
 
   const buyCoins = async () => {
     if (tokensFromAmount > 0) {
@@ -328,7 +328,6 @@ export const BuyWindow = () => {
 
     const balance = await provider.getBalance(signer.address);
     if (balance <= amount) {
-      // TODO: show popup
       setError(true);
 
       return;
@@ -336,7 +335,6 @@ export const BuyWindow = () => {
 
     const tx = await contract.buyTokensNative({ value: amount });
 
-    // TODO: disable front
     setLoading(true);
 
     await tx.wait();
@@ -344,7 +342,17 @@ export const BuyWindow = () => {
     setLoading(false);
     setSuccessful(true);
 
-    // TODO: enable front
+    await fetch("https://back.flary.finance/api/user/boughtTokens", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        amount: Number(tokensToAmount),
+        address: signer.address,
+        chain: network === NETWORK_ETHEREUM ? "eth" : "bsc",
+      }),
+    });
   };
 
   const buyTokensUsdt = async (network) => {
@@ -368,7 +376,6 @@ export const BuyWindow = () => {
 
     const balance = await usdt.balanceOf(signer.address);
     if (balance < amount) {
-      // TODO: show popup
       setError(true);
 
       return;
@@ -376,7 +383,6 @@ export const BuyWindow = () => {
 
     const allowance = await usdt.allowance(signer.address, await contract.getAddress());
 
-    // TODO: disable front
     setLoading(true);
 
     if (allowance < amount) {
@@ -502,94 +508,94 @@ export const BuyWindow = () => {
 
               {network === NETWORK_BSC
                 ? dropToken && (
-                    <div className={style.drop_token}>
-                      <div
-                        className={style.button_drop}
-                        onClick={() =>
-                          handlerChangeToken(TOKEN_BNB, BNB, bnbBNBValue, bnbBNBValueFiat)
-                        }>
-                        <div className={style.button_drop_left}>
-                          <img src={BNB} alt="" />
-                          <p>BNB</p>
-                        </div>
-                        <div className={style.button_drop_right}>
-                          <p className={style.balanceValue}>{bnbBNBValue > 0 ? bnbBNBValue : 0}</p>
-                          <p
-                            className={style.balanceValue}
-                            style={{ color: 'gray', fontWeight: '300' }}>
-                            ${bnbBNBValueFiat}
-                          </p>
-                        </div>
+                  <div className={style.drop_token}>
+                    <div
+                      className={style.button_drop}
+                      onClick={() =>
+                        handlerChangeToken(TOKEN_BNB, BNB, bnbBNBValue, bnbBNBValueFiat)
+                      }>
+                      <div className={style.button_drop_left}>
+                        <img src={BNB} alt="" />
+                        <p>BNB</p>
                       </div>
-                      <div
-                        className={style.button_drop}
-                        onClick={() =>
-                          handlerChangeToken(TOKEN_USDT, USDT, bnbUsdtValue, bnbUsdtValueFiat)
-                        }>
-                        <div className={style.button_drop_left}>
-                          <img src={USDT} alt="" />
-                          <p>USDT</p>
-                        </div>
-                        <div className={style.button_drop_right}>
-                          <p className={style.balanceValue}>
-                            {bnbUsdtValue > 0.001 ? bnbUsdtValue : 0}
-                          </p>
-                          <p
-                            className={style.balanceValue}
-                            style={{ color: 'gray', fontWeight: '300' }}>
-                            ${bnbUsdtValueFiat}
-                          </p>
-                        </div>
+                      <div className={style.button_drop_right}>
+                        <p className={style.balanceValue}>{bnbBNBValue > 0 ? bnbBNBValue : 0}</p>
+                        <p
+                          className={style.balanceValue}
+                          style={{ color: 'gray', fontWeight: '300' }}>
+                          ${bnbBNBValueFiat}
+                        </p>
                       </div>
                     </div>
-                  )
+                    <div
+                      className={style.button_drop}
+                      onClick={() =>
+                        handlerChangeToken(TOKEN_USDT, USDT, bnbUsdtValue, bnbUsdtValueFiat)
+                      }>
+                      <div className={style.button_drop_left}>
+                        <img src={USDT} alt="" />
+                        <p>USDT</p>
+                      </div>
+                      <div className={style.button_drop_right}>
+                        <p className={style.balanceValue}>
+                          {bnbUsdtValue > 0.001 ? bnbUsdtValue : 0}
+                        </p>
+                        <p
+                          className={style.balanceValue}
+                          style={{ color: 'gray', fontWeight: '300' }}>
+                          ${bnbUsdtValueFiat}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )
                 : null}
 
               {network === NETWORK_ETHEREUM
                 ? dropToken && (
-                    <div className={style.drop_token}>
-                      <div
-                        className={style.button_drop}
-                        onClick={() =>
-                          handlerChangeToken(TOKEN_ETHEREUM, ETH, ethEthValue, ethEthValueFiat)
-                        }>
-                        <div className={style.button_drop_left}>
-                          <img src={ETH} alt="" />
-                          <p>ETH</p>
-                        </div>
-                        <div className={style.button_drop_right}>
-                          <p className={style.balanceValue}>
-                            {ethEthValue > 0.001 ? ethEthValue : 0}
-                          </p>
-                          <p
-                            className={style.balanceValue}
-                            style={{ color: 'gray', fontWeight: '300' }}>
-                            ${ethEthValueFiat}
-                          </p>
-                        </div>
+                  <div className={style.drop_token}>
+                    <div
+                      className={style.button_drop}
+                      onClick={() =>
+                        handlerChangeToken(TOKEN_ETHEREUM, ETH, ethEthValue, ethEthValueFiat)
+                      }>
+                      <div className={style.button_drop_left}>
+                        <img src={ETH} alt="" />
+                        <p>ETH</p>
                       </div>
-                      <div
-                        className={style.button_drop}
-                        onClick={() =>
-                          handlerChangeToken(TOKEN_USDT, USDT, ethUsdtValue, ethUsdtValueFiat)
-                        }>
-                        <div className={style.button_drop_left}>
-                          <img src={USDT} alt="" />
-                          <p>USDT</p>
-                        </div>
-                        <div className={style.button_drop_right}>
-                          <p className={style.balanceValue}>
-                            {ethUsdtValue > 0.001 ? ethUsdtValue : 0}
-                          </p>
-                          <p
-                            className={style.balanceValue}
-                            style={{ color: 'gray', fontWeight: '300' }}>
-                            ${ethUsdtValueFiat}
-                          </p>
-                        </div>
+                      <div className={style.button_drop_right}>
+                        <p className={style.balanceValue}>
+                          {ethEthValue > 0.001 ? ethEthValue : 0}
+                        </p>
+                        <p
+                          className={style.balanceValue}
+                          style={{ color: 'gray', fontWeight: '300' }}>
+                          ${ethEthValueFiat}
+                        </p>
                       </div>
                     </div>
-                  )
+                    <div
+                      className={style.button_drop}
+                      onClick={() =>
+                        handlerChangeToken(TOKEN_USDT, USDT, ethUsdtValue, ethUsdtValueFiat)
+                      }>
+                      <div className={style.button_drop_left}>
+                        <img src={USDT} alt="" />
+                        <p>USDT</p>
+                      </div>
+                      <div className={style.button_drop_right}>
+                        <p className={style.balanceValue}>
+                          {ethUsdtValue > 0.001 ? ethUsdtValue : 0}
+                        </p>
+                        <p
+                          className={style.balanceValue}
+                          style={{ color: 'gray', fontWeight: '300' }}>
+                          ${ethUsdtValueFiat}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )
                 : null}
             </div>
             <div className={style.max_input}>
@@ -622,10 +628,10 @@ export const BuyWindow = () => {
               />
               {mounted
                 ? !isDisconnected && (
-                    <p className={style.max} onClick={maxValue}>
-                      MAX
-                    </p>
-                  )
+                  <p className={style.max} onClick={maxValue}>
+                    MAX
+                  </p>
+                )
                 : null}
             </div>
           </div>
@@ -679,10 +685,10 @@ export const BuyWindow = () => {
             style={
               error || isDisconnected || buyLimit < 50
                 ? {
-                    opacity: '0.3',
-                    pointerEvents: 'none',
-                    cursor: 'not-allowed',
-                  }
+                  opacity: '0.3',
+                  pointerEvents: 'none',
+                  cursor: 'not-allowed',
+                }
                 : { opacity: '1' }
             }>
             {buyLimit < 50 ? 'Minimum purchase is $50' : 'Buy FLFI'}
@@ -706,14 +712,14 @@ export const BuyWindow = () => {
       <div className={style.ConnectButton}>
         {mounted
           ? isDisconnected && (
-              <ConnectButton
-                style={{ marginBottom: '20px', marginTop: '20px' }}
-                accountStatus="address"
-                chainStatus="none"
-                showBalance={false}
-                label="Connect Wallet"
-              />
-            )
+            <ConnectButton
+              style={{ marginBottom: '20px', marginTop: '20px' }}
+              accountStatus="address"
+              chainStatus="none"
+              showBalance={false}
+              label="Connect Wallet"
+            />
+          )
           : null}
       </div>
     </div>
