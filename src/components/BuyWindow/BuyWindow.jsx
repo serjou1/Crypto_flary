@@ -68,7 +68,9 @@ export const BuyWindow = () => {
   const [tokenPrice, setTokenPrice] = useState(0);
   const [error, setError] = useState(false);
 
-  const { isConnecting, isDisconnected } = useAccount();
+  const { isConnecting, isDisconnected, isConnected } = useAccount();
+
+  // useEffect(() => {})
 
   useEffect(() => {
     updateTokenHoldings();
@@ -206,14 +208,8 @@ export const BuyWindow = () => {
 
     setCollected(Number(totalUsd.toFixed(2)));
 
-    // либо же здесь можно отправлять на бекенд количество токенов, которое купил пользователь
-    // POST {totalAmount, address: signer.address}
-
     setTokenHoldings(
       `${(boughtTokensEth + boughtTokensBsc).toFixed(2)}`,
-      // (${boughtTokensEth.toFixed(
-      //   2,
-      // )} on ETH + ${boughtTokensBsc.toFixed(2)} on BSC)`,
     );
   };
 
@@ -228,7 +224,6 @@ export const BuyWindow = () => {
     const paused = await contract.paused();
     if (paused) {
       console.log('Token presale is PAUSED!!!');
-      // alert("token presale is PAUSED!!!")
       return;
     }
 
@@ -247,7 +242,17 @@ export const BuyWindow = () => {
     await updateTokenHoldings();
     setLoading(false);
 
-    // здесь нужно отправлять на бекенд хеш транзакции и на бекенде записывать сколько куплено токенов
+    await fetch("https://back.flary.finance/api/user/boughtTokens", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        amount: Number(tokensToAmount),
+        address: signer.address,
+        chain: network === NETWORK_ETHEREUM ? "eth" : "bsc",
+      }),
+    });
   };
 
   const buyTokensUsdt = async (network) => {
@@ -271,7 +276,6 @@ export const BuyWindow = () => {
 
     const balance = await usdt.balanceOf(signer.address);
     if (balance < amount) {
-      // TODO: show popup
       setError(true);
 
       return;
@@ -279,7 +283,6 @@ export const BuyWindow = () => {
 
     const allowance = await usdt.allowance(signer.address, await contract.getAddress());
 
-    // TODO: disable front
     setLoading(true);
 
     if (allowance < amount) {
@@ -291,7 +294,6 @@ export const BuyWindow = () => {
     await tx.wait();
     await updateTokenHoldings();
     setLoading(false);
-    // TODO: enable front
     const progressInPercent = (parseFloat(tokensFromAmount) / Amount_FOR_STAGE) * 100;
 
     setProgress((prevProgress) => prevProgress + progressInPercent);
@@ -487,7 +489,6 @@ export const BuyWindow = () => {
           chainStatus="none"
           showBalance={false}
           label="Connect Wallet"
-        // onClick= отправлять на бекенд адрес кошелька и реферальный код
         />
       )}
     </div>
