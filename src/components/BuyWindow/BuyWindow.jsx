@@ -441,46 +441,6 @@ export const BuyWindow = () => {
 
 
 
-// Провайдер для Binance Smart Chain
-const providerBSC = new ethers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
-
-// Функция для получения текущей цены газа
-const getCurrentGasPrice = async (provider) => {
-  const gasPrice = await provider.send('eth_gasPrice', []);
-  return BigNumber.from(gasPrice); // Возвращаем цену газа как BigNumber
-};
-
-// Функция для расчета баланса с учетом комиссии
-const calculateBalanceAfterGas = async (balance, provider, gasLimit = 21000) => {
-  const gasPriceInWei = await getCurrentGasPrice(provider);
-  
-  // Общая стоимость газа
-  const totalGasCost = gasPriceInWei.mul(gasLimit);
-  
-  // Конвертируем баланс в wei
-  const balanceInWei = ethers.parseEther(balance.toString());
-  
-  // Вычитаем стоимость газа из баланса
-  const balanceAfterGas = balanceInWei.sub(totalGasCost);
-  
-  return ethers.formatEther(balanceAfterGas); // Возвращаем результат в BNB
-};
-
-// Основная функция для выполнения расчетов
-const main = async () => {
-  const initialBalance = 1.0; // Пример начального баланса в BNB
-
-  // Получаем цену газа и вычисляем баланс для BSC
-  const bscGasPrice = await getCurrentGasPrice(providerBSC);
-  const bscBalanceAfterGas = await calculateBalanceAfterGas(initialBalance, providerBSC);
-  
-  console.log(`Current gas price on BSC: ${ethers.formatUnits(bscGasPrice, 'gwei')} Gwei`);
-  console.log(`Balance after gas deduction on BSC: ${bscBalanceAfterGas} BNB`);
-};
-
-// Запуск основной функции
-main().catch(console.error);
-
 
   
 
