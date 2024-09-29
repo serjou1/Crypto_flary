@@ -225,8 +225,27 @@
   .inputs {
     width: auto;
   }
-}
+
 @media (max-width: 500px) {
+  .block_input {
+ 
+width: 100%;
+  
+  }
+ 
+}
+  .down_button {
+  display: flex;
+  gap: 35px;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  .button {
+   
+    min-height: 54px;
+    margin: 15px 12px 0 12px;
+  }
+}
   .button_group {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -234,9 +253,9 @@
     flex-direction: column;
     gap: 30px;
     align-items: center;
-    .button {
-      width: 100%;
-    }
+    // .button {
+    //   width: 100%;
+    // }
   }
   .inputs {
     display: block;

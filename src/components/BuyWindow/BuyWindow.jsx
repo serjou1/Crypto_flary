@@ -1,3 +1,4 @@
+/* global BigInt */
 import React, { useEffect, useState } from 'react';
 import style from './BuyWindow.module.scss';
 import { Progress } from './Progress/Progress';
@@ -8,8 +9,10 @@ import ETH from '../../assets/ETH.svg';
 import FLFI from '../../assets/flary_coin.png';
 import USDT from '../../assets/USDT.svg';
 
+import { BigNumber } from '@ethersproject/bignumber';
+import { JsonRpcProvider } from '@ethersproject/providers'; // Импорт провайдера
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { Contract, ethers,BigNumber, formatUnits } from 'ethers';
+import { Contract, ethers, formatEther, formatUnits, parseEther } from 'ethers';
 import { useAccount, useBalance } from 'wagmi';
 import { config } from '../../config';
 import { ERC_20_ABI } from './erc-20-abi';
@@ -103,7 +106,7 @@ export const BuyWindow = () => {
 
   const calculateBalanceInFiat = (coinValue) => {
     const price = getBaseCoinPrice();
-    if (!price) return null
+    if (!price) return null;
     return (coinValue * price).toFixed(1);
   };
 
@@ -145,8 +148,19 @@ export const BuyWindow = () => {
     console.log(`Balance updated: ${balanceValue}`);
   }, [collected, successful, network]);
 
-  const maxValue = () => {
-    setTokensFromAmount(balanceValue);
+  const maxValue = async () => {
+    if (network === NETWORK_ETHEREUM && tokenETH === TOKEN_ETHEREUM) {
+      setTokensFromAmount(
+        balanceValue > 0 ? await calculateBalanceAfterGas(providerEthereum, balanceValue) : 0,
+      );
+    } else if (network === NETWORK_BSC && tokenBNB === TOKEN_BNB) {
+      setTokensFromAmount(
+        balanceValue > 0 ? await calculateBalanceAfterGas(providerBSC, balanceValue) : 0,
+      );
+    } else {
+      setTokensFromAmount(balanceValue);
+    }
+
     const tokensToAmountNew =
       (balanceValue * (isBaseCoinSelected() ? getBaseCoinPrice() : 1)) / tokenPrice;
     setTokensToAmount(tokensToAmountNew);
@@ -160,16 +174,15 @@ export const BuyWindow = () => {
   };
   const handlerChangeNetwork = async (arg, argImg) => {
     if (arg === NETWORK_ETHEREUM) {
-      
-       setTokenETH(TOKEN_ETHEREUM)
-       setTokenImgETH(ETH)
+      setTokenETH(TOKEN_ETHEREUM);
+      setTokenImgETH(ETH);
       await window.ethereum.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: '0x1' }],
       });
     } else {
-      setTokenBNB(TOKEN_BNB)
-      setTokenImgBNB(BNB)
+      setTokenBNB(TOKEN_BNB);
+      setTokenImgBNB(BNB);
       await window.ethereum.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: '0x38' }],
@@ -181,8 +194,8 @@ export const BuyWindow = () => {
     setDropNetwork(!dropNetwork);
     setNetwork(arg);
     setNetworkImg(argImg);
-
-  
+    setTokensFromAmount('');
+    setTokensToAmount('');
   };
   const handlerChangeTokenETH = (arg, argImg, balance, balanceFiat) => {
     setDropNetwork(!dropToken);
@@ -428,22 +441,33 @@ export const BuyWindow = () => {
   const bnbUsdtValueFiat = Number(bnbUsdtValue).toFixed(1);
   const ethEthValueFiat = (ethEthValue * getBaseCoinPrice()).toFixed(1);
   const ethUsdtValueFiat = Number(ethUsdtValue).toFixed(1);
-  
 
+  // Провайдеры для Ethereum и BSC
+  const providerEthereum = new JsonRpcProvider(
+    'https://mainnet.infura.io/v3/2f33107b586b463cbaea43b40c5cae3f',
+  );
+  const providerBSC = new JsonRpcProvider('https://bsc-dataseed.binance.org/');
 
-  
-  
+  // Функция для получения текущей цены газа
+  const getCurrentGasPrice = async (provider) => {
+    const gasPrice = await provider.send('eth_gasPrice', []);
+    return BigNumber.from(gasPrice);
+  };
 
- 
+  // Функция для расчета баланса с учетом комиссии
+  const calculateBalanceAfterGas = async (provider, balance, gasLimit = 21000) => {
+    const gasPriceInWei = await getCurrentGasPrice(provider);
+    const totalGasCost = BigInt(gasPriceInWei * gasLimit);
+    const balanceInWei = BigInt(parseEther(balance.toString()));
+    const balanceAfterGas = balanceInWei - totalGasCost;
 
+    return formatEther(balanceAfterGas.toString()); // Возвращаем результат в ETH или BNB
+  };
 
-// Провайдеры для основных и тестовых сетей
-
-
-
-
-  
-
+  // useEffect(() => {
+  //   const initialBalance = 1.0;
+  //   calculateBalanceAfterGas(providerBSC, initialBalance);
+  // }, []);
 
   return (
     <div className={style.BuyWindow}>
@@ -468,8 +492,8 @@ export const BuyWindow = () => {
           onClick={handlerClickNetwork}
           style={
             dropNetwork
-              ? { borderBottomLeftRadius: '0', borderBottomRightRadius: '0', padding: '10px 15px' }
-              : { padding: '10px 15px' }
+              ? { borderBottomLeftRadius: '0', borderBottomRightRadius: '0', padding: '10px 15px',width: '100%' }
+              : { padding: '10px 15px' ,width: '100%'}
           }>
           <div className={style.button_tittle}>
             <img src={networkImg} alt="" />
