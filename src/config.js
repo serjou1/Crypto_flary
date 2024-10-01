@@ -6,7 +6,5 @@ export const config = {
     RPC_ETH: "https://eth.drpc.org",
     RPC_BSC: "https://bscrpc.com",
 
-    ETH_CONTRACT_SEPOLIA_ADDRESS: "0x78c3ef2f89321cccb163c465599a7c9025c286de",
-    ETH_USDT_SEPOLIA_ADDRESS: "0xaA8E23Fb1079EA71e0a56F48a2aA51851D8433D0",
-    RPC_SEPOLIA_ETH: "https://ethereum-sepolia-rpc.publicnode.com",
+    
 };

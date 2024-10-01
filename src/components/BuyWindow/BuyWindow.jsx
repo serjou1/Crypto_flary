@@ -135,12 +135,12 @@ export const BuyWindow = () => {
     updateTokenHoldings();
 
     if (network === NETWORK_ETHEREUM) {
-      window.ethereum.request({
+      window.ethereum?.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: '0x1' }],
       });
     } else {
-      window.ethereum.request({
+      window.ethereum?.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: '0x38' }],
       });
