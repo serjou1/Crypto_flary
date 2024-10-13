@@ -5,7 +5,7 @@ import style from './HowToBuy.module.scss';
 export const HowToBuy = () => {
   const buttonContent = [
     { link: '/how-to-buy', tittle: 'How To Buy',id: 'how-to-buy'},
-    { link: '/giveaway', tittle: 'Win $333K',id: 'giveaway'},
+    // { link: '/giveaway', tittle: 'Win $333K',id: 'giveaway'},
   ];
   return (
     <>

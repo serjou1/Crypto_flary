@@ -5,7 +5,7 @@ import { ContactForm, ContactInfo, Navbar } from '../../components'
 export const Contact = () => {
   const buttonContent = [
     { link: '/how-to-buy', tittle: 'How To Buy' },
-    { link: '/giveaway', tittle: 'Win $333K' },
+    // { link: '/giveaway', tittle: 'Win $333K' },
   ];
   return (
     <>

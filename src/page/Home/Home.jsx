@@ -16,7 +16,8 @@ import style from './Home.module.scss';
 export const Home = () => {
   const navLink = [
     { link: '/how-to-buy', tittle: 'How To Buy', id: 'how-to-buy' },
-    { link: '/giveaway', tittle: 'Win $333K', id: 'giveaway' },
+    { link: 'https://flary-finance.gitbook.io/flary-finance', tittle: 'Documentation', id: 'how-to-buy' },
+    // { link: '/giveaway', tittle: 'Win $333K', id: 'giveaway' },
   ];
   useEffect(() => {
     window.scrollTo({
