@@ -15,14 +15,13 @@
   width: 100px;
   height: 100px;
   position: absolute;
-  background: #117b52;;
+  background: #117b52;
   z-index: 1;
   right: -20%;
   top: 20%;
   filter: blur(30px);
-  
 }
-.containerBlik{
+.containerBlik {
   width: 250px;
   height: 250px;
   position: absolute;
@@ -31,7 +30,6 @@
   right: -30%;
   top: 0%;
   filter: blur(90px);
-  
 }
 
 .netBackground {
@@ -49,7 +47,7 @@
 .netBackground::before {
   // background: radial-gradient(70.71% 70.71% at 50% 50%, transparent 0, rgba(0, 0, 0, 0.5) 79%),
   //   url(../../assets/bg-net.png), transparent 0 0/100% 100% no-repeat;
-  content:'';
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -59,8 +57,8 @@
   z-index: -1;
   background-image: url(../../assets/bg-net.png);
   background-repeat: no-repeat;
-  background-position:center;
-  background-size:cover;
+  background-position: center;
+  background-size: cover;
 
   padding-top: 28px;
   padding-bottom: 30px;
@@ -216,8 +214,12 @@
   }
 }
 @media (max-width: 440px) {
+  .contentTitleLittleBlur {
+    display: none;
+  }
   .AboutAs {
     // width:100vh;
     margin-top: 50px;
     margin-bottom: 50px;
-  }}
+  }
+}
