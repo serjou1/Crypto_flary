@@ -140,9 +140,28 @@ export const BuyWindow = () => {
         params: [{ chainId: '0x1' }],
       });
     } else {
-      window.ethereum?.request({
+      window.ethereum.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: '0x38' }],
+      }).catch(() => {
+        window.ethereum.request({
+          jsonrpc: '2.0',
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: '0x38',
+              chainName: 'Binance Smart Chain Mainnet',
+              rpcUrls: ['https://bsc-dataseed.binance.org/'],
+              nativeCurrency: {
+                name: 'BNB',
+                symbol: 'BNB',
+                decimals: 18
+              },
+              blockExplorerUrls: ['https://bscscan.com']
+            }
+          ],
+          id: 0
+        })
       });
     }
     console.log(`Balance updated: ${balanceValue}`);
@@ -183,10 +202,33 @@ export const BuyWindow = () => {
     } else {
       setTokenBNB(TOKEN_BNB);
       setTokenImgBNB(BNB);
-      await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x38' }],
-      });
+      console.log('switching to BSC');
+
+      try {
+        await window.ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: '0x38' }],
+        });
+      } catch {
+        window.ethereum.request({
+          jsonrpc: '2.0',
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: '0x38',
+              chainName: 'Binance Smart Chain Mainnet',
+              rpcUrls: ['https://bsc-dataseed.binance.org/'],
+              nativeCurrency: {
+                name: 'BNB',
+                symbol: 'BNB',
+                decimals: 18
+              },
+              blockExplorerUrls: ['https://bscscan.com']
+            }
+          ],
+          id: 0
+        })
+      }
     }
 
     setBalanceValueFiat((balanceValue * getBaseCoinPrice()).toFixed(1));
