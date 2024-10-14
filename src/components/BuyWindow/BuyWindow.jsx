@@ -91,20 +91,20 @@ export const BuyWindow = () => {
     address: address,
     token: '0x55d398326f99059fF775485246999027B3197955',
   });
-  const bnbUsdtValue = Number(bnbUsdt?.formatted).toFixed(3);
+  const bnbUsdtValue = Number(bnbUsdt?.formatted);//.toFixed(3);
   const { data: ethUsdt } = useBalance({
     address: address,
     token: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
   });
-  const ethUsdtValue = Number(ethUsdt?.formatted).toFixed(3);
+  const ethUsdtValue = Number(ethUsdt?.formatted);//.toFixed(3);
   const { data: ethEth } = useBalance({
     address: address,
   });
-  const ethEthValue = Number(ethEth?.formatted).toFixed(3);
+  const ethEthValue = Number(ethEth?.formatted);//.toFixed(3);
   const { data: bnbBNB } = useBalance({
     address: address,
   });
-  const bnbBNBValue = Number(bnbBNB?.formatted).toFixed(3);
+  const bnbBNBValue = Number(bnbBNB?.formatted);//.toFixed(3);
 
   const calculateBalanceInFiat = (coinValue) => {
     const price = getBaseCoinPrice();
@@ -114,10 +114,11 @@ export const BuyWindow = () => {
 
   useEffect(() => {
     if (ethEth?.formatted) {
-      const ethValue = Number(ethEth.formatted).toFixed(3);
+      const ethValue = Number(ethEth.formatted);
       if (!isNaN(ethValue)) {
-        setBalanceValue(ethValue);
-        setBalanceValueFiat(calculateBalanceInFiat(ethValue));
+        const ethValueFixed = Number(ethEth.formatted).toFixed(3);
+        setBalanceValue(ethValueFixed);
+        setBalanceValueFiat(calculateBalanceInFiat(ethValueFixed));
       }
     } else if (bnbBNB?.formatted) {
       const bnbValue = Number(bnbBNB.formatted).toFixed(3);
@@ -449,7 +450,7 @@ export const BuyWindow = () => {
   // Функция для расчета баланса с учетом комиссии
   const calculateBalanceAfterGas = async (provider, balance, gasLimit = 21000) => {
     const gasPriceInWei = await getCurrentGasPrice(provider);
-    const totalGasCost = BigInt(gasPriceInWei * gasLimit);
+    const totalGasCost = BigInt(gasPriceInWei.toNumber() * gasLimit);
     const balanceInWei = BigInt(parseEther(balance.toString()));
     const balanceAfterGas = balanceInWei - totalGasCost;
 
@@ -516,7 +517,7 @@ export const BuyWindow = () => {
             <p className={style.labelLine}>You pay: </p>
             <div
               className={style.button}
-              onClick={isDisconnected ? null : handlerClickToken}
+              onClick={isDisconnected ? undefined : handlerClickToken}
               style={
                 dropToken ? { borderBottomLeftRadius: '0', borderBottomRightRadius: '0' } : {}
               }>
@@ -555,14 +556,14 @@ export const BuyWindow = () => {
                     <div
                       className={style.button_drop}
                       onClick={() =>
-                        handlerChangeTokenBNB(TOKEN_BNB, BNB, bnbBNBValue, bnbBNBValueFiat)
+                        handlerChangeTokenBNB(TOKEN_BNB, BNB, bnbBNBValue.toFixed(3), bnbBNBValueFiat)
                       }>
                       <div className={style.button_drop_left}>
                         <img src={BNB} alt="" />
                         <p>BNB</p>
                       </div>
                       <div className={style.button_drop_right}>
-                        <p className={style.balanceValue}>{bnbBNBValue > 0 ? bnbBNBValue : 0}</p>
+                        <p className={style.balanceValue}>{bnbBNBValue > 0 ? bnbBNBValue.toFixed(3) : 0}</p>
                         <p
                           className={style.balanceValue}
                           style={{ color: 'gray', fontWeight: '300' }}>
@@ -573,7 +574,7 @@ export const BuyWindow = () => {
                     <div
                       className={style.button_drop}
                       onClick={() =>
-                        handlerChangeTokenBNB(TOKEN_USDT, USDT, bnbUsdtValue, bnbUsdtValueFiat)
+                        handlerChangeTokenBNB(TOKEN_USDT, USDT, bnbUsdtValue.toFixed(3), bnbUsdtValueFiat)
                       }>
                       <div className={style.button_drop_left}>
                         <img src={USDT} alt="" />
@@ -581,7 +582,7 @@ export const BuyWindow = () => {
                       </div>
                       <div className={style.button_drop_right}>
                         <p className={style.balanceValue}>
-                          {bnbUsdtValue > 0.001 ? bnbUsdtValue : 0}
+                          {bnbUsdtValue > 0.001 ? bnbUsdtValue.toFixed(3) : 0}
                         </p>
                         <p
                           className={style.balanceValue}
@@ -600,7 +601,7 @@ export const BuyWindow = () => {
                     <div
                       className={style.button_drop}
                       onClick={() =>
-                        handlerChangeTokenETH(TOKEN_ETHEREUM, ETH, ethEthValue, ethEthValueFiat)
+                        handlerChangeTokenETH(TOKEN_ETHEREUM, ETH, ethEthValue.toFixed(3), ethEthValueFiat)
                       }>
                       <div className={style.button_drop_left}>
                         <img src={ETH} alt="" />
@@ -608,7 +609,7 @@ export const BuyWindow = () => {
                       </div>
                       <div className={style.button_drop_right}>
                         <p className={style.balanceValue}>
-                          {ethEthValue > 0.001 ? ethEthValue : 0}
+                          {ethEthValue > 0.001 ? ethEthValue.toFixed(3) : 0}
                         </p>
                         <p
                           className={style.balanceValue}
@@ -620,7 +621,7 @@ export const BuyWindow = () => {
                     <div
                       className={style.button_drop}
                       onClick={() =>
-                        handlerChangeTokenETH(TOKEN_USDT, USDT, ethUsdtValue, ethUsdtValueFiat)
+                        handlerChangeTokenETH(TOKEN_USDT, USDT, ethUsdtValue.toFixed(3), ethUsdtValueFiat)
                       }>
                       <div className={style.button_drop_left}>
                         <img src={USDT} alt="" />
@@ -628,7 +629,7 @@ export const BuyWindow = () => {
                       </div>
                       <div className={style.button_drop_right}>
                         <p className={style.balanceValue}>
-                          {ethUsdtValue > 0.001 ? ethUsdtValue : 0}
+                          {ethUsdtValue > 0.001 ? ethUsdtValue.toFixed(3) : 0}
                         </p>
                         <p
                           className={style.balanceValue}
@@ -649,7 +650,7 @@ export const BuyWindow = () => {
                 placeholder="Enter Amount"
                 value={tokensFromAmount}
                 onChange={(e) => {
-                  const value = e.target.value;
+                  const value = Number(e.target.value);
 
                   // if (value === '') {
                   //   setTokensFromAmount();
@@ -693,7 +694,7 @@ export const BuyWindow = () => {
               placeholder="0.0"
               value={tokensToAmount}
               onChange={(e) => {
-                const value = e.target.value;
+                const value = Number(e.target.value);
 
                 // if (value === '') {
                 //   setTokensToAmount();
