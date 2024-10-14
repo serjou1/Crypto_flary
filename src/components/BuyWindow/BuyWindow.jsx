@@ -14,7 +14,8 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { JsonRpcProvider } from '@ethersproject/providers'; // Импорт провайдера
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Contract, ethers, formatEther, formatUnits, parseEther } from 'ethers';
-import { useAccount, useBalance, useSwitchChain } from 'wagmi';
+
+import { useAccount, useBalance, useSwitchChain, useSimulateContract } from 'wagmi';
 import { config } from '../../config';
 import { ERC_20_ABI } from './erc-20-abi';
 import { Error } from './Error';
@@ -24,6 +25,9 @@ import { PopupNetwork } from './PopapNetwork/PopupNetwork';
 import { PRICE_FEED_ABI } from './price-feed-abi';
 import { Successful } from './Successful/Successful';
 import { useIsMounted } from './useIsMounted';
+// import { console } from 'inspector';
+import { BuyButton } from './BuyButton';
+import { NETWORK_BSC, NETWORK_ETHEREUM, TOKEN_BNB, TOKEN_ETHEREUM, TOKEN_USDT } from './constants';
 
 const {
   ETH_CONTRACT_ADDRESS,
@@ -34,12 +38,7 @@ const {
   RPC_BSC,
 } = config;
 
-const NETWORK_ETHEREUM = 'Ethereum';
-const NETWORK_BSC = 'BNB Chain';
 
-const TOKEN_ETHEREUM = 'ETH';
-const TOKEN_USDT = 'USDT';
-const TOKEN_BNB = 'BNB';
 
 export const BuyWindow = () => {
   const [stage, setStage] = useState('');
@@ -70,7 +69,7 @@ export const BuyWindow = () => {
   const [chainID, setChainID] = useState(null);
   const [openPopupNetwork, setOpenPopupNetwork] = useState(false);
 
-  const buyLimit = tokensToAmount * 4;
+  
 
   const account = useAccount();
   const { switchChain } = useSwitchChain();
@@ -80,20 +79,27 @@ export const BuyWindow = () => {
     address: account.address,
     token: '0x55d398326f99059fF775485246999027B3197955',
   });
-  const bnbUsdtValue = Number(bnbUsdt?.formatted).toFixed(3);
+  const bnbUsdtValue = Number(bnbUsdt?.formatted);//.toFixed(3);
   const { data: ethUsdt } = useBalance({
     address: account.address,
     token: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
   });
-  const ethUsdtValue = Number(ethUsdt?.formatted).toFixed(3);
+  const ethUsdtValue = Number(ethUsdt?.formatted);//.toFixed(3);
   const { data: ethEth } = useBalance({
     address: account.address,
   });
+
+ 
+
   const ethEthValue = Math.floor(ethEth?.formatted * 1000) / 1000;
+
   const { data: bnbBNB } = useBalance({
     address: account.address,
   });
+
+
   const bnbBNBValue = Math.floor(bnbBNB?.formatted * 1000) / 1000;
+
 
   useEffect(() => {
     const calculateBalanceInFiat = (coinValue) => {
@@ -102,10 +108,14 @@ export const BuyWindow = () => {
       return (coinValue * price).toFixed(1);
     };
     if (ethEth?.formatted) {
+
+
       const ethValue = Math.floor(ethEth.formatted * 1000) / 1000;
+
       if (!isNaN(ethValue)) {
-        setBalanceValue(ethValue);
-        setBalanceValueFiat(calculateBalanceInFiat(ethValue));
+        const ethValueFixed = Number(ethEth.formatted).toFixed(3);
+        setBalanceValue(ethValueFixed);
+        setBalanceValueFiat(calculateBalanceInFiat(ethValueFixed));
       }
     } else if (bnbBNB?.formatted) {
       const bnbValue = Math.floor(bnbBNB.formatted * 1000) / 1000;
@@ -197,8 +207,13 @@ export const BuyWindow = () => {
       // Очистка таймера при размонтировании компонента
       return () => clearTimeout(timer);
     }
+
+
+    
+
     if (account.status === 'connected') {
       updateTokenHoldings();
+
     }
   }, [account.status, successful]);
 
@@ -241,6 +256,8 @@ export const BuyWindow = () => {
     if (arg === NETWORK_ETHEREUM) {
       setTokenETH(TOKEN_ETHEREUM);
       setTokenImgETH(ETH);
+
+
       if (window.ethereum) {
         await window.ethereum?.request({
           method: 'wallet_switchEthereumChain',
@@ -260,6 +277,7 @@ export const BuyWindow = () => {
       } else {
         switchChain({ chainId: 56 });
       }
+
     }
 
     if (controlDrop) {
@@ -292,21 +310,6 @@ export const BuyWindow = () => {
     setBalanceValueFiat(balanceFiat);
   };
 
-  const buyCoins = async () => {
-    if (tokensFromAmount > 0) {
-      if (network === NETWORK_ETHEREUM && tokenETH === TOKEN_ETHEREUM) {
-        await buyTokensNative(NETWORK_ETHEREUM);
-      } else if (network === NETWORK_BSC && tokenBNB === TOKEN_BNB) {
-        await buyTokensNative(NETWORK_BSC);
-      } else if (network === NETWORK_ETHEREUM) {
-        await buyTokensUsdt(NETWORK_ETHEREUM);
-      } else {
-        await buyTokensUsdt(NETWORK_BSC);
-      }
-    } else {
-      alert('Please enter value more than 0');
-    }
-  };
 
   const getContract = (network, provider) => {
     const contractAddress =
@@ -373,95 +376,7 @@ export const BuyWindow = () => {
     );
   };
 
-  const buyTokensNative = async (network) => {
-    const amount = ethers.parseEther(Number(tokensFromAmount).toFixed(18));
 
-    const provider = window.ethereum
-      ? new ethers.BrowserProvider(window.ethereum)
-      : ethers.getDefaultProvider();
-    const signer = await provider.getSigner();
-
-    const contract = getContract(network, signer);
-
-    const paused = await contract.paused();
-    console.log('Wyzow buyTokensNative');
-    if (paused) {
-      console.log('Token presale is PAUSED!!!');
-      // alert("token presale is PAUSED!!!")
-      return;
-    }
-
-    const balance = await provider.getBalance(signer.address);
-    if (balance <= amount) {
-      setError(true);
-
-      return;
-    }
-
-    const tx = await contract.buyTokensNative({ value: amount });
-
-    setLoading(true);
-
-    await tx.wait();
-    await updateTokenHoldings();
-    setLoading(false);
-    setSuccessful(true);
-
-    await fetch('https://back.flary.finance/api/user/boughtTokens', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        amount: Number(tokensToAmount),
-        address: signer.address,
-        chain: network === NETWORK_ETHEREUM ? 'eth' : 'bsc',
-      }),
-    });
-  };
-
-  const buyTokensUsdt = async (network) => {
-    const decimals = network === NETWORK_ETHEREUM ? 6 : 18;
-    const amount = ethers.parseUnits(Number(tokensFromAmount).toFixed(decimals), decimals);
-
-    const provider =window.ethereum ? new ethers.BrowserProvider(window.ethereum) : ethers.getDefaultProvider();
-    const signer = await provider.getSigner();
-
-    const contract = getContract(network, signer);
-
-    const usdtAddress = network === NETWORK_ETHEREUM ? ETH_USDT_ADDRESS : BSC_USDT_ADDRESS;
-
-    const usdt = new ethers.Contract(usdtAddress, ERC_20_ABI, signer);
-    console.log('wyzow buyTokensUsdt');
-    const paused = await contract.paused();
-    if (paused) {
-      console.log('Token presale is PAUSED!!!');
-      return;
-    }
-
-    const balance = await usdt.balanceOf(signer.address);
-    if (balance < amount) {
-      setError(true);
-
-      return;
-    }
-
-    const allowance = await usdt.allowance(signer.address, await contract.getAddress());
-
-    setLoading(true);
-
-    if (allowance < amount) {
-      const approveTx = await usdt.approve(await contract.getAddress(), amount);
-      await approveTx.wait();
-    }
-
-    const tx = await contract.buyTokensUSDT(amount);
-    await tx.wait();
-    await updateTokenHoldings();
-    setLoading(false);
-    setSuccessful(true);
-    // TODO: enable front
-  };
 
   const isBaseCoinSelected = () => {
     if (network === NETWORK_ETHEREUM) {
@@ -499,7 +414,7 @@ export const BuyWindow = () => {
   // Функция для расчета баланса с учетом комиссии
   const calculateBalanceAfterGas = async (provider, balance, gasLimit = 210000) => {
     const gasPriceInWei = await getCurrentGasPrice(provider);
-    const totalGasCost = BigInt(gasPriceInWei * gasLimit);
+    const totalGasCost = BigInt(gasPriceInWei.toNumber() * gasLimit);
     const balanceInWei = BigInt(parseEther(balance.toString()));
     const balanceAfterGas = balanceInWei - totalGasCost;
 
@@ -549,12 +464,15 @@ export const BuyWindow = () => {
           onClick={handlerClickNetwork}
           style={
             dropNetwork
+
+
               ? {
                   borderBottomLeftRadius: '0',
                   borderBottomRightRadius: '0',
                   padding: '10px 15px',
                   width: '100%',
                 }
+
               : { padding: '10px 15px', width: '100%' }
           }>
           <div className={style.button_tittle}>
@@ -586,7 +504,9 @@ export const BuyWindow = () => {
             <p className={style.labelLine}>You pay: </p>
             <div
               className={style.button}
+
               onClick={account.status === 'disconnected' ? null : handlerClickToken}
+
               style={
                 dropToken ? { borderBottomLeftRadius: '0', borderBottomRightRadius: '0' } : {}
               }>
@@ -622,94 +542,94 @@ export const BuyWindow = () => {
 
               {network === NETWORK_BSC
                 ? dropToken && (
-                    <div className={style.drop_token}>
-                      <div
-                        className={style.button_drop}
-                        onClick={() =>
-                          handlerChangeTokenBNB(TOKEN_BNB, BNB, bnbBNBValue, bnbBNBValueFiat)
-                        }>
-                        <div className={style.button_drop_left}>
-                          <img src={BNB} alt="" />
-                          <p>BNB</p>
-                        </div>
-                        <div className={style.button_drop_right}>
-                          <p className={style.balanceValue}>{bnbBNBValue > 0 ? bnbBNBValue : 0}</p>
-                          <p
-                            className={style.balanceValue}
-                            style={{ color: 'gray', fontWeight: '300' }}>
-                            ${bnbBNBValueFiat}
-                          </p>
-                        </div>
+                  <div className={style.drop_token}>
+                    <div
+                      className={style.button_drop}
+                      onClick={() =>
+                        handlerChangeTokenBNB(TOKEN_BNB, BNB, bnbBNBValue.toFixed(3), bnbBNBValueFiat)
+                      }>
+                      <div className={style.button_drop_left}>
+                        <img src={BNB} alt="" />
+                        <p>BNB</p>
                       </div>
-                      <div
-                        className={style.button_drop}
-                        onClick={() =>
-                          handlerChangeTokenBNB(TOKEN_USDT, USDT, bnbUsdtValue, bnbUsdtValueFiat)
-                        }>
-                        <div className={style.button_drop_left}>
-                          <img src={USDT} alt="" />
-                          <p>USDT</p>
-                        </div>
-                        <div className={style.button_drop_right}>
-                          <p className={style.balanceValue}>
-                            {bnbUsdtValue > 0.001 ? bnbUsdtValue : 0}
-                          </p>
-                          <p
-                            className={style.balanceValue}
-                            style={{ color: 'gray', fontWeight: '300' }}>
-                            ${bnbUsdtValueFiat}
-                          </p>
-                        </div>
+                      <div className={style.button_drop_right}>
+                        <p className={style.balanceValue}>{bnbBNBValue > 0 ? bnbBNBValue.toFixed(3) : 0}</p>
+                        <p
+                          className={style.balanceValue}
+                          style={{ color: 'gray', fontWeight: '300' }}>
+                          ${bnbBNBValueFiat}
+                        </p>
                       </div>
                     </div>
-                  )
+                    <div
+                      className={style.button_drop}
+                      onClick={() =>
+                        handlerChangeTokenBNB(TOKEN_USDT, USDT, bnbUsdtValue.toFixed(3), bnbUsdtValueFiat)
+                      }>
+                      <div className={style.button_drop_left}>
+                        <img src={USDT} alt="" />
+                        <p>USDT</p>
+                      </div>
+                      <div className={style.button_drop_right}>
+                        <p className={style.balanceValue}>
+                          {bnbUsdtValue > 0.001 ? bnbUsdtValue.toFixed(3) : 0}
+                        </p>
+                        <p
+                          className={style.balanceValue}
+                          style={{ color: 'gray', fontWeight: '300' }}>
+                          ${bnbUsdtValueFiat}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )
                 : null}
 
               {network === NETWORK_ETHEREUM
                 ? dropToken && (
-                    <div className={style.drop_token}>
-                      <div
-                        className={style.button_drop}
-                        onClick={() =>
-                          handlerChangeTokenETH(TOKEN_ETHEREUM, ETH, ethEthValue, ethEthValueFiat)
-                        }>
-                        <div className={style.button_drop_left}>
-                          <img src={ETH} alt="" />
-                          <p>ETH</p>
-                        </div>
-                        <div className={style.button_drop_right}>
-                          <p className={style.balanceValue}>
-                            {ethEthValue > 0.001 ? ethEthValue : 0}
-                          </p>
-                          <p
-                            className={style.balanceValue}
-                            style={{ color: 'gray', fontWeight: '300' }}>
-                            ${ethEthValueFiat}
-                          </p>
-                        </div>
+                  <div className={style.drop_token}>
+                    <div
+                      className={style.button_drop}
+                      onClick={() =>
+                        handlerChangeTokenETH(TOKEN_ETHEREUM, ETH, ethEthValue.toFixed(3), ethEthValueFiat)
+                      }>
+                      <div className={style.button_drop_left}>
+                        <img src={ETH} alt="" />
+                        <p>ETH</p>
                       </div>
-                      <div
-                        className={style.button_drop}
-                        onClick={() =>
-                          handlerChangeTokenETH(TOKEN_USDT, USDT, ethUsdtValue, ethUsdtValueFiat)
-                        }>
-                        <div className={style.button_drop_left}>
-                          <img src={USDT} alt="" />
-                          <p>USDT</p>
-                        </div>
-                        <div className={style.button_drop_right}>
-                          <p className={style.balanceValue}>
-                            {ethUsdtValue > 0.001 ? ethUsdtValue : 0}
-                          </p>
-                          <p
-                            className={style.balanceValue}
-                            style={{ color: 'gray', fontWeight: '300' }}>
-                            ${ethUsdtValueFiat}
-                          </p>
-                        </div>
+                      <div className={style.button_drop_right}>
+                        <p className={style.balanceValue}>
+                          {ethEthValue > 0.001 ? ethEthValue.toFixed(3) : 0}
+                        </p>
+                        <p
+                          className={style.balanceValue}
+                          style={{ color: 'gray', fontWeight: '300' }}>
+                          ${ethEthValueFiat}
+                        </p>
                       </div>
                     </div>
-                  )
+                    <div
+                      className={style.button_drop}
+                      onClick={() =>
+                        handlerChangeTokenETH(TOKEN_USDT, USDT, ethUsdtValue.toFixed(3), ethUsdtValueFiat)
+                      }>
+                      <div className={style.button_drop_left}>
+                        <img src={USDT} alt="" />
+                        <p>USDT</p>
+                      </div>
+                      <div className={style.button_drop_right}>
+                        <p className={style.balanceValue}>
+                          {ethUsdtValue > 0.001 ? ethUsdtValue.toFixed(3) : 0}
+                        </p>
+                        <p
+                          className={style.balanceValue}
+                          style={{ color: 'gray', fontWeight: '300' }}>
+                          ${ethUsdtValueFiat}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )
                 : null}
             </div>
             <div className={style.max_input}>
@@ -720,7 +640,7 @@ export const BuyWindow = () => {
                 placeholder="Enter Amount"
                 value={tokensFromAmount}
                 onChange={(e) => {
-                  const value = e.target.value;
+                  const value = Number(e.target.value);
 
                   setTokensFromAmount(value);
 
@@ -736,11 +656,13 @@ export const BuyWindow = () => {
                 }}
               />
               {mounted
+
                 ? account.status === 'connected' && (
                     <p className={style.max} onClick={maxValue}>
                       MAX
                     </p>
                   )
+
                 : null}
             </div>
           </div>
@@ -759,7 +681,7 @@ export const BuyWindow = () => {
               placeholder="0.0"
               value={tokensToAmount}
               onChange={(e) => {
-                const value = e.target.value;
+                const value = Number(e.target.value);
 
                 // if (value === '') {
                 //   setTokensToAmount();
@@ -787,26 +709,29 @@ export const BuyWindow = () => {
       ) : successful ? (
         <Successful />
       ) : (
-        account.status === 'connected' && (
-          <div
-            className={style.pay_button}
-            onClick={() => buyCoins()}
-            style={
-              error || account.status === 'disconnected' || buyLimit < 1
-                ? {
-                    opacity: '0.3',
-                    pointerEvents: 'none',
-                    cursor: 'not-allowed',
-                  }
-                : { opacity: '1' }
-            }>
-            {buyLimit < 50 ? 'Minimum purchase is $50' : 'Buy FLFI'}
-          </div>
+
+        !isDisconnected && (
+          <BuyButton
+            error={error}
+            tokensToAmount={tokensToAmount}
+            network={network}
+            tokensFromAmount={tokensFromAmount}
+            setError={setError}
+            setLoading={setLoading}
+            token={token}
+            updateTokenHoldings={updateTokenHoldings}
+            setProgress={setProgress}
+            setSuccessful={setSuccessful}
+            Amount_FOR_STAGE={Amount_FOR_STAGE}
+          />
+
+
         )
       )}
 
       <div className={style.ConnectButton}>
         {mounted
+
           ? account.status === 'disconnected' && (
               <ConnectButton
                 style={{ marginBottom: '20px', marginTop: '20px' }}
@@ -815,6 +740,7 @@ export const BuyWindow = () => {
                 label="Connect Wallet"
               />
             )
+
           : null}
       </div>
     </div>
