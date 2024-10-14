@@ -13,7 +13,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { JsonRpcProvider } from '@ethersproject/providers'; // Импорт провайдера
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Contract, ethers, formatEther, formatUnits, parseEther } from 'ethers';
-import { useAccount, useBalance, useSwitchChain } from 'wagmi';
+import { useAccount, useBalance, useSwitchChain, useSimulateContract } from 'wagmi';
 import { config } from '../../config';
 import { ERC_20_ABI } from './erc-20-abi';
 import { Error } from './Error';
@@ -22,6 +22,9 @@ import { Loader } from './Loader/Loader';
 import { PRICE_FEED_ABI } from './price-feed-abi';
 import { Successful } from './Successful/Successful';
 import { useIsMounted } from './useIsMounted';
+// import { console } from 'inspector';
+import { BuyButton } from './BuyButton';
+import { NETWORK_BSC, NETWORK_ETHEREUM, TOKEN_BNB, TOKEN_ETHEREUM, TOKEN_USDT } from './constants';
 
 const {
   ETH_CONTRACT_SEPOLIA_ADDRESS,
@@ -34,12 +37,7 @@ const {
 } = config;
 const Amount_FOR_STAGE = 300000;
 
-const NETWORK_ETHEREUM = 'Ethereum';
-const NETWORK_BSC = 'BNB Chain';
 
-const TOKEN_ETHEREUM = 'ETH';
-const TOKEN_USDT = 'USDT';
-const TOKEN_BNB = 'BNB';
 
 const stages = [
   {
@@ -81,8 +79,6 @@ export const BuyWindow = () => {
   const [tokenBNB, setTokenBNB] = useState(TOKEN_BNB);
 
   const { switchChain } = useSwitchChain();
-
-  const buyLimit = tokensToAmount * 4;
 
   const { isDisconnected, address } = useAccount();
 
@@ -208,21 +204,6 @@ export const BuyWindow = () => {
     setBalanceValue(balance);
     setBalanceValueFiat(balanceFiat);
   };
-  const buyCoins = async () => {
-    if (tokensFromAmount > 0) {
-      if (network === NETWORK_ETHEREUM && token === TOKEN_ETHEREUM) {
-        await buyTokensNative(NETWORK_ETHEREUM);
-      } else if (network === NETWORK_BSC && token === TOKEN_BNB) {
-        await buyTokensNative(NETWORK_BSC);
-      } else if (network === NETWORK_ETHEREUM) {
-        await buyTokensUsdt(NETWORK_ETHEREUM);
-      } else {
-        await buyTokensUsdt(NETWORK_BSC);
-      }
-    } else {
-      alert('Please enter value more than 0');
-    }
-  };
 
   const getContract = (network, provider) => {
     const contractAddress =
@@ -318,101 +299,16 @@ export const BuyWindow = () => {
     );
   };
 
-  const buyTokensNative = async (network) => {
-    const amount = ethers.parseEther(Number(tokensFromAmount).toFixed(18));
 
-    const provider = new ethers.BrowserProvider(window.ethereum);
-    const signer = await provider.getSigner();
 
-    const contract = getContract(network, signer);
-
-    const paused = await contract.paused();
-    if (paused) {
-      console.log('Token presale is PAUSED!!!');
-      // alert("token presale is PAUSED!!!")
-      return;
-    }
-
-    const balance = await provider.getBalance(signer.address);
-    if (balance <= amount) {
-      setError(true);
-
-      return;
-    }
-
-    const tx = await contract.buyTokensNative({ value: amount });
-
-    setLoading(true);
-
-    await tx.wait();
-    await updateTokenHoldings();
-    setLoading(false);
-    setSuccessful(true);
-
-    await fetch('https://back.flary.finance/api/user/boughtTokens', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        amount: Number(tokensToAmount),
-        address: signer.address,
-        chain: network === NETWORK_ETHEREUM ? 'eth' : 'bsc',
-      }),
-    });
-  };
-
-  const buyTokensUsdt = async (network) => {
-    const decimals = network === NETWORK_ETHEREUM ? 6 : 18;
-    const amount = ethers.parseUnits(Number(tokensFromAmount).toFixed(decimals), decimals);
-
-    const provider = new ethers.BrowserProvider(window.ethereum);
-    const signer = await provider.getSigner();
-
-    const contract = getContract(network, signer);
-
-    const usdtAddress = network === NETWORK_ETHEREUM ? ETH_USDT_ADDRESS : BSC_USDT_ADDRESS;
-
-    const usdt = new ethers.Contract(usdtAddress, ERC_20_ABI, signer);
-
-    const paused = await contract.paused();
-    if (paused) {
-      console.log('Token presale is PAUSED!!!');
-      return;
-    }
-
-    const balance = await usdt.balanceOf(signer.address);
-    if (balance < amount) {
-      setError(true);
-
-      return;
-    }
-
-    const allowance = await usdt.allowance(signer.address, await contract.getAddress());
-
-    setLoading(true);
-
-    if (allowance < amount) {
-      const approveTx = await usdt.approve(await contract.getAddress(), amount);
-      await approveTx.wait();
-    }
-
-    const tx = await contract.buyTokensUSDT(amount);
-    await tx.wait();
-    await updateTokenHoldings();
-    setLoading(false);
-    setSuccessful(true);
-    // TODO: enable front
-    const progressInPercent = (parseFloat(tokensFromAmount) / Amount_FOR_STAGE) * 100;
-
-    setProgress((prevProgress) => prevProgress + progressInPercent);
-  };
   const [collectedX, setCollectedX] = useState(() => {
     const savedNumber = localStorage.getItem('collectedX');
     return savedNumber !== null
       ? parseInt(savedNumber, 10)
       : Math.floor(Math.random() * 45001) + 210000;
   });
+
+
   const [sellTokensX, setSellTokensX] = useState(0);
   useEffect(() => {
     localStorage.setItem('collectedX', collectedX);
@@ -723,20 +619,19 @@ export const BuyWindow = () => {
         <Successful />
       ) : (
         !isDisconnected && (
-          <div
-            className={style.pay_button}
-            onClick={() => buyCoins()}
-            style={
-              error || isDisconnected || buyLimit < 50
-                ? {
-                  opacity: '0.3',
-                  pointerEvents: 'none',
-                  cursor: 'not-allowed',
-                }
-                : { opacity: '1' }
-            }>
-            {buyLimit < 50 ? 'Minimum purchase is $50' : 'Buy FLFI'}
-          </div>
+          <BuyButton
+            error={error}
+            tokensToAmount={tokensToAmount}
+            network={network}
+            tokensFromAmount={tokensFromAmount}
+            setError={setError}
+            setLoading={setLoading}
+            token={token}
+            updateTokenHoldings={updateTokenHoldings}
+            setProgress={setProgress}
+            setSuccessful={setSuccessful}
+            Amount_FOR_STAGE={Amount_FOR_STAGE}
+          />
         )
       )}
 
