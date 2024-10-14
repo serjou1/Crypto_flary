@@ -13,7 +13,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { JsonRpcProvider } from '@ethersproject/providers'; // Импорт провайдера
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Contract, ethers, formatEther, formatUnits, parseEther } from 'ethers';
-import { useAccount, useBalance } from 'wagmi';
+import { useAccount, useBalance, useSwitchChain } from 'wagmi';
 import { config } from '../../config';
 import { ERC_20_ABI } from './erc-20-abi';
 import { Error } from './Error';
@@ -80,6 +80,8 @@ export const BuyWindow = () => {
   const [tokenETH, setTokenETH] = useState(TOKEN_ETHEREUM);
   const [tokenBNB, setTokenBNB] = useState(TOKEN_BNB);
 
+  const { switchChain } = useSwitchChain();
+
   const buyLimit = tokensToAmount * 4;
 
   const { isDisconnected, address } = useAccount();
@@ -135,34 +137,9 @@ export const BuyWindow = () => {
     updateTokenHoldings();
 
     if (network === NETWORK_ETHEREUM) {
-      window.ethereum?.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x1' }],
-      });
+      switchChain({ chainId: 1 });
     } else {
-      window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x38' }],
-      }).catch(() => {
-        window.ethereum.request({
-          jsonrpc: '2.0',
-          method: 'wallet_addEthereumChain',
-          params: [
-            {
-              chainId: '0x38',
-              chainName: 'Binance Smart Chain Mainnet',
-              rpcUrls: ['https://bsc-dataseed.binance.org/'],
-              nativeCurrency: {
-                name: 'BNB',
-                symbol: 'BNB',
-                decimals: 18
-              },
-              blockExplorerUrls: ['https://bscscan.com']
-            }
-          ],
-          id: 0
-        })
-      });
+      switchChain({ chainId: 56 });
     }
     console.log(`Balance updated: ${balanceValue}`);
   }, [collected, successful, network]);
@@ -195,40 +172,13 @@ export const BuyWindow = () => {
     if (arg === NETWORK_ETHEREUM) {
       setTokenETH(TOKEN_ETHEREUM);
       setTokenImgETH(ETH);
-      await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x1' }],
-      });
+
+      switchChain({ chainId: 1 });
     } else {
       setTokenBNB(TOKEN_BNB);
       setTokenImgBNB(BNB);
-      console.log('switching to BSC');
 
-      try {
-        await window.ethereum.request({
-          method: 'wallet_switchEthereumChain',
-          params: [{ chainId: '0x38' }],
-        });
-      } catch {
-        window.ethereum.request({
-          jsonrpc: '2.0',
-          method: 'wallet_addEthereumChain',
-          params: [
-            {
-              chainId: '0x38',
-              chainName: 'Binance Smart Chain Mainnet',
-              rpcUrls: ['https://bsc-dataseed.binance.org/'],
-              nativeCurrency: {
-                name: 'BNB',
-                symbol: 'BNB',
-                decimals: 18
-              },
-              blockExplorerUrls: ['https://bscscan.com']
-            }
-          ],
-          id: 0
-        })
-      }
+      switchChain({ chainId: 56 });
     }
 
     setBalanceValueFiat((balanceValue * getBaseCoinPrice()).toFixed(1));
