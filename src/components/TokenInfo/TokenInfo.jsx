@@ -49,14 +49,12 @@ export const TokenInfo = () => {
           </div>
           <div className={style.blok_content}>
             <p>INITIAL MARKET CAP</p>
-            <p> $1.236.160</p>
-          </div>
-          <div className={style.blok_content}>
-            <p>CONTRACT ADDRESS</p>
-            <p>--</p>
+            <p> $3.065.677</p>
           </div>
           <a
             href="https://docs.google.com/spreadsheets/d/1Z2hgw8ZQ7TDD4f8IEDFU7KoZgZ-S3PUEycSTUyJGzok/edit?gid=427940397#gid=427940397"
+            target='_blank'
+            rel='noreferrer'
             className={style.block_button}>
             <p>Detailed Info</p>
           </a>

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import style from './BuyWindow.module.scss';
 import { Progress } from './Progress/Progress';
 
+
 import Arrow from '../../assets/arrow_down.svg';
 import BNB from '../../assets/bnb logo.webp';
 import ETH from '../../assets/ETH.svg';
@@ -13,11 +14,12 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { JsonRpcProvider } from '@ethersproject/providers'; // Импорт провайдера
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Contract, ethers, formatEther, formatUnits, parseEther } from 'ethers';
-import { useAccount, useBalance, useSwitchChain } from 'wagmi';
+import { useAccount, useBalance, useSwitchChain, useSimulateContract } from 'wagmi';
 import { config } from '../../config';
 import { Error } from './Error';
 import { FLARY_PRESALE_ABI } from './flary-contract-abi';
 import { Loader } from './Loader/Loader';
+import { PopupNetwork } from './PopapNetwork/PopupNetwork';
 import { PRICE_FEED_ABI } from './price-feed-abi';
 import { Successful } from './Successful/Successful';
 import { useIsMounted } from './useIsMounted';
@@ -25,7 +27,6 @@ import { BuyButton } from './BuyButton';
 import { NETWORK_BSC, NETWORK_ETHEREUM, TOKEN_BNB, TOKEN_ETHEREUM, TOKEN_USDT } from './constants';
 
 const {
-  ETH_CONTRACT_SEPOLIA_ADDRESS,
   ETH_CONTRACT_ADDRESS,
   BSC_CONTRACT_ADDRESS,
   ETH_USDT_ADDRESS,
@@ -52,13 +53,15 @@ const stages = [
 ];
 
 export const BuyWindow = () => {
+  const [stage, setStage] = useState('');
+  const [capPerStage, setCapPerStage] = useState(0);
   const [collected, setCollected] = useState(0);
   const [sellTokens, setSellTokens] = useState(0);
   const [progress, setProgress] = useState(0);
   const [dropNetwork, setDropNetwork] = useState(false);
   const [dropToken, setDropToken] = useState(false);
   const [network, setNetwork] = useState(NETWORK_ETHEREUM);
-  const [token, setToken] = useState(TOKEN_ETHEREUM);
+  const [tokenSold, setTokenSold] = useState(0);
   const [networkImg, setNetworkImg] = useState(ETH);
   const [tokenImgETH, setTokenImgETH] = useState(ETH);
   const [tokenImgBNB, setTokenImgBNB] = useState(BNB);
@@ -69,15 +72,19 @@ export const BuyWindow = () => {
   const [tokenHoldings, setTokenHoldings] = useState('0');
   const [networkPrices, setNetworkPrices] = useState({});
   const [tokenPrice, setTokenPrice] = useState(0);
+  const [tokenPriceActually, setTokenPriceActually] = useState(0);
   const [error, setError] = useState(false);
   const [balanceValue, setBalanceValue] = useState(0);
   const [balanceValueFiat, setBalanceValueFiat] = useState(0);
   const [tokenETH, setTokenETH] = useState(TOKEN_ETHEREUM);
   const [tokenBNB, setTokenBNB] = useState(TOKEN_BNB);
+  const [chainID, setChainID] = useState(null);
+  const [openPopupNetwork, setOpenPopupNetwork] = useState(false);
 
+
+
+  const account = useAccount();
   const { switchChain } = useSwitchChain();
-
-  const { isDisconnected, address } = useAccount();
 
   const mounted = useIsMounted();
   const { data: bnbUsdt } = useBalance({
@@ -91,35 +98,119 @@ export const BuyWindow = () => {
   });
   const ethUsdtValue = Number(ethUsdt?.formatted);//.toFixed(3);
   const { data: ethEth } = useBalance({
-    address: address,
+    address: account.address,
   });
-  const ethEthValue = Number(ethEth?.formatted);//.toFixed(3);
-  const { data: bnbBNB } = useBalance({
-    address: address,
-  });
-  const bnbBNBValue = Number(bnbBNB?.formatted);//.toFixed(3);
 
-  const calculateBalanceInFiat = (coinValue) => {
-    const price = getBaseCoinPrice();
-    if (!price) return null;
-    return (coinValue * price).toFixed(1);
-  };
+
+
+  const ethEthValue = Math.floor(ethEth?.formatted * 1000) / 1000;
+
+  const { data: bnbBNB } = useBalance({
+    address: account.address,
+  });
+
+
+  const bnbBNBValue = Math.floor(bnbBNB?.formatted * 1000) / 1000;
+
 
   useEffect(() => {
+    const calculateBalanceInFiat = (coinValue) => {
+      const price = getBaseCoinPrice();
+      if (!price) return null;
+      return (coinValue * price).toFixed(1);
+    };
     if (ethEth?.formatted) {
-      const ethValue = Number(ethEth.formatted);
+
+
+      const ethValue = Math.floor(ethEth.formatted * 1000) / 1000;
+
       if (!isNaN(ethValue)) {
         const ethValueFixed = Number(ethEth.formatted).toFixed(3);
         setBalanceValue(ethValueFixed);
         setBalanceValueFiat(calculateBalanceInFiat(ethValueFixed));
       }
     } else if (bnbBNB?.formatted) {
-      const bnbValue = Number(bnbBNB.formatted).toFixed(3);
+      const bnbValue = Math.floor(bnbBNB.formatted * 1000) / 1000;
       setBalanceValue(bnbValue);
+      setBalanceValueFiat(calculateBalanceInFiat(bnbValue));
     }
   }, [ethEth, bnbBNB, network]);
 
   useEffect(() => {
+    const checkNetwork = async () => {
+      if (account.status === 'connected') {
+        const chainId = account.chainId;
+        console.log(chainId);
+        if (chainId === 1) {
+          handlerChangeNetwork(NETWORK_ETHEREUM, ETH, false);
+          setOpenPopupNetwork(false);
+        } else if (chainId === 56) {
+          handlerChangeNetwork(NETWORK_BSC, BNB, false);
+          setOpenPopupNetwork(false);
+        } else {
+          setOpenPopupNetwork(true);
+        }
+      }
+    };
+
+    checkNetwork();
+  }, [account.chainId, account.status]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://back.flary.finance/api/tokens/totalTokens');
+        if (!response.ok) throw new Error('Response was not successful');
+        const result = await response.json();
+        setTokenSold(result);
+      } catch (e) {
+        // setError(true);
+        console.log('Error fetching token');
+      } finally {
+        setLoading(false);
+      }
+    };
+    const getStage = async () => {
+      if (tokenSold < 6700000) {
+        setStage('Stage 1');
+        setTokenPriceActually(0.07);
+        setCapPerStage(469000);
+        setCollected(tokenSold * tokenPriceActually);
+      } else if (tokenSold >= 6700000 && tokenSold < 11950000) {
+        setStage('Stage 2');
+        setTokenPriceActually(0.08);
+        setCapPerStage(420000);
+        setCollected((tokenSold - 6700000) * tokenPriceActually);
+      } else if (tokenSold >= 11950000 && tokenSold < 16137500) {
+        setStage('Stage 3');
+        setTokenPriceActually(0.09);
+        setCapPerStage(376875);
+        setCollected((tokenSold - 11950000) * tokenPriceActually);
+      } else if (tokenSold >= 16137500 && tokenSold < 20087500) {
+        setStage('Stage 4');
+        setTokenPriceActually(0.1);
+        setCapPerStage(395000);
+        setCollected((tokenSold - 16137500) * tokenPriceActually);
+      } else if (tokenSold >= 20087500 && tokenSold < 23750000) {
+        setStage('Stage 5');
+        setTokenPriceActually(0.12);
+        setCapPerStage(439500);
+        setCollected((tokenSold - 20087500) * tokenPriceActually);
+      } else {
+        setStage('Stage 6');
+        setTokenPriceActually(0.14);
+        setCapPerStage(875000);
+        setCollected((tokenSold - 23750000) * tokenPriceActually);
+      }
+    };
+
+    fetchData();
+    getStage();
+    setProgress((collected / capPerStage) * 100);
+  }, [capPerStage, collected, tokenPriceActually, tokenSold]);
+
+  useEffect(() => {
+    console.log(balanceValue, balanceValueFiat);
     if (successful) {
       const timer = setTimeout(() => {
         setSuccessful(false);
@@ -128,66 +219,94 @@ export const BuyWindow = () => {
       // Очистка таймера при размонтировании компонента
       return () => clearTimeout(timer);
     }
-    updateTokenHoldings();
 
-    if (network === NETWORK_ETHEREUM) {
-      switchChain({ chainId: 1 });
-    } else {
-      switchChain({ chainId: 56 });
+
+
+
+    if (account.status === 'connected') {
+      updateTokenHoldings();
+
     }
-    console.log(`Balance updated: ${balanceValue}`);
-  }, [collected, successful, network]);
+  }, [account.status, successful]);
 
   const maxValue = async () => {
     if (network === NETWORK_ETHEREUM && tokenETH === TOKEN_ETHEREUM) {
       setTokensFromAmount(
         balanceValue > 0 ? await calculateBalanceAfterGas(providerEthereum, balanceValue) : 0,
       );
+      const tokensToAmountNew =
+        ((await calculateBalanceAfterGas(providerEthereum, balanceValue)) *
+          (isBaseCoinSelected() ? getBaseCoinPrice() : 1)) /
+        tokenPrice;
+      setTokensToAmount(tokensToAmountNew > 0 ? tokensToAmountNew : 0);
     } else if (network === NETWORK_BSC && tokenBNB === TOKEN_BNB) {
       setTokensFromAmount(
         balanceValue > 0 ? await calculateBalanceAfterGas(providerBSC, balanceValue) : 0,
       );
+      const tokensToAmountNew =
+        ((await calculateBalanceAfterGas(providerBSC, balanceValue)) *
+          (isBaseCoinSelected() ? getBaseCoinPrice() : 1)) /
+        tokenPrice;
+      setTokensToAmount(tokensToAmountNew > 0 ? tokensToAmountNew : 0);
     } else {
       setTokensFromAmount(balanceValue);
+      const tokensToAmountNew =
+        (balanceValue * (isBaseCoinSelected() ? getBaseCoinPrice() : 1)) / tokenPrice;
+      setTokensToAmount(tokensToAmountNew);
     }
-
-    const tokensToAmountNew =
-      (balanceValue * (isBaseCoinSelected() ? getBaseCoinPrice() : 1)) / tokenPrice;
-    setTokensToAmount(tokensToAmountNew);
   };
 
   const handlerClickNetwork = () => {
     setDropNetwork(!dropNetwork);
+    setDropToken(false);
   };
   const handlerClickToken = () => {
     setDropToken(!dropToken);
+    setDropNetwork(false);
   };
-  const handlerChangeNetwork = async (arg, argImg) => {
+  const handlerChangeNetwork = async (arg, argImg, controlDrop = true) => {
     if (arg === NETWORK_ETHEREUM) {
 
       setToken(TOKEN_ETHEREUM);
       setTokenETH(TOKEN_ETHEREUM);
       setTokenImgETH(ETH);
 
-      switchChain({ chainId: 1 });
+
+      if (window.ethereum) {
+        await window.ethereum?.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: 1 }],
+        });
+      } else {
+        switchChain({ chainId: 1 });
+      }
     } else {
 
       setToken(TOKEN_BNB);
       setTokenBNB(TOKEN_BNB);
       setTokenImgBNB(BNB);
+      if (window.ethereum) {
+        await window.ethereum?.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: 56 }],
+        });
+      } else {
+        switchChain({ chainId: 56 });
+      }
 
-      switchChain({ chainId: 56 });
     }
 
-    setBalanceValueFiat((balanceValue * getBaseCoinPrice()).toFixed(1));
+    if (controlDrop) {
+      setDropNetwork(!dropNetwork);
+    }
 
-    setDropNetwork(!dropNetwork);
     setNetwork(arg);
     setNetworkImg(argImg);
     setTokensFromAmount('');
     setTokensToAmount('');
   };
   const handlerChangeTokenETH = (arg, argImg, balance, balanceFiat) => {
+    console.log(balanceValue, balanceValueFiat, balance);
     setDropNetwork(!dropToken);
     setTokenETH(arg);
     setToken(arg);
@@ -196,6 +315,7 @@ export const BuyWindow = () => {
     setTokensToAmount('');
     setBalanceValue(balance);
     setBalanceValueFiat(balanceFiat);
+    console.log(balanceValue, balanceValueFiat, balance, balanceFiat);
   };
   const handlerChangeTokenBNB = (arg, argImg, balance, balanceFiat) => {
     setDropNetwork(!dropToken);
@@ -207,6 +327,7 @@ export const BuyWindow = () => {
     setBalanceValue(balance);
     setBalanceValueFiat(balanceFiat);
   };
+
 
   const getContract = (network, provider) => {
     const contractAddress =
@@ -249,17 +370,6 @@ export const BuyWindow = () => {
     return Number(ethers.formatEther(balance));
   };
 
-  const getTokensSold = async (network) => {
-    const providerRpc = network === NETWORK_ETHEREUM ? RPC_ETH : RPC_BSC;
-
-    const provider = new ethers.JsonRpcProvider(providerRpc);
-    const contract = getContract(network, provider);
-
-    const tokensSold = await contract.tokenSold();
-
-    return Number(ethers.formatEther(tokensSold));
-  };
-
   const updateTokenHoldings = async () => {
     await initializeNativeCurrencyPrice(NETWORK_ETHEREUM);
     await initializeNativeCurrencyPrice(NETWORK_BSC);
@@ -269,32 +379,14 @@ export const BuyWindow = () => {
     const tp = Number(formatUnits(await contract.tokensPriceInUsdt(), 6));
     setTokenPrice(tp);
 
-    const provider = new ethers.BrowserProvider(window.ethereum);
+    const provider = window.ethereum
+      ? new ethers.BrowserProvider(window.ethereum)
+      : ethers.getDefaultProvider();
     const signer = await provider.getSigner();
 
     const boughtTokensEth = await getBoughtTokens(NETWORK_ETHEREUM, signer.address);
     const boughtTokensBsc = await getBoughtTokens(NETWORK_BSC, signer.address);
-
-    const tokensSoldEth = await getTokensSold(NETWORK_ETHEREUM);
-    const tokensSoldBsc = await getTokensSold(NETWORK_BSC);
-
-    const totalAmount = tokensSoldBsc + tokensSoldEth;
-    setSellTokens(Number(totalAmount.toFixed(2)));
-
-    let totalUsd = 0;
-    let tokensLeft = totalAmount;
-    for (const stage of stages) {
-      if (tokensLeft < stage.amount) {
-        totalUsd += tokensLeft * stage.price;
-        break;
-      }
-
-      totalUsd += stage.amount * stage.price;
-      tokensLeft -= stage.amount;
-    }
-
-    setCollected(Number(totalUsd.toFixed(2)));
-
+    console.log('Wyzow updateTokenHoldings');
     setTokenHoldings(
       `${(boughtTokensEth + boughtTokensBsc).toFixed(2)}`,
       // (${boughtTokensEth.toFixed(
@@ -305,24 +397,15 @@ export const BuyWindow = () => {
 
 
 
-  const [collectedX, setCollectedX] = useState(() => {
-    const savedNumber = localStorage.getItem('collectedX');
-    return savedNumber !== null
-      ? parseInt(savedNumber, 10)
-      : Math.floor(Math.random() * 45001) + 210000;
-  });
+  const isBaseCoinSelected = () => {
+    if (network === NETWORK_ETHEREUM) {
+      return tokenETH !== TOKEN_USDT;
+    } else if (network === NETWORK_BSC) {
+      return tokenBNB !== TOKEN_USDT;
+    }
+    return false;
+  };
 
-
-  const [sellTokensX, setSellTokensX] = useState(0);
-  useEffect(() => {
-    localStorage.setItem('collectedX', collectedX);
-    const progressInPercent = (collectedX / Amount_FOR_STAGE) * 100;
-
-    setProgress(progressInPercent);
-    setSellTokensX((collectedX / 0.1).toFixed(0));
-  }, [collectedX]);
-
-  const isBaseCoinSelected = () => token !== TOKEN_USDT;
   const getBaseCoinPrice = () => {
     // console.log('network', network);
     // console.log(networkPrices.Ethereum);
@@ -348,35 +431,50 @@ export const BuyWindow = () => {
   };
 
   // Функция для расчета баланса с учетом комиссии
-  const calculateBalanceAfterGas = async (provider, balance, gasLimit = 21000) => {
+  const calculateBalanceAfterGas = async (provider, balance, gasLimit = 210000) => {
     const gasPriceInWei = await getCurrentGasPrice(provider);
     const totalGasCost = BigInt(gasPriceInWei.toNumber() * gasLimit);
     const balanceInWei = BigInt(parseEther(balance.toString()));
     const balanceAfterGas = balanceInWei - totalGasCost;
 
-    return formatEther(balanceAfterGas.toString()); // Возвращаем результат в ETH или BNB
+    return (Number(formatEther(balanceAfterGas.toString())) - 0.001).toFixed(4); // Возвращаем результат в ETH или BNB
   };
-
-  // useEffect(() => {
-  //   const initialBalance = 1.0;
-  //   calculateBalanceAfterGas(providerBSC, initialBalance);
-  // }, []);
 
   return (
     <div className={style.BuyWindow}>
-      {/* <div className={style.BuyWindowBlur}></div> */}
+      {openPopupNetwork && (
+        <PopupNetwork
+          imgEth={ETH}
+          imgBNB={BNB}
+          handlerChangeNetwork={handlerChangeNetwork}
+          NETWORK_ETHEREUM={NETWORK_ETHEREUM}
+          NETWORK_BSC={NETWORK_BSC}
+        />
+      )}
       <div className={style.bg}>
-        <h1>Stage 1</h1>
+        <h1>{stage}</h1>
       </div>
-      <p>1 FLFI = $0,100 </p>
-      <p>Price next stage = $0,110</p>
+      <p>1 $FLFI = ${tokenPriceActually} </p>
+      <p>
+        Price next stage = $
+        {tokenSold < 20087500
+          ? (tokenPriceActually + 0.01).toFixed(2)
+          : (tokenPriceActually + 0.02).toFixed(2)}
+      </p>
 
       <p style={{ marginTop: '15px', fontSize: '20px' }}>
         <span style={{ fontSize: '20px' }}>Your holdings:</span> {tokenHoldings}
       </p>
+      <p></p>
+
       <Progress progress={progress.toFixed(2)} />
       <p>
-        Collected USDT : ${collectedX.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} / $300,000
+        Rised USD : $
+        {collected
+          .toFixed()
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+        / ${capPerStage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
       </p>
 
       <div className={style.button_group}>
@@ -385,7 +483,15 @@ export const BuyWindow = () => {
           onClick={handlerClickNetwork}
           style={
             dropNetwork
-              ? { borderBottomLeftRadius: '0', borderBottomRightRadius: '0', padding: '10px 15px', width: '100%' }
+
+
+              ? {
+                borderBottomLeftRadius: '0',
+                borderBottomRightRadius: '0',
+                padding: '10px 15px',
+                width: '100%',
+              }
+
               : { padding: '10px 15px', width: '100%' }
           }>
           <div className={style.button_tittle}>
@@ -417,7 +523,9 @@ export const BuyWindow = () => {
             <p className={style.labelLine}>You pay: </p>
             <div
               className={style.button}
-              onClick={isDisconnected ? undefined : handlerClickToken}
+
+              onClick={account.status === 'disconnected' ? null : handlerClickToken}
+
               style={
                 dropToken ? { borderBottomLeftRadius: '0', borderBottomRightRadius: '0' } : {}
               }>
@@ -426,16 +534,17 @@ export const BuyWindow = () => {
                   <img src={tokenImgBNB} alt="" />
                   <p>{tokenBNB}</p>
 
-                  {isDisconnected ? '' : <img src={Arrow} alt="" />}
+                  {account.status === 'disconnected' ? '' : <img src={Arrow} alt="" />}
                 </div>
               ) : (
                 <div className={style.button_tittle}>
                   {' '}
                   <img src={tokenImgETH} alt="" />
-                  <p>{tokenETH}</p> {isDisconnected ? '' : <img src={Arrow} alt="" />}
+                  <p>{tokenETH}</p>{' '}
+                  {account.status === 'disconnected' ? '' : <img src={Arrow} alt="" />}
                 </div>
               )}
-              {isDisconnected ? (
+              {account.status === 'disconnected' ? (
                 ''
               ) : (
                 <div>
@@ -552,18 +661,13 @@ export const BuyWindow = () => {
                 onChange={(e) => {
                   const value = Number(e.target.value);
 
-                  // if (value === '') {
-                  //   setTokensFromAmount();
-                  // }
-                  console.log('value intial:', e.target.value);
-                  console.log('value:', value);
                   setTokensFromAmount(value);
-                  // console.log('actual amount:', tokensFromAmount);
+
                   const tokensToAmountNew =
                     (value * (isBaseCoinSelected() ? getBaseCoinPrice() : 1)) / tokenPrice;
-                  // console.log('isBaseCoinSelected', isBaseCoinSelected());
-                  // console.log('getBaseCoinPrice', getBaseCoinPrice());
-                  // console.log('new tokens to amount:', tokensToAmountNew);
+                  console.log('isBaseCoinSelected', isBaseCoinSelected());
+                  console.log('getBaseCoinPrice', getBaseCoinPrice());
+                  console.log('new tokens to amount:', tokensToAmountNew);
 
                   setTokensToAmount(tokensToAmountNew);
                   // console.log(getBaseCoinPrice() * 2);
@@ -571,11 +675,13 @@ export const BuyWindow = () => {
                 }}
               />
               {mounted
-                ? !isDisconnected && (
+
+                ? account.status === 'connected' && (
                   <p className={style.max} onClick={maxValue}>
                     MAX
                   </p>
                 )
+
                 : null}
             </div>
           </div>
@@ -622,6 +728,7 @@ export const BuyWindow = () => {
       ) : successful ? (
         <Successful />
       ) : (
+
         !isDisconnected && (
           <BuyButton
             error={error}
@@ -636,20 +743,23 @@ export const BuyWindow = () => {
             setSuccessful={setSuccessful}
             Amount_FOR_STAGE={Amount_FOR_STAGE}
           />
+
+
         )
       )}
 
       <div className={style.ConnectButton}>
         {mounted
-          ? isDisconnected && (
+
+          ? account.status === 'disconnected' && (
             <ConnectButton
               style={{ marginBottom: '20px', marginTop: '20px' }}
               accountStatus="address"
-              chainStatus="none"
               showBalance={false}
               label="Connect Wallet"
             />
           )
+
           : null}
       </div>
     </div>

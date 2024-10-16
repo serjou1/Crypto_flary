@@ -5,8 +5,10 @@ import style from './Navbar.module.scss';
 
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
+import { useAccount } from 'wagmi';
 
 export const Navbar = ({ navLink }) => {
+  const account = useAccount();
   const params = useLocation().pathname.slice(1);
 
   const [mobileNav, SetMobileNav] = useState(false);
@@ -66,6 +68,15 @@ export const Navbar = ({ navLink }) => {
         </ul>
         {/* <Select /> */}
         <div className={style.mobile_button} onClick={handlerMobileNav}>
+          <div onClick={(e)=>e.stopPropagation()}>
+            <ConnectButton
+              accountStatus="address"
+              chainStatus="none"
+              showBalance={false}
+              label="Connect Wallet"
+            />
+          </div>
+
           {mobileNav ? (
             <FaTimes size={20} style={{ color: '#fff', cursor: 'pointer' }} />
           ) : (
@@ -75,9 +86,7 @@ export const Navbar = ({ navLink }) => {
 
         <div className={mobileNav ? style.mobile_open : style.mobile_close}>
           <ul className={style.mobile_list}>
-            <li>
-              <ConnectButton accountStatus="address" chainStatus="none" label="Connect Wallet" />
-            </li>
+            
             <li>
               <Link
                 to="/"

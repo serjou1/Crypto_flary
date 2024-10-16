@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import style from './AboutAs.module.scss';
 
 import AboutAsImg from '../../assets/AboutAs.png';
-import BgBlik from '../../assets/bg_blik.png';
 
 const animation = {
   hidden: {
@@ -36,7 +35,10 @@ export const AboutAs = () => {
           className={style.content}>
           <div className={style.contentTitle}>One platform - multiple solution </div>
           <div className={style.contentText}>
-          Flary bridges the gap between the familiar world of Web-2 and the exciting potential of Web3. Our platform is designed to make the leap from TradFI to DeFi seamless and advantageous for all users. With Flary, you can unlock the power of your assets without the usual headaches, ensuring you're always ready to seize the next big opportunity.
+            Flary bridges the gap between the familiar world of Web-2 and the exciting potential of
+            Web3. Our platform is designed to make the leap from TradFI to DeFi seamless and
+            advantageous for all users. With Flary, you can unlock the power of your assets without
+            the usual headaches, ensuring you're always ready to seize the next big opportunity.
           </div>
           {/* <div className={style.containerBlikDark}>
             

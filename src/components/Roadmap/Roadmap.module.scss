@@ -129,6 +129,10 @@
   }
 }
 @media (max-width: 710px) {
+  .timeLine {
+    padding: 10px 15px 10px 20px;
+    margin-left: 30px;
+  }
   .Roadmap {
     margin-bottom: 100px;
     overflow: hidden;
@@ -144,7 +148,7 @@
   }
   .tileLineBlok {
     //margin-right: 0;
-    min-width: 350px;
+    min-width: 340px;
     max-width: 350px;
   }
   .tileLineBlok:last-child {
@@ -154,5 +158,14 @@
 @media (max-width: 390px) {
   .info {
     font-size: 16px;
+  }
+}
+@media (max-width: 380px) {
+  .tileLineBlok {
+    //margin-right: 0;
+    min-width: 330px;
+  }
+  .timeLine {
+    margin-left: 15px;
   }
 }

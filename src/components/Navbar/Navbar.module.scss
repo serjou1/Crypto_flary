@@ -83,7 +83,9 @@
 }
 @media (max-width: 950px) {
   .mobile_button {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 20px;
   }
   .list {
     font-size: 16px;
