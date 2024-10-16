@@ -116,6 +116,7 @@ export const BuyWindow = () => {
       if (account.status === 'connected') {
         const chainId = account.chainId;
         console.log(chainId);
+        
         if (chainId === 1) {
           handlerChangeNetwork(NETWORK_ETHEREUM, ETH, false);
           setOpenPopupNetwork(false);
@@ -245,7 +246,7 @@ export const BuyWindow = () => {
       if (window.ethereum) {
         await window.ethereum?.request({
           method: 'wallet_switchEthereumChain',
-          params: [{ chainId: 1 }],
+          params: [{ chainId: '0x1' }],
         });
       } else {
         switchChain({ chainId: 1 });
@@ -257,7 +258,7 @@ export const BuyWindow = () => {
       if (window.ethereum) {
         await window.ethereum?.request({
           method: 'wallet_switchEthereumChain',
-          params: [{ chainId: 56 }],
+          params: [{ chainId: '0x38' }],
         });
       } else {
         switchChain({ chainId: 56 });
