@@ -9,7 +9,7 @@ import { bsc, mainnet, sepolia } from 'wagmi/chains';
 // // import {publicProvider} from 'wagmi/pro'
 
 const projectId = '95b12f1450eb1b99e25683fb739ccb3e';
-const config = getDefaultConfig({
+export const config = getDefaultConfig({
   appName: 'RainbowKit demo',
   projectId: projectId,
   chains: [mainnet, bsc, sepolia],
