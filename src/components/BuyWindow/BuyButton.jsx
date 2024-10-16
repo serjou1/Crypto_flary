@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import style from './BuyWindow.module.scss';
-import { useAccount, useBalance, useSimulateContract, useReadContract, useWriteContract } from 'wagmi';
+import { useAccount, useBalance, useReadContract, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import { FLARY_PRESALE_ABI } from './flary-contract-abi';
 import { NETWORK_ETHEREUM, TOKEN_USDT } from './constants';
 import { config } from '../../config';
 import { parseEther, parseUnits } from 'viem';
 import { ERC_20_ABI } from './erc-20-abi';
+import { waitForTransactionReceipt } from '@wagmi/core'
+import { config as rainbowConfig } from '../../providers';
 
 const {
     ETH_CONTRACT_SEPOLIA_ADDRESS,
@@ -46,29 +48,11 @@ export const BuyButton = ({ error, tokensToAmount, network, tokensFromAmount, se
         setAmountUsdt(parseUnits(Number(tokensFromAmount).toFixed(usdtDecimals), usdtDecimals));
     }, [tokensFromAmount, network]);
 
-    const { writeContractAsync: buyTokensNative, isError: isErrorNative, isSuccess: isErrorSuccess } = useWriteContract({
-        address: contractAddress,
-        abi: FLARY_PRESALE_ABI,
-        functionName: 'buyTokensNative',
-        args: [],
-        overrides: {
-            value: amountNative,
-        },
-    });
+    const { writeContractAsync: buyTokensNativeWrite, isError: isErrorNative, isSuccess: isSuccessNative } = useWriteContract();
 
-    const { writeContractAsync: buyTokensUsdtWrite, isError: isErrorUsdt, isSuccess: isSuccessUsdt } = useWriteContract({
-        address: contractAddress,
-        abi: FLARY_PRESALE_ABI,
-        functionName: 'buyTokensUSDT',
-        args: [amountUsdt],
-    });
+    const { writeContractAsync: buyTokensUsdtWrite, isError: isErrorUsdt, isSuccess: isSuccessUsdt } = useWriteContract();
 
-    const { writeContractAsync: approve, isError: isErrorApprove, isSuccess: isSuccessApprove } = useWriteContract({
-        address: usdtAddress,
-        abi: ERC_20_ABI,
-        functionName: 'allowance',
-        args: [address, contractAddress],
-    });
+    const { writeContractAsync: approve, isError: isErrorApprove, isSuccess: isSuccessApprove } = useWriteContract();
 
     const { data: balance } = useBalance({
         address,
@@ -107,8 +91,18 @@ export const BuyButton = ({ error, tokensToAmount, network, tokensFromAmount, se
         }
 
         setLoading(true);
-        await buyTokensNative();
+        const buyHash = await buyTokensNativeWrite({
+            address: contractAddress,
+            abi: FLARY_PRESALE_ABI,
+            functionName: 'buyTokensNative',
+            args: [],
+            value: amountNative,
+        });
+
+        await waitForTransactionReceipt(rainbowConfig, { hash: buyHash });
+
         setLoading(false);
+        setSuccessful(true);
     };
 
     const buyTokensUsdt = async () => {
@@ -125,12 +119,26 @@ export const BuyButton = ({ error, tokensToAmount, network, tokensFromAmount, se
         setLoading(true);
 
         if (allowance < amountUsdt) {
-            await approve();
+            const hash = await approve({
+                address: usdtAddress,
+                abi: ERC_20_ABI,
+                functionName: 'approve',
+                args: [contractAddress, amountUsdt],
+
+            });
+
+            await waitForTransactionReceipt(rainbowConfig, { hash });
         }
 
-        await buyTokensUsdtWrite();
+        const buyHash = await buyTokensUsdtWrite({
+            address: contractAddress,
+            abi: FLARY_PRESALE_ABI,
+            functionName: 'buyTokensUSDT',
+            args: [amountUsdt],
+        });
 
-        await updateTokenHoldings();
+        await waitForTransactionReceipt(rainbowConfig, { hash: buyHash });
+
         setLoading(false);
         setSuccessful(true);
 
@@ -145,6 +153,8 @@ export const BuyButton = ({ error, tokensToAmount, network, tokensFromAmount, se
         } else {
             await buyCoinsNative();
         }
+
+        await updateTokenHoldings();
     };
 
     return (
@@ -164,130 +174,3 @@ export const BuyButton = ({ error, tokensToAmount, network, tokensFromAmount, se
         </div>
     )
 };
-
-
-// const buyCoins = async () => {
-//     if (tokensFromAmount > 0) {
-//         if (network === NETWORK_ETHEREUM && token === TOKEN_ETHEREUM) {
-//             await buyTokensNative(NETWORK_ETHEREUM);
-//         } else if (network === NETWORK_BSC && token === TOKEN_BNB) {
-//             await buyTokensNative(NETWORK_BSC);
-//         } else if (network === NETWORK_ETHEREUM) {
-//             await buyTokensUsdt(NETWORK_ETHEREUM);
-//         } else {
-//             await buyTokensUsdt(NETWORK_BSC);
-//         }
-//     } else {
-//         alert('Please enter value more than 0');
-//     }
-// };
-
-
-
-// const buyTokensNative = async (network) => {
-//     const amount = parseEther(Number(tokensFromAmount).toFixed(18));
-
-//     const contractAddress =
-//         network === NETWORK_ETHEREUM ? ETH_CONTRACT_ADDRESS : BSC_CONTRACT_ADDRESS;
-
-//     const { config } = useSimulateContract({
-//         address: contractAddress, // replace with your contract address
-//         abi: FLARY_PRESALE_ABI, // replace with your contract ABI
-//         functionName: 'buyTokensNative',
-//         args: [], // if the function accepts arguments, pass them here
-//         overrides: {
-//             value: amount, // value to send in the transaction
-//         },
-//     });
-
-//     console.log('config', config);
-
-//     return;
-
-
-//     const provider = new ethers.BrowserProvider(window.ethereum);
-//     const signer = await provider.getSigner();
-
-//     const contract = getContract(network, signer);
-
-//     const paused = await contract.paused();
-//     if (paused) {
-//         console.log('Token presale is PAUSED!!!');
-//         // alert("token presale is PAUSED!!!")
-//         return;
-//     }
-
-//     const balance = await provider.getBalance(signer.address);
-//     if (balance <= amount) {
-//         setError(true);
-
-//         return;
-//     }
-
-//     const tx = await contract.buyTokensNative({ value: amount });
-
-//     setLoading(true);
-
-//     await tx.wait();
-//     await updateTokenHoldings();
-//     setLoading(false);
-//     setSuccessful(true);
-
-//     await fetch('https://back.flary.finance/api/user/boughtTokens', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({
-//             amount: Number(tokensToAmount),
-//             address: signer.address,
-//             chain: network === NETWORK_ETHEREUM ? 'eth' : 'bsc',
-//         }),
-//     });
-// };
-
-// const buyTokensUsdt = async (network) => {
-//     const decimals = network === NETWORK_ETHEREUM ? 6 : 18;
-//     const amount = ethers.parseUnits(Number(tokensFromAmount).toFixed(decimals), decimals);
-
-//     const provider = new ethers.BrowserProvider(window.ethereum);
-//     const signer = await provider.getSigner();
-
-//     const contract = getContract(network, signer);
-
-//     const usdtAddress = network === NETWORK_ETHEREUM ? ETH_USDT_ADDRESS : BSC_USDT_ADDRESS;
-
-//     const usdt = new ethers.Contract(usdtAddress, ERC_20_ABI, signer);
-
-//     const paused = await contract.paused();
-//     if (paused) {
-//         console.log('Token presale is PAUSED!!!');
-//         return;
-//     }
-
-//     const balance = await usdt.balanceOf(signer.address);
-//     if (balance < amount) {
-//         setError(true);
-
-//         return;
-//     }
-
-//     const allowance = await usdt.allowance(signer.address, await contract.getAddress());
-
-//     setLoading(true);
-
-//     if (allowance < amount) {
-//         const approveTx = await usdt.approve(await contract.getAddress(), amount);
-//         await approveTx.wait();
-//     }
-
-//     const tx = await contract.buyTokensUSDT(amount);
-//     await tx.wait();
-//     await updateTokenHoldings();
-//     setLoading(false);
-//     setSuccessful(true);
-//     // TODO: enable front
-//     const progressInPercent = (parseFloat(tokensFromAmount) / Amount_FOR_STAGE) * 100;
-
-//     setProgress((prevProgress) => prevProgress + progressInPercent);
-// };
