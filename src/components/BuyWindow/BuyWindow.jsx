@@ -38,7 +38,6 @@ export const BuyWindow = () => {
   const [stage, setStage] = useState('');
   const [capPerStage, setCapPerStage] = useState(0);
   const [collected, setCollected] = useState(0);
-  const [sellTokens, setSellTokens] = useState(0);
   const [progress, setProgress] = useState(0);
   const [dropNetwork, setDropNetwork] = useState(false);
   const [dropToken, setDropToken] = useState(false);
@@ -60,32 +59,33 @@ export const BuyWindow = () => {
   const [balanceValueFiat, setBalanceValueFiat] = useState(0);
   const [tokenETH, setTokenETH] = useState(TOKEN_ETHEREUM);
   const [tokenBNB, setTokenBNB] = useState(TOKEN_BNB);
-  const [chainID, setChainID] = useState(null);
+
   const [openPopupNetwork, setOpenPopupNetwork] = useState(false);
-  const [token,setToken] = useState(TOKEN_ETHEREUM)
+  const [token, setToken] = useState('');
 
   const account = useAccount();
+  const { address, status, chainId, isDisconnected } = useAccount();
   const { switchChain } = useSwitchChain();
 
   const mounted = useIsMounted();
   const { data: bnbUsdt } = useBalance({
-    address: account.address,
+    address: address,
     token: BSC_USDT_ADDRESS,
   });
   const bnbUsdtValue = Number(bnbUsdt?.formatted); //.toFixed(3);
   const { data: ethUsdt } = useBalance({
-    address: account.address,
+    address: address,
     token: ETH_USDT_ADDRESS,
   });
   const ethUsdtValue = Number(ethUsdt?.formatted); //.toFixed(3);
   const { data: ethEth } = useBalance({
-    address: account.address,
+    address: address,
   });
 
   const ethEthValue = Math.floor(ethEth?.formatted * 1000) / 1000;
 
   const { data: bnbBNB } = useBalance({
-    address: account.address,
+    address: address,
   });
 
   const bnbBNBValue = Math.floor(bnbBNB?.formatted * 1000) / 1000;
@@ -113,10 +113,7 @@ export const BuyWindow = () => {
 
   useEffect(() => {
     const checkNetwork = async () => {
-      if (account.status === 'connected') {
-        const chainId = account.chainId;
-        console.log(chainId);
-        
+      if (status === 'connected') {
         if (chainId === 1) {
           handlerChangeNetwork(NETWORK_ETHEREUM, ETH, false);
           setOpenPopupNetwork(false);
@@ -130,8 +127,7 @@ export const BuyWindow = () => {
     };
 
     checkNetwork();
-  }, [account.chainId, account.status]);
-
+  }, [chainId, status]);
   useEffect(() => {
     console.log(tokenETH);
     const fetchData = async () => {
@@ -184,7 +180,7 @@ export const BuyWindow = () => {
     fetchData();
     getStage();
     setProgress((collected / capPerStage) * 100);
-  }, [capPerStage, collected, tokenPriceActually, tokenSold,tokenETH]);
+  }, [capPerStage, collected, tokenPriceActually, tokenSold, tokenETH]);
 
   useEffect(() => {
     console.log(balanceValue, balanceValueFiat);
@@ -243,26 +239,13 @@ export const BuyWindow = () => {
       setTokenETH(TOKEN_ETHEREUM);
       setTokenImgETH(ETH);
 
-      if (window.ethereum) {
-        await window.ethereum?.request({
-          method: 'wallet_switchEthereumChain',
-          params: [{ chainId: '0x1' }],
-        });
-      } else {
-        switchChain({ chainId: 1 });
-      }
+      switchChain({ chainId: 1 });
     } else {
       setToken(TOKEN_BNB);
       setTokenBNB(TOKEN_BNB);
       setTokenImgBNB(BNB);
-      if (window.ethereum) {
-        await window.ethereum?.request({
-          method: 'wallet_switchEthereumChain',
-          params: [{ chainId: '0x38' }],
-        });
-      } else {
-        switchChain({ chainId: 56 });
-      }
+
+      switchChain({ chainId: 56 });
     }
 
     if (controlDrop) {
@@ -717,7 +700,7 @@ export const BuyWindow = () => {
             tokensFromAmount={tokensFromAmount}
             setError={setError}
             setLoading={setLoading}
-            token = {token}
+            token={token}
             updateTokenHoldings={updateTokenHoldings}
             setProgress={setProgress}
             setSuccessful={setSuccessful}
