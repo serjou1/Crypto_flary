@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import style from './BuyWindow.module.scss';
 import { useAccount, useBalance, useSimulateContract, useReadContract, useWriteContract } from 'wagmi';
 import { FLARY_PRESALE_ABI } from './flary-contract-abi';
-import { NETWORK_ETHEREUM, TOKEN_USDT } from './constants';
+import { NETWORK_ETHEREUM, TOKEN_BNB, TOKEN_USDT } from './constants';
 import { config } from '../../config';
 import { parseEther, parseUnits } from 'viem';
 import { ERC_20_ABI } from './erc-20-abi';
@@ -17,7 +17,7 @@ const {
     RPC_BSC,
 } = config;
 
-export const BuyButton = ({ error, tokensToAmount, network, tokensFromAmount, setError, setLoading, token, updateTokenHoldings, setSuccessful, Amount_FOR_STAGE, setProgress }) => {
+export const BuyButton = ({ error, tokensToAmount, network, tokensFromAmount, setError, setLoading, tokenETH, tokenBNB, updateTokenHoldings, setSuccessful, Amount_FOR_STAGE, setProgress }) => {
     const { isDisconnected, address, chain } = useAccount();
 
     const [buyLimit, setBuyLimit] = useState(0);
@@ -140,7 +140,7 @@ export const BuyButton = ({ error, tokensToAmount, network, tokensFromAmount, se
     };
 
     const buyCoins = async () => {
-        if (token === TOKEN_USDT) {
+        if (tokenETH === TOKEN_USDT || TOKEN_BNB === TOKEN_USDT) {
             await buyTokensUsdt();
         } else {
             await buyCoinsNative();

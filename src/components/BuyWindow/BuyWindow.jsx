@@ -710,7 +710,7 @@ export const BuyWindow = () => {
         <Successful />
       ) : (
 
-        !isDisconnected && (
+        account.status === 'connected' && (
           <BuyButton
             error={error}
             tokensToAmount={tokensToAmount}
@@ -718,11 +718,12 @@ export const BuyWindow = () => {
             tokensFromAmount={tokensFromAmount}
             setError={setError}
             setLoading={setLoading}
-            token={token}
+            tokenEthe={tokenETH}
+            tokenBNB={tokenBNB}
             updateTokenHoldings={updateTokenHoldings}
             setProgress={setProgress}
             setSuccessful={setSuccessful}
-            Amount_FOR_STAGE={Amount_FOR_STAGE}
+            // Amount_FOR_STAGE={Amount_FOR_STAGE}
           />
 
 
