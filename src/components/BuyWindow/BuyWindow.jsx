@@ -13,16 +13,14 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { JsonRpcProvider } from '@ethersproject/providers'; // Импорт провайдера
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Contract, ethers, formatEther, formatUnits, parseEther } from 'ethers';
-import { useAccount, useBalance, useSwitchChain, useSimulateContract } from 'wagmi';
+import { useAccount, useBalance, useSwitchChain } from 'wagmi';
 import { config } from '../../config';
-import { ERC_20_ABI } from './erc-20-abi';
 import { Error } from './Error';
 import { FLARY_PRESALE_ABI } from './flary-contract-abi';
 import { Loader } from './Loader/Loader';
 import { PRICE_FEED_ABI } from './price-feed-abi';
 import { Successful } from './Successful/Successful';
 import { useIsMounted } from './useIsMounted';
-// import { console } from 'inspector';
 import { BuyButton } from './BuyButton';
 import { NETWORK_BSC, NETWORK_ETHEREUM, TOKEN_BNB, TOKEN_ETHEREUM, TOKEN_USDT } from './constants';
 
@@ -35,9 +33,8 @@ const {
   RPC_ETH,
   RPC_BSC,
 } = config;
+
 const Amount_FOR_STAGE = 300000;
-
-
 
 const stages = [
   {
@@ -85,12 +82,12 @@ export const BuyWindow = () => {
   const mounted = useIsMounted();
   const { data: bnbUsdt } = useBalance({
     address: address,
-    token: '0x55d398326f99059fF775485246999027B3197955',
+    token: BSC_USDT_ADDRESS,
   });
   const bnbUsdtValue = Number(bnbUsdt?.formatted);//.toFixed(3);
   const { data: ethUsdt } = useBalance({
     address: address,
-    token: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+    token: ETH_USDT_ADDRESS,
   });
   const ethUsdtValue = Number(ethUsdt?.formatted);//.toFixed(3);
   const { data: ethEth } = useBalance({
@@ -167,11 +164,15 @@ export const BuyWindow = () => {
   };
   const handlerChangeNetwork = async (arg, argImg) => {
     if (arg === NETWORK_ETHEREUM) {
+
+      setToken(TOKEN_ETHEREUM);
       setTokenETH(TOKEN_ETHEREUM);
       setTokenImgETH(ETH);
 
       switchChain({ chainId: 1 });
     } else {
+
+      setToken(TOKEN_BNB);
       setTokenBNB(TOKEN_BNB);
       setTokenImgBNB(BNB);
 
@@ -189,6 +190,7 @@ export const BuyWindow = () => {
   const handlerChangeTokenETH = (arg, argImg, balance, balanceFiat) => {
     setDropNetwork(!dropToken);
     setTokenETH(arg);
+    setToken(arg);
     setTokenImgETH(argImg);
     setTokensFromAmount('');
     setTokensToAmount('');
@@ -197,6 +199,7 @@ export const BuyWindow = () => {
   };
   const handlerChangeTokenBNB = (arg, argImg, balance, balanceFiat) => {
     setDropNetwork(!dropToken);
+    setToken(arg);
     setTokenBNB(arg);
     setTokenImgBNB(argImg);
     setTokensFromAmount('');
@@ -242,6 +245,7 @@ export const BuyWindow = () => {
     const contract = getContract(network, provider);
 
     const balance = await contract.investemetByAddress(address);
+
     return Number(ethers.formatEther(balance));
   };
 
