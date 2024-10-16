@@ -12,11 +12,10 @@ const projectId = '95b12f1450eb1b99e25683fb739ccb3e';
 export const config = getDefaultConfig({
   appName: 'RainbowKit demo',
   projectId: projectId,
-  chains: [mainnet, bsc, sepolia],
+  chains: [mainnet, bsc],
   transports: {
     [mainnet.id]: http(),
     [bsc.id]: http(),
-    [sepolia.id]: http(),
   },
 });
 const queryClient = new QueryClient();
