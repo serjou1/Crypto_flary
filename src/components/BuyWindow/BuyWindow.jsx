@@ -100,9 +100,9 @@ export const BuyWindow = () => {
       const ethValue = Math.floor(ethEth.formatted * 1000) / 1000;
 
       if (!isNaN(ethValue)) {
-        const ethValueFixed = Number(ethEth.formatted).toFixed(3);
-        setBalanceValue(ethValueFixed);
-        setBalanceValueFiat(calculateBalanceInFiat(ethValueFixed));
+        
+        setBalanceValue(ethEthValue);
+        setBalanceValueFiat(calculateBalanceInFiat(ethValue));
       }
     } else if (bnbBNB?.formatted) {
       const bnbValue = Math.floor(bnbBNB.formatted * 1000) / 1000;
