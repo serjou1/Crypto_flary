@@ -8,7 +8,7 @@ import style from './BuyWindow.module.scss';
 import { NETWORK_ETHEREUM, TOKEN_USDT } from './constants';
 import { ERC_20_ABI } from './erc-20-abi';
 import { FLARY_PRESALE_ABI } from './flary-contract-abi';
-import { isRouteErrorResponse } from 'react-router-dom';
+import { ErrorTransaction } from './ErrorTransaction/ErrorTransaction';
 
 const {
   ETH_CONTRACT_SEPOLIA_ADDRESS,
@@ -28,6 +28,7 @@ export const BuyButton = ({
   token,
   updateTokenHoldings,
   setSuccessful,
+  setErrorTransaction
 }) => {
   const { isDisconnected, address, chain } = useAccount();
 
@@ -36,10 +37,12 @@ export const BuyButton = ({
   const [usdtAddress, setUsdtAddress] = useState(null);
   const [amountNative, setAmountNative] = useState(0);
   const [amountUsdt, setAmountUsdt] = useState(0);
+  
 
   useEffect(() => {
+    
     setBuyLimit(tokensToAmount * 4);
-  }, [tokensToAmount]);
+  }, [ tokensToAmount]);
 
   useEffect(() => {
     const address = network === NETWORK_ETHEREUM ? ETH_CONTRACT_ADDRESS : BSC_CONTRACT_ADDRESS;
@@ -58,8 +61,9 @@ export const BuyButton = ({
 
   const {
     writeContractAsync: buyTokensNativeWrite,
-    
+    error: errorNativ,
     isError: isErrorNative,
+    isPending: isMintLoading,
     isSuccess: isSuccessNative,
   } = useWriteContract();
 
@@ -112,6 +116,10 @@ export const BuyButton = ({
     }
     try {
       setLoading(true);
+      
+      console.log('Attempting to buy tokens...');
+
+ 
       const buyHash = await buyTokensNativeWrite({
         address: contractAddress,
         abi: FLARY_PRESALE_ABI,
@@ -119,17 +127,21 @@ export const BuyButton = ({
         args: [],
         value: amountNative,
       });
-
-      await waitForTransactionReceipt(rainbowConfig, { hash: buyHash });
+      await waitForTransactionReceipt(rainbowConfig, {
+        hash: buyHash,
+      });
 
       setSuccessful(true);
     } catch (error) {
+      setErrorTransaction(true);
       console.log(error);
     } finally {
       setLoading(false);
     }
   };
-  console.log(isErrorNative)
+
+  
+
   useEffect(() => {
     if (isErrorNative) {
       console.error('An error occurred during the transaction.');
@@ -144,41 +156,38 @@ export const BuyButton = ({
     }
 
     if (usdtBalance && Number(usdtBalance) > amountUsdt) {
-      
-try {
-      setLoading(true);
-      if (allowance < amountUsdt) {
-        const hash = await approve({
-          address: usdtAddress,
-          abi: ERC_20_ABI,
-          functionName: 'approve',
-          args: [contractAddress, amountUsdt],
+      try {
+        setLoading(true);
+        if (allowance < amountUsdt) {
+          const hash = await approve({
+            address: usdtAddress,
+            abi: ERC_20_ABI,
+            functionName: 'approve',
+            args: [contractAddress, amountUsdt],
+          });
+
+          await waitForTransactionReceipt(rainbowConfig, { hash });
+        }
+
+        const buyHash = await buyTokensUsdtWrite({
+          address: contractAddress,
+          abi: FLARY_PRESALE_ABI,
+          functionName: 'buyTokensUSDT',
+          args: [amountUsdt],
         });
 
-        await waitForTransactionReceipt(rainbowConfig, { hash });
+        await waitForTransactionReceipt(rainbowConfig, { hash: buyHash });
+        setSuccessful(true);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
       }
-
-      const buyHash = await buyTokensUsdtWrite({
-        address: contractAddress,
-        abi: FLARY_PRESALE_ABI,
-        functionName: 'buyTokensUSDT',
-        args: [amountUsdt],
-      });
-
-      await waitForTransactionReceipt(rainbowConfig, { hash: buyHash });
-      setSuccessful(true);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
+    } else {
+      setError(true);
     }
-  }else{setError(true)}
-      
-    }
-    ;
-
+  };
   const buyCoins = async () => {
-    console.log(Number(usdtBalance));
     if (tokensFromAmount <= 0) {
       alert('Please');
     } else {
@@ -192,15 +201,11 @@ try {
     await updateTokenHoldings();
   };
 
-  useEffect(() => {
-    
-    if (isErrorNative) {
-      console.error('An error occurred during the token purchase.');
-       // Обновление состояния ошибки
-    }
-  }, [isErrorNative]);
+
 
   return (
+    <>
+   
     <div
       className={style.pay_button}
       onClick={() => buyCoins()}
@@ -217,5 +222,6 @@ try {
       {buyLimit < 50 ? 'Minimum purchase is $50' : 'Buy FLFI'}
       {isErrorNative && <p>error</p>}
     </div>
+    </>
   );
 };

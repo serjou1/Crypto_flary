@@ -16,8 +16,27 @@ import { Contract, ethers, formatEther, formatUnits, parseEther } from 'ethers';
 import { useAccount, useBalance, useSwitchChain } from 'wagmi';
 import { config } from '../../config';
 import { BuyButton } from './BuyButton';
-import { NETWORK_BSC, NETWORK_ETHEREUM, TOKEN_BNB, TOKEN_ETHEREUM, TOKEN_USDT } from './constants';
+import {
+  NETWORK_BSC,
+  NETWORK_ETHEREUM,
+  TOKEN_BNB,
+  TOKEN_CAP_STAGE_1,
+  TOKEN_CAP_STAGE_2,
+  TOKEN_CAP_STAGE_3,
+  TOKEN_CAP_STAGE_4,
+  TOKEN_CAP_STAGE_5,
+  TOKEN_CAP_STAGE_6,
+  TOKEN_ETHEREUM,
+  TOKEN_USDT,
+  USDT_STAGE_1,
+  USDT_STAGE_2,
+  USDT_STAGE_3,
+  USDT_STAGE_4,
+  USDT_STAGE_5,
+  USDT_STAGE_6,
+} from './constants';
 import { Error } from './Error';
+import { ErrorTransaction } from './ErrorTransaction/ErrorTransaction';
 import { FLARY_PRESALE_ABI } from './flary-contract-abi';
 import { Loader } from './Loader/Loader';
 import { PopupNetwork } from './PopapNetwork/PopupNetwork';
@@ -37,6 +56,7 @@ const {
 export const BuyWindow = () => {
   const [stage, setStage] = useState('');
   const [capPerStage, setCapPerStage] = useState(0);
+  const [usdtPerStage, setUsdtPerStage] = useState(0);
   const [collected, setCollected] = useState(0);
   const [progress, setProgress] = useState(0);
   const [dropNetwork, setDropNetwork] = useState(false);
@@ -59,6 +79,7 @@ export const BuyWindow = () => {
   const [balanceValueFiat, setBalanceValueFiat] = useState(0);
   const [tokenETH, setTokenETH] = useState(TOKEN_ETHEREUM);
   const [tokenBNB, setTokenBNB] = useState(TOKEN_BNB);
+  const [errorTransaction, setErrorTransaction] = useState(false);
 
   const [openPopupNetwork, setOpenPopupNetwork] = useState(false);
   const [token, setToken] = useState('');
@@ -100,7 +121,6 @@ export const BuyWindow = () => {
       const ethValue = Math.floor(ethEth.formatted * 1000) / 1000;
 
       if (!isNaN(ethValue)) {
-        
         setBalanceValue(ethEthValue);
         setBalanceValueFiat(calculateBalanceInFiat(ethValue));
       }
@@ -144,49 +164,124 @@ export const BuyWindow = () => {
       }
     };
     const getStage = async () => {
-      if (tokenSold < 6700000) {
+      if (tokenSold < TOKEN_CAP_STAGE_1) {
         setStage('Stage 1');
         setTokenPriceActually(0.07);
-        setCapPerStage(469000);
+        setCapPerStage(TOKEN_CAP_STAGE_1);
+        setUsdtPerStage(USDT_STAGE_1);
         setCollected(tokenSold * tokenPriceActually);
-      } else if (tokenSold >= 6700000 && tokenSold < 11950000) {
+        setProgress((collected / usdtPerStage) * 100);
+      } else if (tokenSold >= TOKEN_CAP_STAGE_1 && tokenSold < 11950000) {
         setStage('Stage 2');
         setTokenPriceActually(0.08);
-        setCapPerStage(420000);
-        setCollected((tokenSold - 6700000) * tokenPriceActually);
+        setCapPerStage(TOKEN_CAP_STAGE_2);
+        setUsdtPerStage(USDT_STAGE_2 + USDT_STAGE_1);
+        setCollected((tokenSold - TOKEN_CAP_STAGE_1) * tokenPriceActually + USDT_STAGE_1);
+        setProgress((collected / usdtPerStage) * 100);
       } else if (tokenSold >= 11950000 && tokenSold < 16137500) {
         setStage('Stage 3');
         setTokenPriceActually(0.09);
-        setCapPerStage(376875);
-        setCollected((tokenSold - 11950000) * tokenPriceActually);
+        setCapPerStage(TOKEN_CAP_STAGE_3);
+        setUsdtPerStage(USDT_STAGE_2 + USDT_STAGE_1 + USDT_STAGE_3);
+        setCollected(
+          (tokenSold - TOKEN_CAP_STAGE_1 - TOKEN_CAP_STAGE_2) * tokenPriceActually +
+            USDT_STAGE_2 +
+            USDT_STAGE_1,
+        );
+        setProgress((collected / usdtPerStage) * 100);
       } else if (tokenSold >= 16137500 && tokenSold < 20087500) {
         setStage('Stage 4');
         setTokenPriceActually(0.1);
-        setCapPerStage(395000);
-        setCollected((tokenSold - 16137500) * tokenPriceActually);
+        setCapPerStage(TOKEN_CAP_STAGE_4);
+        setUsdtPerStage(USDT_STAGE_2 + USDT_STAGE_1 + USDT_STAGE_3 + USDT_STAGE_4);
+        setCollected(
+          (tokenSold - TOKEN_CAP_STAGE_1 - TOKEN_CAP_STAGE_2 - TOKEN_CAP_STAGE_3) *
+            tokenPriceActually +
+            USDT_STAGE_2 +
+            USDT_STAGE_1 +
+            USDT_STAGE_3,
+        );
+        setProgress((collected / usdtPerStage) * 100);
       } else if (tokenSold >= 20087500 && tokenSold < 23750000) {
         setStage('Stage 5');
         setTokenPriceActually(0.12);
-        setCapPerStage(439500);
-        setCollected((tokenSold - 20087500) * tokenPriceActually);
+        setCapPerStage(TOKEN_CAP_STAGE_5);
+        setUsdtPerStage(USDT_STAGE_2 + USDT_STAGE_1 + USDT_STAGE_3 + USDT_STAGE_4 + USDT_STAGE_5);
+        setCollected(
+          (tokenSold -
+            TOKEN_CAP_STAGE_1 -
+            TOKEN_CAP_STAGE_2 -
+            TOKEN_CAP_STAGE_3 -
+            TOKEN_CAP_STAGE_4) *
+            tokenPriceActually +
+            USDT_STAGE_2 +
+            USDT_STAGE_1 +
+            USDT_STAGE_3 +
+            USDT_STAGE_4,
+        );
+        setProgress((collected / usdtPerStage) * 100);
       } else {
         setStage('Stage 6');
         setTokenPriceActually(0.14);
-        setCapPerStage(875000);
-        setCollected((tokenSold - 23750000) * tokenPriceActually);
+        setCapPerStage(TOKEN_CAP_STAGE_6);
+        setUsdtPerStage(
+          USDT_STAGE_2 + USDT_STAGE_1 + USDT_STAGE_3 + USDT_STAGE_4 + USDT_STAGE_5 + USDT_STAGE_6,
+        );
+        setCollected(
+          (tokenSold -
+            TOKEN_CAP_STAGE_1 -
+            TOKEN_CAP_STAGE_2 -
+            TOKEN_CAP_STAGE_3 -
+            TOKEN_CAP_STAGE_4 -
+            TOKEN_CAP_STAGE_5) *
+            tokenPriceActually +
+            USDT_STAGE_2 +
+            USDT_STAGE_1 +
+            USDT_STAGE_3 +
+            USDT_STAGE_4 +
+            USDT_STAGE_5,
+        );
+        setProgress((collected / usdtPerStage) * 100);
       }
     };
+    // const getStage = async () => {
+    //   let accumulatedUsdt = 0;
+    //   let accumulatedToken = 0
+
+    //   for (let i = 0; i < stages.length; i++) {
+    //     const { tokens, price, usdt } = stages[i];
+
+    //     if (tokenSold < accumulatedToken + token) {
+    //       const stageName = `Stage ${i + 1}`;
+    //       const tokensSoldInStage = tokenSold - accumulatedToken;
+
+    //       setStage(stageName);
+    //       setTokenPriceActually(price);
+    //       setCapPerStage(tokens);
+    //       setUsdtPerStage(accumulatedUsdt + usdt);
+    //       setCollected(tokensSoldInStage * price + accumulatedUsdt);
+
+    //       const progressBase = collected - accumulatedUsdt;
+    //       const progressMax = usdtPerStage - accumulatedUsdt;
+    //       setProgress((progressBase / progressMax) * 100);
+
+    //       break;
+    //     }
+    //     accumulatedUsdt += usdt;
+    //     accumulatedToken += tokens
+    //   }
+    // };
 
     fetchData();
     getStage();
-    setProgress((collected / capPerStage) * 100);
   }, [capPerStage, collected, tokenPriceActually, tokenSold, tokenETH]);
 
   useEffect(() => {
-    console.log(balanceValue, balanceValueFiat);
-    if (successful) {
+
+    if (successful || errorTransaction) {
       const timer = setTimeout(() => {
         setSuccessful(false);
+        setErrorTransaction(false);
       }, 3000); // 3000 миллисекунд = 3 секунды
 
       // Очистка таймера при размонтировании компонента
@@ -196,12 +291,14 @@ export const BuyWindow = () => {
     if (account.status === 'connected') {
       updateTokenHoldings();
     }
-  }, [account.status, successful]);
+  }, [account.status, errorTransaction, successful]);
 
   const maxValue = async () => {
     if (network === NETWORK_ETHEREUM && tokenETH === TOKEN_ETHEREUM) {
       setTokensFromAmount(
-        balanceValue > 0 ? await calculateBalanceAfterGas(providerEthereum, balanceValue) : 0,
+        balanceValue && (await calculateBalanceAfterGas(providerEthereum, balanceValue)) > 0
+          ? await calculateBalanceAfterGas(providerEthereum, balanceValue)
+          : 0,
       );
       const tokensToAmountNew =
         ((await calculateBalanceAfterGas(providerEthereum, balanceValue)) *
@@ -210,7 +307,9 @@ export const BuyWindow = () => {
       setTokensToAmount(tokensToAmountNew > 0 ? tokensToAmountNew : 0);
     } else if (network === NETWORK_BSC && tokenBNB === TOKEN_BNB) {
       setTokensFromAmount(
-        balanceValue > 0 ? await calculateBalanceAfterGas(providerBSC, balanceValue) : 0,
+        balanceValue && (await calculateBalanceAfterGas(providerBSC, balanceValue)) > 0
+          ? await calculateBalanceAfterGas(providerBSC, balanceValue)
+          : 0,
       );
       const tokensToAmountNew =
         ((await calculateBalanceAfterGas(providerBSC, balanceValue)) *
@@ -391,6 +490,7 @@ export const BuyWindow = () => {
 
   return (
     <div className={style.BuyWindow}>
+       <ErrorTransaction setErrorTransaction={setErrorTransaction} errorTransaction={errorTransaction}/> 
       {openPopupNetwork && (
         <PopupNetwork
           imgEth={ETH}
@@ -406,7 +506,7 @@ export const BuyWindow = () => {
       <p>1 $FLFI = ${tokenPriceActually} </p>
       <p>
         Price next stage = $
-        {tokenSold < 20087500
+        {tokenSold < 16137500
           ? (tokenPriceActually + 0.01).toFixed(2)
           : (tokenPriceActually + 0.02).toFixed(2)}
       </p>
@@ -418,12 +518,12 @@ export const BuyWindow = () => {
 
       <Progress progress={progress.toFixed(2)} />
       <p>
-        Rised USD : $
+        Raised USD : $
         {collected
           .toFixed()
           .toString()
           .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
-        / ${capPerStage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+        / ${usdtPerStage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
       </p>
 
       <div className={style.button_group}>
@@ -620,22 +720,29 @@ export const BuyWindow = () => {
             <div className={style.max_input}>
               <input
                 className={style.input_buy}
-                type="number"
-                step="any"
+                type="text"
                 placeholder="Enter Amount"
                 value={tokensFromAmount}
                 onChange={(e) => {
-                  const value = Number(e.target.value);
-
-                  setTokensFromAmount(value);
-
+                  const value = e.target.value.replace(/[^0-9.]/g, '');
+                  console.log(tokensFromAmount);
+                  const trimmedValue = value
+                    .replace(/^0+(?=\d)/, '')
+                    .replace(/^0+\.$/, '0.')
+                    .replace(/^\.$/, '0.');
+                  setTokensFromAmount(trimmedValue);
+                  // if (value === 0) {
+                  //   setTokensToAmount('');
+                  // } else {
                   const tokensToAmountNew =
                     (value * (isBaseCoinSelected() ? getBaseCoinPrice() : 1)) / tokenPrice;
-                  console.log('isBaseCoinSelected', isBaseCoinSelected());
+                  console.log('isBaseCoinSelected', value);
                   console.log('getBaseCoinPrice', getBaseCoinPrice());
                   console.log('new tokens to amount:', tokensToAmountNew);
 
                   setTokensToAmount(tokensToAmountNew);
+                  // }
+
                   // console.log(getBaseCoinPrice() * 2);
                   // console.log('actual tokens to amount:', tokensToAmount);
                 }}
@@ -666,9 +773,6 @@ export const BuyWindow = () => {
               onChange={(e) => {
                 const value = Number(e.target.value);
 
-                // if (value === '') {
-                //   setTokensToAmount();
-                // }
                 setTokensToAmount(value);
                 const tokensFromAmountNew =
                   (value * tokenPrice) / (isBaseCoinSelected() ? getBaseCoinPrice() : 1);
@@ -704,6 +808,7 @@ export const BuyWindow = () => {
             updateTokenHoldings={updateTokenHoldings}
             setProgress={setProgress}
             setSuccessful={setSuccessful}
+            setErrorTransaction={setErrorTransaction}
             // Amount_FOR_STAGE={Amount_FOR_STAGE}
           />
         )
