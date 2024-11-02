@@ -1,9 +1,12 @@
 export const NETWORK_ETHEREUM = 'Ethereum';
 export const NETWORK_BSC = 'BNB Chain';
+export const NETWORK_SOLANA = 'Solana'
+
 
 export const TOKEN_ETHEREUM = 'ETH';
 export const TOKEN_USDT = 'USDT';
 export const TOKEN_BNB = 'BNB';
+export const TOKEN_SOL = 'SOL';
 
 export const TOKEN_CAP_STAGE_1 = 6_700_000
 export const TOKEN_CAP_STAGE_2 = 5_250_000

@@ -11,7 +11,7 @@ export const Modularity = () => {
       <h1 className="tittle">Plug-and-Play Architecture</h1>
       <div className={style.content}>
         <div className={style.top}>
-          <img src={ModularityCircle} className={style.circle} alt="" />
+          <img loading='lazy' src={ModularityCircle} className={style.circle} alt="" />
           <p>
             Simultaneously lightweight and technologically advanced approach, allowing modules to be
             added, removed, or replaced without disrupting the system.
@@ -24,7 +24,7 @@ export const Modularity = () => {
         </div>
         <div className={style.line}></div>
         <div className={style.bottom}>
-          <img src={ModularityDiagram} className={style.diagram} alt="" />
+          <img loading='lazy' src={ModularityDiagram} className={style.diagram} alt="" />
         </div>
       </div>
     </div>

@@ -179,7 +179,7 @@ export const BuyButton = ({
         await waitForTransactionReceipt(rainbowConfig, { hash: buyHash });
         setSuccessful(true);
       } catch (error) {
-        console.log(error);
+        setErrorTransaction(true);
       } finally {
         setLoading(false);
       }

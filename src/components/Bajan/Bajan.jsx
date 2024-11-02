@@ -25,7 +25,7 @@ export const Bajan = () => {
   };
   return (
     <div className={style.bajan}>
-      <div className={style.bajan_section} style={{display:'none'}}>
+      <div className={style.bajan_section} style={{ display: 'none' }}>
         <div className={style.tittle}>
           <h2>Buying With Ethereum (ETH)</h2>
           <p onClick={handlerOpenBajan} style={{ fontSize: '20px' }}>

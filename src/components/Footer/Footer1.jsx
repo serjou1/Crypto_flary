@@ -11,7 +11,6 @@ import { ModalRules } from '../ModalRules/ModalRules';
 import style from './Footer1.module.scss';
 
 export const Footer1 = () => {
-
   const params = useLocation().pathname.slice(1);
   const [modalPolicyIsOpen, setModalPolicyIsOpen] = useState(false);
   const [modalTermsIsOpen, setModalTermsIsOpen] = useState(false);
@@ -20,7 +19,6 @@ export const Footer1 = () => {
     { to: 'tekenomics', offset: -150, name: 'Tokenomics' },
     { to: 'roadmap', offset: -200, name: 'Roadmap' },
   ];
-
 
   const animation = {
     hidden: {
@@ -63,9 +61,7 @@ export const Footer1 = () => {
           variants={animation2}
           transition={{ duration: '1' }}>
           <img src={logo} alt="Logo" />
-          <p>
-          Enter Flary, a game-changer in the world of DeFI.
-          </p>
+          <p>Enter Flary, a game-changer in the world of DeFI.</p>
         </motion.div>
         <motion.div
           className={style.right}
@@ -74,7 +70,7 @@ export const Footer1 = () => {
           viewport={{ once: true }}>
           <div className={style.nav}>
             <motion.p variants={animation} transition={{ duration: '1' }}>
-            Navigation
+              Navigation
             </motion.p>
             {params === '' ? (
               <ul>
@@ -195,7 +191,7 @@ export const Footer1 = () => {
           isOpen={modalPolicyIsOpen}
           onClose={() => setModalPolicyIsOpen(false)}
           title={
-            <h2 style={{ paddingTop: '60px', paddingBottom: '40px' }}>PRIVACY POLICY FOR SITE</h2>
+            'PRIVACY POLICY FOR SITE'
           }>
           <p>
             The platform's collection, use, and sharing of personal information are governed by its
@@ -213,9 +209,7 @@ export const Footer1 = () => {
         <ModalRules
           isOpen={modalTermsIsOpen}
           onClose={() => setModalTermsIsOpen(false)}
-          title={
-            <h2 style={{ paddingTop: '60px', paddingBottom: '40px' }}>TERMS OF USE FOR SITE</h2>
-          }>
+          title={'TERMS OF USE FOR SITE'}>
           <p>
             Flary Finance is an innovative cross-chain lending platform connecting EVM and non-EVM
             networks including bitcoin ordinals, FlaryFinance (“we”, “our”, or “us”). provides its

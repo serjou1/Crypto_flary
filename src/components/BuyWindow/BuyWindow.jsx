@@ -7,6 +7,7 @@ import Arrow from '../../assets/arrow_down.svg';
 import BNB from '../../assets/bnb logo.webp';
 import ETH from '../../assets/ETH.svg';
 import FLFI from '../../assets/flary_coin.png';
+import SOL from '../../assets/solana.svg';
 import USDT from '../../assets/USDT.svg';
 
 import { BigNumber } from '@ethersproject/bignumber';
@@ -19,6 +20,7 @@ import { BuyButton } from './BuyButton';
 import {
   NETWORK_BSC,
   NETWORK_ETHEREUM,
+  NETWORK_SOLANA,
   TOKEN_BNB,
   TOKEN_CAP_STAGE_1,
   TOKEN_CAP_STAGE_2,
@@ -27,6 +29,7 @@ import {
   TOKEN_CAP_STAGE_5,
   TOKEN_CAP_STAGE_6,
   TOKEN_ETHEREUM,
+  TOKEN_SOL,
   TOKEN_USDT,
   USDT_STAGE_1,
   USDT_STAGE_2,
@@ -66,6 +69,7 @@ export const BuyWindow = () => {
   const [networkImg, setNetworkImg] = useState(ETH);
   const [tokenImgETH, setTokenImgETH] = useState(ETH);
   const [tokenImgBNB, setTokenImgBNB] = useState(BNB);
+  const [tokenImgSOL, setTokenImgSOL] = useState(SOL);
   const [loading, setLoading] = useState(false);
   const [successful, setSuccessful] = useState(false);
   const [tokensFromAmount, setTokensFromAmount] = useState('');
@@ -79,6 +83,7 @@ export const BuyWindow = () => {
   const [balanceValueFiat, setBalanceValueFiat] = useState(0);
   const [tokenETH, setTokenETH] = useState(TOKEN_ETHEREUM);
   const [tokenBNB, setTokenBNB] = useState(TOKEN_BNB);
+  const [tokenSOL,setTokenSOL] = useState(TOKEN_SOL);
   const [errorTransaction, setErrorTransaction] = useState(false);
 
   const [openPopupNetwork, setOpenPopupNetwork] = useState(false);
@@ -277,7 +282,6 @@ export const BuyWindow = () => {
   }, [capPerStage, collected, tokenPriceActually, tokenSold, tokenETH]);
 
   useEffect(() => {
-
     if (successful || errorTransaction) {
       const timer = setTimeout(() => {
         setSuccessful(false);
@@ -339,12 +343,16 @@ export const BuyWindow = () => {
       setTokenImgETH(ETH);
 
       switchChain({ chainId: 1 });
-    } else {
+    } else if(arg === NETWORK_BSC){
       setToken(TOKEN_BNB);
       setTokenBNB(TOKEN_BNB);
       setTokenImgBNB(BNB);
 
       switchChain({ chainId: 56 });
+    } else{
+      setToken(TOKEN_SOL);
+      setTokenSOL(TOKEN_SOL);
+      setTokenImgSOL(SOL);
     }
 
     if (controlDrop) {
@@ -490,7 +498,10 @@ export const BuyWindow = () => {
 
   return (
     <div className={style.BuyWindow}>
-       <ErrorTransaction setErrorTransaction={setErrorTransaction} errorTransaction={errorTransaction}/> 
+      <ErrorTransaction
+        setErrorTransaction={setErrorTransaction}
+        errorTransaction={errorTransaction}
+      />
       {openPopupNetwork && (
         <PopupNetwork
           imgEth={ETH}
@@ -561,6 +572,13 @@ export const BuyWindow = () => {
                 <img src={BNB} alt="" />
                 <p>BNB Chain</p>
               </div>
+              <div
+                style={{ justifyContent: 'start' }}
+                className={style.button_drop}
+                onClick={() => handlerChangeNetwork(NETWORK_SOLANA, SOL)}>
+                <img src={SOL} alt="" />
+                <p>Solana</p>
+              </div>
             </div>
           )}
         </div>
@@ -573,18 +591,27 @@ export const BuyWindow = () => {
               style={
                 dropToken ? { borderBottomLeftRadius: '0', borderBottomRightRadius: '0' } : {}
               }>
-              {network === NETWORK_BSC ? (
+              {network === NETWORK_BSC && (
                 <div className={style.button_tittle}>
                   <img src={tokenImgBNB} alt="" />
                   <p>{tokenBNB}</p>
 
                   {account.status === 'disconnected' ? '' : <img src={Arrow} alt="" />}
                 </div>
-              ) : (
+              )}{' '}
+              {network === NETWORK_ETHEREUM && (
                 <div className={style.button_tittle}>
                   {' '}
                   <img src={tokenImgETH} alt="" />
                   <p>{tokenETH}</p>{' '}
+                  {account.status === 'disconnected' ? '' : <img src={Arrow} alt="" />}
+                </div>
+              )}
+              {network === NETWORK_SOLANA && (
+                <div className={style.button_tittle}>
+                  {' '}
+                  <img src={tokenImgSOL} alt="" />
+                  <p>{tokenSOL}</p>{' '}
                   {account.status === 'disconnected' ? '' : <img src={Arrow} alt="" />}
                 </div>
               )}
@@ -602,7 +629,6 @@ export const BuyWindow = () => {
                   </p>
                 </div>
               )}
-
               {network === NETWORK_BSC
                 ? dropToken && (
                     <div className={style.drop_token}>
@@ -659,7 +685,6 @@ export const BuyWindow = () => {
                     </div>
                   )
                 : null}
-
               {network === NETWORK_ETHEREUM
                 ? dropToken && (
                     <div className={style.drop_token}>

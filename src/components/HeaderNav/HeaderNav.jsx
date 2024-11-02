@@ -10,12 +10,12 @@ export const HeaderNav = () => {
   ];
   return (
     <div className={style.HeaderNav}>
-      {buttonContent.map((content, i) => (
-        <Link key={i} to={content.link} className={style.button}>
-          <span>{content.tittle}</span>
-          
-        </Link>
-      ))}
+      <Link to="/how-to-buy" className={style.button}>
+        <span>How To Buy</span>
+      </Link>
+      <div className={style.button_2}>
+        <span className={style.coming}>Win $333K</span>
+      </div>
     </div>
   );
 };

@@ -56,9 +56,16 @@
   background-color: transparent;
   color: white;
 }
+.modal_tittle{
+padding-top: 60px;
+padding-bottom: 40px;
+}
 
 @media (max-width: 600px) {
   .modal_wrapper{
     width: 80%;
   }
+  .modal_tittle{
+font-size: 18px;
+}
 }

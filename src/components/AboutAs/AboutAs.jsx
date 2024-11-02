@@ -27,7 +27,7 @@ export const AboutAs = () => {
           variants={animation}
           transition={{ duration: '1', delay: 0.25 }}
           className={style.contentHelperImg}>
-          <img src={AboutAsImg} alt="AboutAsImg" />
+          <img loading='lazy' src={AboutAsImg} alt="AboutAsImg" />
         </motion.div>
         <motion.div
           variants={animation}

@@ -24,8 +24,19 @@
     font-weight: 600;
   }
 }
-@media (max-width:768px){
+@media (max-width: 768px) {
   .bajan {
-    margin: 5px 10px;
+    margin: 35px 10px;
+  }
+  .tittle {
+    h2 {
+      font-size: 18px;
+    }
+  }
+  .bajan_info {
+    li {
+      margin-top:15px;
+      font-size: 13px;
+    }
   }
 }
