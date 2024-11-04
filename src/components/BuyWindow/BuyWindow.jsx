@@ -14,8 +14,9 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { JsonRpcProvider } from '@ethersproject/providers'; // Импорт провайдера
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Contract, ethers, formatEther, formatUnits, parseEther } from 'ethers';
-import { useAccount, useBalance, useSwitchChain } from 'wagmi';
+import { useAccount, useBalance, useConnections, useConnectorClient, useSwitchChain } from 'wagmi';
 import { config } from '../../config';
+import { config as rainbowConfig } from '../../providers';
 import { BuyButton } from './BuyButton';
 import {
   NETWORK_BSC,
@@ -83,14 +84,17 @@ export const BuyWindow = () => {
   const [balanceValueFiat, setBalanceValueFiat] = useState(0);
   const [tokenETH, setTokenETH] = useState(TOKEN_ETHEREUM);
   const [tokenBNB, setTokenBNB] = useState(TOKEN_BNB);
-  const [tokenSOL,setTokenSOL] = useState(TOKEN_SOL);
+  const [tokenSOL, setTokenSOL] = useState(TOKEN_SOL);
   const [errorTransaction, setErrorTransaction] = useState(false);
 
   const [openPopupNetwork, setOpenPopupNetwork] = useState(false);
   const [token, setToken] = useState('');
 
   const account = useAccount();
-  const { address, status, chainId, isDisconnected } = useAccount();
+  const connections = useConnections()
+
+  
+  const { address, status, chainId,  } = useAccount();
   const { switchChain } = useSwitchChain();
 
   const mounted = useIsMounted();
@@ -115,7 +119,8 @@ export const BuyWindow = () => {
   });
 
   const bnbBNBValue = Math.floor(bnbBNB?.formatted * 1000) / 1000;
-
+  
+  console.log(connections[0]?.connector.name);
   useEffect(() => {
     const calculateBalanceInFiat = (coinValue) => {
       const price = getBaseCoinPrice();
@@ -343,13 +348,13 @@ export const BuyWindow = () => {
       setTokenImgETH(ETH);
 
       switchChain({ chainId: 1 });
-    } else if(arg === NETWORK_BSC){
+    } else if (arg === NETWORK_BSC) {
       setToken(TOKEN_BNB);
       setTokenBNB(TOKEN_BNB);
       setTokenImgBNB(BNB);
 
       switchChain({ chainId: 56 });
-    } else{
+    } else {
       setToken(TOKEN_SOL);
       setTokenSOL(TOKEN_SOL);
       setTokenImgSOL(SOL);

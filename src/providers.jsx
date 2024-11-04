@@ -2,6 +2,7 @@ import { RainbowKitProvider, darkTheme, getDefaultConfig } from '@rainbow-me/rai
 import React from 'react';
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 import {
+  metaMaskWallet,
   phantomWallet,
   rabbyWallet,
   rainbowWallet,
@@ -16,7 +17,7 @@ import { bsc, mainnet, sepolia } from 'wagmi/chains';
 const projectId = '95b12f1450eb1b99e25683fb739ccb3e';
 const connectors  = connectorsForWallets([
   {groupName:'ENV',
-    wallets:[rainbowWallet,walletConnectWallet,rabbyWallet]
+    wallets:[rainbowWallet,walletConnectWallet,rabbyWallet,metaMaskWallet]
   },
   {groupName:'Solana',
     wallets:[phantomWallet]
