@@ -7,6 +7,7 @@ import {
   rabbyWallet,
   rainbowWallet,
   walletConnectWallet,
+  coinbaseWallet
 } from '@rainbow-me/rainbowkit/wallets';
 // import {configureChain,createConfig, WagmiConfig} from 'wagmi'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -20,7 +21,7 @@ const connectors  = connectorsForWallets([
     wallets:[rainbowWallet,walletConnectWallet,rabbyWallet,metaMaskWallet]
   },
   {groupName:'Solana',
-    wallets:[phantomWallet]
+    wallets:[phantomWallet,coinbaseWallet]
   },
 ],{appName: 'RainbowKit demo',
   projectId: projectId,})

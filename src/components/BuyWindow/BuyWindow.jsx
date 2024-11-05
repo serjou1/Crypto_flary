@@ -14,9 +14,9 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { JsonRpcProvider } from '@ethersproject/providers'; // Импорт провайдера
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Contract, ethers, formatEther, formatUnits, parseEther } from 'ethers';
-import { useAccount, useBalance, useConnections, useConnectorClient, useSwitchChain } from 'wagmi';
+import { useAccount, useBalance, useConnect, useConnections, useSwitchChain } from 'wagmi';
+import {} from 'wagmi/connectors';
 import { config } from '../../config';
-import { config as rainbowConfig } from '../../providers';
 import { BuyButton } from './BuyButton';
 import {
   NETWORK_BSC,
@@ -91,10 +91,12 @@ export const BuyWindow = () => {
   const [token, setToken] = useState('');
 
   const account = useAccount();
-  const connections = useConnections()
+  const { connect, connectors } = useConnect();
+  const connections = useConnections();
+  const checkConnector = connections[0]?.connector.name;
 
-  
-  const { address, status, chainId,  } = useAccount();
+  const { address, status, chainId } = useAccount();
+
   const { switchChain } = useSwitchChain();
 
   const mounted = useIsMounted();
@@ -107,7 +109,13 @@ export const BuyWindow = () => {
     address: address,
     token: ETH_USDT_ADDRESS,
   });
+
   const ethUsdtValue = Number(ethUsdt?.formatted); //.toFixed(3);
+  const { data: solanaUsdt } = useBalance({
+    address: address,
+    //token: SOL_USDT_ADDRESS,
+  });
+  const solanaUsdtValue = Number(solanaUsdt?.formatted);
   const { data: ethEth } = useBalance({
     address: address,
   });
@@ -119,8 +127,14 @@ export const BuyWindow = () => {
   });
 
   const bnbBNBValue = Math.floor(bnbBNB?.formatted * 1000) / 1000;
-  
-  console.log(connections[0]?.connector.name);
+
+  const { data: solanaSol } = useBalance({
+    address: address,
+  });
+
+  const solanaSolValue = Math.floor(solanaSol?.formatted * 1000) / 1000;
+
+  console.log(connectors);
   useEffect(() => {
     const calculateBalanceInFiat = (coinValue) => {
       const price = getBaseCoinPrice();
@@ -181,7 +195,7 @@ export const BuyWindow = () => {
         setUsdtPerStage(USDT_STAGE_1);
         setCollected(tokenSold * tokenPriceActually);
         setProgress((collected / usdtPerStage) * 100);
-      } else if (tokenSold >= TOKEN_CAP_STAGE_1 && tokenSold < 11950000) {
+      } else if (tokenSold >= TOKEN_CAP_STAGE_1 && tokenSold < 6410714) {
         setStage('Stage 2');
         setTokenPriceActually(0.08);
         setCapPerStage(TOKEN_CAP_STAGE_2);
@@ -386,6 +400,16 @@ export const BuyWindow = () => {
     setToken(arg);
     setTokenBNB(arg);
     setTokenImgBNB(argImg);
+    setTokensFromAmount('');
+    setTokensToAmount('');
+    setBalanceValue(balance);
+    setBalanceValueFiat(balanceFiat);
+  };
+  const handlerChangeTokenSolana = (arg, argImg, balance, balanceFiat) => {
+    setDropNetwork(!dropToken);
+    setToken(arg);
+    setTokenSOL(arg);
+    setTokenImgSOL(argImg);
     setTokensFromAmount('');
     setTokensToAmount('');
     setBalanceValue(balance);
@@ -746,6 +770,52 @@ export const BuyWindow = () => {
                     </div>
                   )
                 : null}
+              {network === NETWORK_SOLANA
+                ? dropToken && (
+                    <div className={style.drop_token}>
+                      <div
+                        className={style.button_drop}
+                        onClick={() =>
+                          handlerChangeTokenSolana(TOKEN_SOL, SOL, solanaSolValue.toFixed(3), 0)
+                        }>
+                        <div className={style.button_drop_left}>
+                          <img src={SOL} alt="" />
+                          <p>SOL</p>
+                        </div>
+                        <div className={style.button_drop_right}>
+                          <p className={style.balanceValue}>
+                            {solanaSolValue > 0.001 ? solanaSolValue.toFixed(3) : 0}
+                          </p>
+                          <p
+                            className={style.balanceValue}
+                            style={{ color: 'gray', fontWeight: '300' }}>
+                            ${0}
+                          </p>
+                        </div>
+                      </div>
+                      <div
+                        className={style.button_drop}
+                        onClick={() =>
+                          handlerChangeTokenETH(TOKEN_USDT, USDT, solanaUsdtValue.toFixed(3), 0)
+                        }>
+                        <div className={style.button_drop_left}>
+                          <img src={USDT} alt="" />
+                          <p>USDT</p>
+                        </div>
+                        <div className={style.button_drop_right}>
+                          <p className={style.balanceValue}>
+                            {ethUsdtValue > 0.001 ? ethUsdtValue.toFixed(3) : 0}
+                          </p>
+                          <p
+                            className={style.balanceValue}
+                            style={{ color: 'gray', fontWeight: '300' }}>
+                            ${0}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                : null}
             </div>
             <div className={style.max_input}>
               <input
@@ -826,7 +896,8 @@ export const BuyWindow = () => {
       ) : successful ? (
         <Successful />
       ) : (
-        account.status === 'connected' && (
+        account.status === 'connected' &&
+        network !== NETWORK_SOLANA && (
           <BuyButton
             error={error}
             tokensToAmount={tokensToAmount}
@@ -845,16 +916,22 @@ export const BuyWindow = () => {
       )}
 
       <div className={style.ConnectButton}>
-        {mounted
-          ? account.status === 'disconnected' && (
-              <ConnectButton
-                style={{ marginBottom: '20px', marginTop: '20px' }}
-                accountStatus="address"
-                showBalance={false}
-                label="Connect Wallet"
-              />
-            )
-          : null}
+        {network === NETWORK_SOLANA &&
+        checkConnector !== 'Phantom' &&
+        account.status === 'connected' ? (
+          <div className={style.pay_button} style={{ width: '100%' }}>
+            Connect SOL wallet first
+          </div>
+        ) : (
+          account.status === 'disconnected' && (
+            <ConnectButton
+              style={{ marginBottom: '20px', marginTop: '20px' }}
+              accountStatus="address"
+              showBalance={false}
+              label="Connect Wallet"
+            />
+          )
+        )}
       </div>
     </div>
   );

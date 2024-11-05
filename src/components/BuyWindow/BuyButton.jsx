@@ -8,7 +8,7 @@ import style from './BuyWindow.module.scss';
 import { NETWORK_ETHEREUM, TOKEN_USDT } from './constants';
 import { ERC_20_ABI } from './erc-20-abi';
 import { FLARY_PRESALE_ABI } from './flary-contract-abi';
-import { ErrorTransaction } from './ErrorTransaction/ErrorTransaction';
+
 
 const {
   ETH_CONTRACT_SEPOLIA_ADDRESS,
@@ -210,8 +210,8 @@ export const BuyButton = ({
       className={style.pay_button}
       onClick={() => buyCoins()}
       style={
-        error || isDisconnected
-          ? // || buyLimit < 50
+        error || isDisconnected|| buyLimit < 50
+          ? 
             {
               opacity: '0.3',
               pointerEvents: 'none',
