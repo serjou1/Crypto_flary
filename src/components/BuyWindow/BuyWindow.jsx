@@ -134,7 +134,7 @@ export const BuyWindow = () => {
 
   const solanaSolValue = Math.floor(solanaSol?.formatted * 1000) / 1000;
 
-  console.log(connectors);
+  console.log(checkConnector);
   useEffect(() => {
     const calculateBalanceInFiat = (coinValue) => {
       const price = getBaseCoinPrice();
@@ -616,7 +616,11 @@ export const BuyWindow = () => {
             <p className={style.labelLine}>You pay: </p>
             <div
               className={style.button}
-              onClick={account.status === 'disconnected' ? null : handlerClickToken}
+              onClick={
+                account.status === 'disconnected' || network === NETWORK_SOLANA
+                  ? null
+                  : handlerClickToken
+              }
               style={
                 dropToken ? { borderBottomLeftRadius: '0', borderBottomRightRadius: '0' } : {}
               }>
@@ -641,10 +645,14 @@ export const BuyWindow = () => {
                   {' '}
                   <img src={tokenImgSOL} alt="" />
                   <p>{tokenSOL}</p>{' '}
-                  {account.status === 'disconnected' ? '' : <img src={Arrow} alt="" />}
+                  {account.status === 'disconnected' || network === NETWORK_SOLANA ? (
+                    ''
+                  ) : (
+                    <img src={Arrow} alt="" />
+                  )}
                 </div>
               )}
-              {account.status === 'disconnected' ? (
+              {account.status === 'disconnected' || network === NETWORK_SOLANA ? (
                 ''
               ) : (
                 <div>
@@ -804,7 +812,7 @@ export const BuyWindow = () => {
                         </div>
                         <div className={style.button_drop_right}>
                           <p className={style.balanceValue}>
-                            {ethUsdtValue > 0.001 ? ethUsdtValue.toFixed(3) : 0}
+                            {solanaUsdtValue > 0.001 ? solanaUsdtValue.toFixed(3) : 0}
                           </p>
                           <p
                             className={style.balanceValue}
@@ -848,7 +856,7 @@ export const BuyWindow = () => {
                 }}
               />
               {mounted
-                ? account.status === 'connected' && (
+                ? (account.status === 'connected' && network !==NETWORK_SOLANA) && (
                     <p className={style.max} onClick={maxValue}>
                       MAX
                     </p>
