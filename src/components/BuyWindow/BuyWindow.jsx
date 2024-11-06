@@ -15,7 +15,7 @@ import { JsonRpcProvider } from '@ethersproject/providers'; // Импорт пр
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Contract, ethers, formatEther, formatUnits, parseEther } from 'ethers';
 import { useAccount, useBalance, useConnect, useConnections, useSwitchChain } from 'wagmi';
-import {} from 'wagmi/connectors';
+import { } from 'wagmi/connectors';
 import { config } from '../../config';
 import { BuyButton } from './BuyButton';
 import {
@@ -31,6 +31,7 @@ import {
   TOKEN_CAP_STAGE_6,
   TOKEN_ETHEREUM,
   TOKEN_SOL,
+  TOKEN_USDC,
   TOKEN_USDT,
   USDT_STAGE_1,
   USDT_STAGE_2,
@@ -47,6 +48,7 @@ import { PopupNetwork } from './PopapNetwork/PopupNetwork';
 import { PRICE_FEED_ABI } from './price-feed-abi';
 import { Successful } from './Successful/Successful';
 import { useIsMounted } from './useIsMounted';
+import { getSolanaPrice } from './solana/get-solana-price';
 
 const {
   ETH_CONTRACT_ADDRESS,
@@ -209,8 +211,8 @@ export const BuyWindow = () => {
         setUsdtPerStage(USDT_STAGE_2 + USDT_STAGE_1 + USDT_STAGE_3);
         setCollected(
           (tokenSold - TOKEN_CAP_STAGE_1 - TOKEN_CAP_STAGE_2) * tokenPriceActually +
-            USDT_STAGE_2 +
-            USDT_STAGE_1,
+          USDT_STAGE_2 +
+          USDT_STAGE_1,
         );
         setProgress((collected / usdtPerStage) * 100);
       } else if (tokenSold >= 16137500 && tokenSold < 20087500) {
@@ -220,10 +222,10 @@ export const BuyWindow = () => {
         setUsdtPerStage(USDT_STAGE_2 + USDT_STAGE_1 + USDT_STAGE_3 + USDT_STAGE_4);
         setCollected(
           (tokenSold - TOKEN_CAP_STAGE_1 - TOKEN_CAP_STAGE_2 - TOKEN_CAP_STAGE_3) *
-            tokenPriceActually +
-            USDT_STAGE_2 +
-            USDT_STAGE_1 +
-            USDT_STAGE_3,
+          tokenPriceActually +
+          USDT_STAGE_2 +
+          USDT_STAGE_1 +
+          USDT_STAGE_3,
         );
         setProgress((collected / usdtPerStage) * 100);
       } else if (tokenSold >= 20087500 && tokenSold < 23750000) {
@@ -237,11 +239,11 @@ export const BuyWindow = () => {
             TOKEN_CAP_STAGE_2 -
             TOKEN_CAP_STAGE_3 -
             TOKEN_CAP_STAGE_4) *
-            tokenPriceActually +
-            USDT_STAGE_2 +
-            USDT_STAGE_1 +
-            USDT_STAGE_3 +
-            USDT_STAGE_4,
+          tokenPriceActually +
+          USDT_STAGE_2 +
+          USDT_STAGE_1 +
+          USDT_STAGE_3 +
+          USDT_STAGE_4,
         );
         setProgress((collected / usdtPerStage) * 100);
       } else {
@@ -258,12 +260,12 @@ export const BuyWindow = () => {
             TOKEN_CAP_STAGE_3 -
             TOKEN_CAP_STAGE_4 -
             TOKEN_CAP_STAGE_5) *
-            tokenPriceActually +
-            USDT_STAGE_2 +
-            USDT_STAGE_1 +
-            USDT_STAGE_3 +
-            USDT_STAGE_4 +
-            USDT_STAGE_5,
+          tokenPriceActually +
+          USDT_STAGE_2 +
+          USDT_STAGE_1 +
+          USDT_STAGE_3 +
+          USDT_STAGE_4 +
+          USDT_STAGE_5,
         );
         setProgress((collected / usdtPerStage) * 100);
       }
@@ -425,6 +427,14 @@ export const BuyWindow = () => {
     return contract;
   };
 
+  const initializeSolanaPrice = async () => {
+    const price = await getSolanaPrice();
+    console.log('Solana price is', price);
+
+    networkPrices[NETWORK_SOLANA] = price;
+    setNetworkPrices(networkPrices);
+  };
+
   const initializeNativeCurrencyPrice = async (network) => {
     const providerRpc = network === NETWORK_ETHEREUM ? RPC_ETH : RPC_BSC;
 
@@ -460,6 +470,7 @@ export const BuyWindow = () => {
   const updateTokenHoldings = async () => {
     await initializeNativeCurrencyPrice(NETWORK_ETHEREUM);
     await initializeNativeCurrencyPrice(NETWORK_BSC);
+    await initializeSolanaPrice();
 
     const providerEth = new ethers.JsonRpcProvider(RPC_ETH);
     const contract = getContract(NETWORK_ETHEREUM, providerEth);
@@ -487,14 +498,13 @@ export const BuyWindow = () => {
       return tokenETH !== TOKEN_USDT;
     } else if (network === NETWORK_BSC) {
       return tokenBNB !== TOKEN_USDT;
+    } else if (network === NETWORK_SOLANA) {
+      return tokenSOL !== TOKEN_USDC;
     }
     return false;
   };
 
   const getBaseCoinPrice = () => {
-    // console.log('network', network);
-    // console.log(networkPrices.Ethereum);
-
     return networkPrices[network];
   };
 
@@ -524,6 +534,22 @@ export const BuyWindow = () => {
 
     return (Number(formatEther(balanceAfterGas.toString())) - 0.001).toFixed(4); // Возвращаем результат в ETH или BNB
   };
+
+  const updateReceivedValue = (amountToPay) => {
+    console.log("Update received price");
+
+    setTokensToAmount(amountToPay);
+
+    const _isBaseCoinSelected = isBaseCoinSelected();
+
+    const tokensFromAmountNew =
+      (amountToPay * tokenPrice) / (_isBaseCoinSelected ? getBaseCoinPrice() : 1);
+    setTokensFromAmount(tokensFromAmountNew);
+
+    console.log("Is base coin selected", _isBaseCoinSelected);
+    console.log("Amount to pay", amountToPay);
+    console.log("Tokens from amount", tokensFromAmountNew);
+  }
 
   return (
     <div className={style.BuyWindow}>
@@ -573,11 +599,11 @@ export const BuyWindow = () => {
           style={
             dropNetwork
               ? {
-                  borderBottomLeftRadius: '0',
-                  borderBottomRightRadius: '0',
-                  padding: '10px 15px',
-                  width: '100%',
-                }
+                borderBottomLeftRadius: '0',
+                borderBottomRightRadius: '0',
+                padding: '10px 15px',
+                width: '100%',
+              }
               : { padding: '10px 15px', width: '100%' }
           }>
           <div className={style.button_tittle}>
@@ -668,161 +694,161 @@ export const BuyWindow = () => {
               )}
               {network === NETWORK_BSC
                 ? dropToken && (
-                    <div className={style.drop_token}>
-                      <div
-                        className={style.button_drop}
-                        onClick={() =>
-                          handlerChangeTokenBNB(
-                            TOKEN_BNB,
-                            BNB,
-                            bnbBNBValue.toFixed(3),
-                            bnbBNBValueFiat,
-                          )
-                        }>
-                        <div className={style.button_drop_left}>
-                          <img src={BNB} alt="" />
-                          <p>BNB</p>
-                        </div>
-                        <div className={style.button_drop_right}>
-                          <p className={style.balanceValue}>
-                            {bnbBNBValue > 0 ? bnbBNBValue.toFixed(3) : 0}
-                          </p>
-                          <p
-                            className={style.balanceValue}
-                            style={{ color: 'gray', fontWeight: '300' }}>
-                            ${bnbBNBValueFiat}
-                          </p>
-                        </div>
+                  <div className={style.drop_token}>
+                    <div
+                      className={style.button_drop}
+                      onClick={() =>
+                        handlerChangeTokenBNB(
+                          TOKEN_BNB,
+                          BNB,
+                          bnbBNBValue.toFixed(3),
+                          bnbBNBValueFiat,
+                        )
+                      }>
+                      <div className={style.button_drop_left}>
+                        <img src={BNB} alt="" />
+                        <p>BNB</p>
                       </div>
-                      <div
-                        className={style.button_drop}
-                        onClick={() =>
-                          handlerChangeTokenBNB(
-                            TOKEN_USDT,
-                            USDT,
-                            bnbUsdtValue.toFixed(3),
-                            bnbUsdtValueFiat,
-                          )
-                        }>
-                        <div className={style.button_drop_left}>
-                          <img src={USDT} alt="" />
-                          <p>USDT</p>
-                        </div>
-                        <div className={style.button_drop_right}>
-                          <p className={style.balanceValue}>
-                            {bnbUsdtValue > 0.001 ? bnbUsdtValue.toFixed(3) : 0}
-                          </p>
-                          <p
-                            className={style.balanceValue}
-                            style={{ color: 'gray', fontWeight: '300' }}>
-                            ${bnbUsdtValueFiat}
-                          </p>
-                        </div>
+                      <div className={style.button_drop_right}>
+                        <p className={style.balanceValue}>
+                          {bnbBNBValue > 0 ? bnbBNBValue.toFixed(3) : 0}
+                        </p>
+                        <p
+                          className={style.balanceValue}
+                          style={{ color: 'gray', fontWeight: '300' }}>
+                          ${bnbBNBValueFiat}
+                        </p>
                       </div>
                     </div>
-                  )
+                    <div
+                      className={style.button_drop}
+                      onClick={() =>
+                        handlerChangeTokenBNB(
+                          TOKEN_USDT,
+                          USDT,
+                          bnbUsdtValue.toFixed(3),
+                          bnbUsdtValueFiat,
+                        )
+                      }>
+                      <div className={style.button_drop_left}>
+                        <img src={USDT} alt="" />
+                        <p>USDT</p>
+                      </div>
+                      <div className={style.button_drop_right}>
+                        <p className={style.balanceValue}>
+                          {bnbUsdtValue > 0.001 ? bnbUsdtValue.toFixed(3) : 0}
+                        </p>
+                        <p
+                          className={style.balanceValue}
+                          style={{ color: 'gray', fontWeight: '300' }}>
+                          ${bnbUsdtValueFiat}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )
                 : null}
               {network === NETWORK_ETHEREUM
                 ? dropToken && (
-                    <div className={style.drop_token}>
-                      <div
-                        className={style.button_drop}
-                        onClick={() =>
-                          handlerChangeTokenETH(
-                            TOKEN_ETHEREUM,
-                            ETH,
-                            ethEthValue.toFixed(3),
-                            ethEthValueFiat,
-                          )
-                        }>
-                        <div className={style.button_drop_left}>
-                          <img src={ETH} alt="" />
-                          <p>ETH</p>
-                        </div>
-                        <div className={style.button_drop_right}>
-                          <p className={style.balanceValue}>
-                            {ethEthValue > 0.001 ? ethEthValue.toFixed(3) : 0}
-                          </p>
-                          <p
-                            className={style.balanceValue}
-                            style={{ color: 'gray', fontWeight: '300' }}>
-                            ${ethEthValueFiat}
-                          </p>
-                        </div>
+                  <div className={style.drop_token}>
+                    <div
+                      className={style.button_drop}
+                      onClick={() =>
+                        handlerChangeTokenETH(
+                          TOKEN_ETHEREUM,
+                          ETH,
+                          ethEthValue.toFixed(3),
+                          ethEthValueFiat,
+                        )
+                      }>
+                      <div className={style.button_drop_left}>
+                        <img src={ETH} alt="" />
+                        <p>ETH</p>
                       </div>
-                      <div
-                        className={style.button_drop}
-                        onClick={() =>
-                          handlerChangeTokenETH(
-                            TOKEN_USDT,
-                            USDT,
-                            ethUsdtValue.toFixed(3),
-                            ethUsdtValueFiat,
-                          )
-                        }>
-                        <div className={style.button_drop_left}>
-                          <img src={USDT} alt="" />
-                          <p>USDT</p>
-                        </div>
-                        <div className={style.button_drop_right}>
-                          <p className={style.balanceValue}>
-                            {ethUsdtValue > 0.001 ? ethUsdtValue.toFixed(3) : 0}
-                          </p>
-                          <p
-                            className={style.balanceValue}
-                            style={{ color: 'gray', fontWeight: '300' }}>
-                            ${ethUsdtValueFiat}
-                          </p>
-                        </div>
+                      <div className={style.button_drop_right}>
+                        <p className={style.balanceValue}>
+                          {ethEthValue > 0.001 ? ethEthValue.toFixed(3) : 0}
+                        </p>
+                        <p
+                          className={style.balanceValue}
+                          style={{ color: 'gray', fontWeight: '300' }}>
+                          ${ethEthValueFiat}
+                        </p>
                       </div>
                     </div>
-                  )
+                    <div
+                      className={style.button_drop}
+                      onClick={() =>
+                        handlerChangeTokenETH(
+                          TOKEN_USDT,
+                          USDT,
+                          ethUsdtValue.toFixed(3),
+                          ethUsdtValueFiat,
+                        )
+                      }>
+                      <div className={style.button_drop_left}>
+                        <img src={USDT} alt="" />
+                        <p>USDT</p>
+                      </div>
+                      <div className={style.button_drop_right}>
+                        <p className={style.balanceValue}>
+                          {ethUsdtValue > 0.001 ? ethUsdtValue.toFixed(3) : 0}
+                        </p>
+                        <p
+                          className={style.balanceValue}
+                          style={{ color: 'gray', fontWeight: '300' }}>
+                          ${ethUsdtValueFiat}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )
                 : null}
               {network === NETWORK_SOLANA
                 ? dropToken && (
-                    <div className={style.drop_token}>
-                      <div
-                        className={style.button_drop}
-                        onClick={() =>
-                          handlerChangeTokenSolana(TOKEN_SOL, SOL, solanaSolValue.toFixed(3), 0)
-                        }>
-                        <div className={style.button_drop_left}>
-                          <img src={SOL} alt="" />
-                          <p>SOL</p>
-                        </div>
-                        <div className={style.button_drop_right}>
-                          <p className={style.balanceValue}>
-                            {solanaSolValue > 0.001 ? solanaSolValue.toFixed(3) : 0}
-                          </p>
-                          <p
-                            className={style.balanceValue}
-                            style={{ color: 'gray', fontWeight: '300' }}>
-                            ${0}
-                          </p>
-                        </div>
+                  <div className={style.drop_token}>
+                    <div
+                      className={style.button_drop}
+                      onClick={() =>
+                        handlerChangeTokenSolana(TOKEN_SOL, SOL, solanaSolValue.toFixed(3), 0)
+                      }>
+                      <div className={style.button_drop_left}>
+                        <img src={SOL} alt="" />
+                        <p>SOL</p>
                       </div>
-                      <div
-                        className={style.button_drop}
-                        onClick={() =>
-                          handlerChangeTokenETH(TOKEN_USDT, USDT, solanaUsdtValue.toFixed(3), 0)
-                        }>
-                        <div className={style.button_drop_left}>
-                          <img src={USDT} alt="" />
-                          <p>USDT</p>
-                        </div>
-                        <div className={style.button_drop_right}>
-                          <p className={style.balanceValue}>
-                            {solanaUsdtValue > 0.001 ? solanaUsdtValue.toFixed(3) : 0}
-                          </p>
-                          <p
-                            className={style.balanceValue}
-                            style={{ color: 'gray', fontWeight: '300' }}>
-                            ${0}
-                          </p>
-                        </div>
+                      <div className={style.button_drop_right}>
+                        <p className={style.balanceValue}>
+                          {solanaSolValue > 0.001 ? solanaSolValue.toFixed(3) : 0}
+                        </p>
+                        <p
+                          className={style.balanceValue}
+                          style={{ color: 'gray', fontWeight: '300' }}>
+                          ${0}
+                        </p>
                       </div>
                     </div>
-                  )
+                    <div
+                      className={style.button_drop}
+                      onClick={() =>
+                        handlerChangeTokenETH(TOKEN_USDT, USDT, solanaUsdtValue.toFixed(3), 0)
+                      }>
+                      <div className={style.button_drop_left}>
+                        <img src={USDT} alt="" />
+                        <p>USDT</p>
+                      </div>
+                      <div className={style.button_drop_right}>
+                        <p className={style.balanceValue}>
+                          {solanaUsdtValue > 0.001 ? solanaUsdtValue.toFixed(3) : 0}
+                        </p>
+                        <p
+                          className={style.balanceValue}
+                          style={{ color: 'gray', fontWeight: '300' }}>
+                          ${0}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )
                 : null}
             </div>
             <div className={style.max_input}>
@@ -856,11 +882,11 @@ export const BuyWindow = () => {
                 }}
               />
               {mounted
-                ? (account.status === 'connected' && network !==NETWORK_SOLANA) && (
-                    <p className={style.max} onClick={maxValue}>
-                      MAX
-                    </p>
-                  )
+                ? (account.status === 'connected' && network !== NETWORK_SOLANA) && (
+                  <p className={style.max} onClick={maxValue}>
+                    MAX
+                  </p>
+                )
                 : null}
             </div>
           </div>
@@ -879,12 +905,7 @@ export const BuyWindow = () => {
               placeholder="0.0"
               value={tokensToAmount}
               onChange={(e) => {
-                const value = Number(e.target.value);
-
-                setTokensToAmount(value);
-                const tokensFromAmountNew =
-                  (value * tokenPrice) / (isBaseCoinSelected() ? getBaseCoinPrice() : 1);
-                setTokensFromAmount(tokensFromAmountNew);
+                updateReceivedValue(Number(e.target.value))
               }}
             />
           </div>
@@ -918,15 +939,15 @@ export const BuyWindow = () => {
             setProgress={setProgress}
             setSuccessful={setSuccessful}
             setErrorTransaction={setErrorTransaction}
-            // Amount_FOR_STAGE={Amount_FOR_STAGE}
+          // Amount_FOR_STAGE={Amount_FOR_STAGE}
           />
         )
       )}
 
       <div className={style.ConnectButton}>
         {network === NETWORK_SOLANA &&
-        checkConnector !== 'Phantom' &&
-        account.status === 'connected' ? (
+          checkConnector !== 'Phantom' &&
+          account.status === 'connected' ? (
           <div className={style.pay_button} style={{ width: '100%' }}>
             Connect SOL wallet first
           </div>
