@@ -5,20 +5,38 @@ import { useAccount, useBalance, useReadContract, useWriteContract } from 'wagmi
 import { config } from '../../config';
 import { config as rainbowConfig } from '../../providers';
 import style from './BuyWindow.module.scss';
-import { NETWORK_ETHEREUM, TOKEN_USDT } from './constants';
+import { NETWORK_ETHEREUM, NETWORK_SOLANA, TOKEN_USDT } from './constants';
 import { ERC_20_ABI } from './erc-20-abi';
 import { FLARY_PRESALE_ABI } from './flary-contract-abi';
-
+import { buyTokensUsdcSolana } from './solana/buy-coins-for-solana-usdc';
+import { useBuy } from './BuyContext';
+import { BuyButtonSolana } from './BuyButtonSolana';
+import { BuyButtonEvm } from './BuyButtonEvm';
 
 const {
-  ETH_CONTRACT_SEPOLIA_ADDRESS,
   ETH_CONTRACT_ADDRESS,
   BSC_CONTRACT_ADDRESS,
   ETH_USDT_ADDRESS,
   BSC_USDT_ADDRESS,
 } = config;
 
-export const BuyButton = ({
+export const BuyButton = () => {
+  const { network } = useBuy();
+
+  return (
+    <>
+      {
+        network === NETWORK_SOLANA
+          ? <BuyButtonSolana />
+          : <BuyButtonEvm />
+      }
+    </>
+  );
+};
+
+
+
+export const BuyButton2 = ({
   error,
   tokensToAmount,
   network,
@@ -37,12 +55,10 @@ export const BuyButton = ({
   const [usdtAddress, setUsdtAddress] = useState(null);
   const [amountNative, setAmountNative] = useState(0);
   const [amountUsdt, setAmountUsdt] = useState(0);
-  
 
   useEffect(() => {
-    
     setBuyLimit(tokensToAmount * 4);
-  }, [ tokensToAmount]);
+  }, [tokensToAmount]);
 
   useEffect(() => {
     const address = network === NETWORK_ETHEREUM ? ETH_CONTRACT_ADDRESS : BSC_CONTRACT_ADDRESS;
@@ -116,10 +132,10 @@ export const BuyButton = ({
     }
     try {
       setLoading(true);
-      
+
       console.log('Attempting to buy tokens...');
 
- 
+
       const buyHash = await buyTokensNativeWrite({
         address: contractAddress,
         abi: FLARY_PRESALE_ABI,
@@ -140,7 +156,7 @@ export const BuyButton = ({
     }
   };
 
-  
+
 
   useEffect(() => {
     if (isErrorNative) {
@@ -188,6 +204,10 @@ export const BuyButton = ({
     }
   };
   const buyCoins = async () => {
+    if (network === NETWORK_SOLANA) {
+      await buyTokensSolana();
+    }
+
     if (tokensFromAmount <= 0) {
       alert('Please');
     } else {
@@ -201,27 +221,35 @@ export const BuyButton = ({
     await updateTokenHoldings();
   };
 
-
-
   return (
-    <>
-   
     <div
       className={style.pay_button}
       onClick={() => buyCoins()}
       style={
-        error || isDisconnected|| buyLimit < 50
-          ? 
-            {
-              opacity: '0.3',
-              pointerEvents: 'none',
-              cursor: 'not-allowed',
-            }
+        error || isDisconnected || buyLimit < 50
+          ?
+          {
+            opacity: '0.3',
+            pointerEvents: 'none',
+            cursor: 'not-allowed',
+          }
           : { opacity: '1' }
       }>
       {buyLimit < 50 ? 'Minimum purchase is $50' : 'Buy FLFI'}
-      {isErrorNative && <p>error</p>}
+      {isErrorNative && <p>{error}</p>}
     </div>
-    </>
   );
+};
+
+const buyTokensSolana = async (
+  coin,
+  amount,
+) => {
+  // console.log('Buying tokens on Solana...');
+
+  // const { connection } = useConnection();
+
+  // if (coin === 'USDC') {
+  //   await buyTokensUsdcSolana(amount);
+  // }
 };
