@@ -24,11 +24,13 @@ const {
 const flaryTokenSaleAddress = new PublicKey("2EBs8GKZGfrnQSdhQfHmxa1Mik2UgGXRV6kRjS4h8G8T");
 const USDC_MINT_ADDRESS = new PublicKey(SOL_USDC_ADDRESS);
 
-export const BuyButtonSolana = () => {
+export const BuyButtonSolana = ({
+    updateTokenHoldings
+}) => {
     const { connected: isSolanaConnected } = useWalletSolana();
 
     return (
-        (isSolanaConnected ? <ProcessPaymentButtonSolana /> : <ConnectSolanaButton />)
+        (isSolanaConnected ? <ProcessPaymentButtonSolana updateTokenHoldings={updateTokenHoldings} /> : <ConnectSolanaButton />)
     );
 };
 
@@ -48,11 +50,13 @@ const ConnectSolanaButton = () => {
     )
 };
 
-const ProcessPaymentButtonSolana = () => {
+const ProcessPaymentButtonSolana = ({
+    updateTokenHoldings
+}) => {
     const { connection } = useConnection();
     const { publicKey, sendTransaction } = useWallet();
 
-    const { token, tokensFromAmount, setLoading, tokensToAmount } = useBuy();
+    const { token, tokensFromAmount, setLoading, tokensToAmount, setErrorTransaction, setSuccessful } = useBuy();
 
     const buyTokensWithSolana = async () => {
         try {
@@ -116,11 +120,6 @@ const ProcessPaymentButtonSolana = () => {
         } finally {
             setLoading(false);
         }
-
-
-        await updateTokenHoldings();
-
-        setLoading(false);
     };
 
     return (

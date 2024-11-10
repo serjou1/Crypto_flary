@@ -5,15 +5,15 @@ import { useBuy } from './BuyContext';
 import { BuyButtonSolana } from './BuyButtonSolana';
 import { BuyButtonEvm } from './BuyButtonEvm';
 
-export const BuyButton = () => {
+export const BuyButton = ({ updateTokenHoldings }) => {
   const { network } = useBuy();
 
   return (
     <>
       {
         network === NETWORK_SOLANA
-          ? <BuyButtonSolana />
-          : <BuyButtonEvm />
+          ? <BuyButtonSolana updateTokenHoldings={updateTokenHoldings} />
+          : <BuyButtonEvm updateTokenHoldings={updateTokenHoldings} />
       }
     </>
   );
