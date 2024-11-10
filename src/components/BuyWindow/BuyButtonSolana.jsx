@@ -8,15 +8,17 @@ import { BN, Program } from "@coral-xyz/anchor";
 import { Buffer } from 'buffer';
 import { TOKEN_SOL } from './constants';
 import { config } from '../../config';
-import { getAssociatedTokenAddress, TOKEN_PROGRAM_ID, TOKEN_2022_PROGRAM_ID } from '@solana/spl-token';
+import { getAssociatedTokenAddress } from '@solana/spl-token';
 import { useWallet as useWalletSolana } from '@solana/wallet-adapter-react';
 import { useBuy } from './BuyContext';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
+import { MakeAPurchaseButton } from './BuyButton';
 
 window.Buffer = Buffer;
 
 const {
-    SOL_USDC_ADDRESS
+    SOL_USDC_ADDRESS,
+    TOKEN_PROGRAM
 } = config;
 
 const flaryTokenSaleAddress = new PublicKey("2EBs8GKZGfrnQSdhQfHmxa1Mik2UgGXRV6kRjS4h8G8T");
@@ -63,11 +65,7 @@ const ProcessPaymentButtonSolana = () => {
     };
 
     return (
-        <div
-            className={style.pay_button}
-            onClick={() => (token === TOKEN_SOL ? buyTokensWithSolana : buyTokensWithUsdc)()}>
-            Buy FLFI
-        </div>
+        <MakeAPurchaseButton onClick={() => (token === TOKEN_SOL ? buyTokensWithSolana : buyTokensWithUsdc)()} />
     )
 }
 
@@ -129,7 +127,7 @@ const getBuyWithUsdcTransaction = async (publicKey, connection, amount) => {
         USDC_MINT_ADDRESS,
         publicKey,
         false,
-        TOKEN_2022_PROGRAM_ID
+        TOKEN_PROGRAM
     );
 
     const instruction = await saleProgram
@@ -137,7 +135,7 @@ const getBuyWithUsdcTransaction = async (publicKey, connection, amount) => {
         .buyTokensUsdt(amountBn)
         .accounts({
             usdtMint: USDC_MINT_ADDRESS,
-            tokenProgram: TOKEN_2022_PROGRAM_ID,
+            tokenProgram: TOKEN_PROGRAM,
             signerUsdtMint: usdcAddress,
             user: publicKey,
             systemProgram: SystemProgram.programId,

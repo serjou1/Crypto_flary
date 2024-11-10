@@ -1,3 +1,5 @@
+import { TOKEN_PROGRAM_ID, TOKEN_2022_PROGRAM_ID } from '@solana/spl-token';
+
 export const config = {
     ETH_CONTRACT_ADDRESS: "0xDC55a5aCcAB5cf8C6B3286920C282fe3AA6AE68F",
     BSC_CONTRACT_ADDRESS: "0x32ceB379Ac314A1FbFF5BE37B0875172893Cd79f",
@@ -8,5 +10,7 @@ export const config = {
     RPC_ETH: "https://eth.drpc.org",
     RPC_BSC: "https://bscrpc.com",
 
-    SOL_USDC_ADDRESS: "8sBN4LKrFeqgUjTZF15rfoVdWoen6c94UKWf3CTQuc7n"
+    SOL_USDC_ADDRESS: "8sBN4LKrFeqgUjTZF15rfoVdWoen6c94UKWf3CTQuc7n",
+
+    TOKEN_PROGRAM: TOKEN_2022_PROGRAM_ID
 };

@@ -8,7 +8,7 @@ import { useBalance } from 'wagmi';
 import { config } from '../../config';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { PublicKey } from '@solana/web3.js';
-import { getAssociatedTokenAddress, TOKEN_PROGRAM_ID, TOKEN_2022_PROGRAM_ID } from '@solana/spl-token';
+import { getAssociatedTokenAddress } from '@solana/spl-token';
 import { useIsMounted } from './useIsMounted';
 import { formatEther, JsonRpcProvider } from 'ethers';
 
@@ -17,7 +17,8 @@ const {
     BSC_USDT_ADDRESS,
     RPC_ETH,
     RPC_BSC,
-    SOL_USDC_ADDRESS
+    SOL_USDC_ADDRESS,
+    TOKEN_PROGRAM
 } = config;
 
 const USDC_MINT_ADDRESS = new PublicKey(SOL_USDC_ADDRESS);
@@ -45,7 +46,10 @@ export const YouPayComponent = () => {
         address,
         networkPrices,
         tokensFromAmount,
-        tokenPrice
+        tokenPrice,
+        inputAmountInUsd,
+        setInputAmountInUsd,
+        chainId
     } = useBuy();
 
     const { connection } = useConnection();
@@ -74,7 +78,7 @@ export const YouPayComponent = () => {
             if (publicKey) {
                 try {
                     const balanceLamports = await connection.getBalance(publicKey);
-                    const balanceSol = balanceLamports / 1e9; // Convert lamports to SOL
+                    const balanceSol = balanceLamports / 1e9;
                     setSolBalance(balanceSol);
                     setSolBalanceFiat(balanceSol * networkPrices[NETWORK_SOLANA]);
                 } catch (error) {
@@ -87,7 +91,7 @@ export const YouPayComponent = () => {
                     USDC_MINT_ADDRESS,
                     publicKey,
                     false,
-                    TOKEN_2022_PROGRAM_ID
+                    TOKEN_PROGRAM
                 );
 
                 console.log('usdcAddress:', usdcAddress.toBase58());
@@ -106,32 +110,34 @@ export const YouPayComponent = () => {
     }, [connection, publicKey]);
 
 
-    // useEffect(() => {
-    //     const calculateBalanceInFiat = (coinValue) => {
-    //         const price = getBaseCoinPrice();
-    //         if (!price) return null;
-    //         return (coinValue * price).toFixed(1);
-    //     };
+    useEffect(() => {
+        const calculateBalanceInFiat = (coinValue) => {
+            const price = getBaseCoinPrice();
+            if (!price) return null;
+            return (coinValue * price).toFixed(1);
+        };
 
-    //     if (ethEth?.formatted) {
-    //         const ethValue = Math.floor(ethEth.formatted * 1000) / 1000;
+        if (ethEth?.formatted) {
+            const ethValue = Math.floor(ethEth.formatted * 1000) / 1000;
 
-    //         if (!isNaN(ethValue)) {
-    //             setBalanceValue(ethEthValue);
-    //             setBalanceValueFiat(calculateBalanceInFiat(ethValue));
-    //         }
-    //     } else if (bnbBNB?.formatted) {
-    //         const bnbValue = Math.floor(bnbBNB.formatted * 1000) / 1000;
-    //         setBalanceValue(bnbValue);
-    //         setBalanceValueFiat(calculateBalanceInFiat(bnbValue));
-    //     }
-    // },
-    //     [ethEth, bnbBNB, network]
-    // );
+            if (!isNaN(ethValue)) {
+                setBalanceValue(ethEthValue);
+                setBalanceValueFiat(calculateBalanceInFiat(ethValue));
+            }
+        } else if (bnbBNB?.formatted) {
+            const bnbValue = Math.floor(bnbBNB.formatted * 1000) / 1000;
+            setBalanceValue(bnbValue);
+            setBalanceValueFiat(calculateBalanceInFiat(bnbValue));
+        }
+    },
+        [address, status, chainId, network]
+    );
 
     const dropTokenList = () => {
         if (network === NETWORK_SOLANA) {
-            // and if solana is disconnected
+            if (!solWalletConnected) {
+                return;
+            }
         } else if (status === 'disconnected') {
             return;
         }
@@ -180,7 +186,7 @@ export const YouPayComponent = () => {
 
     const { data: ethUsdt } = useBalance({
         address: address,
-        token: ETH_USDT_ADDRESS,
+        token: ETH_USDT_ADDRESS
     });
 
     const ethUsdtValue = Number(ethUsdt?.formatted);
@@ -292,10 +298,13 @@ export const YouPayComponent = () => {
             <div className={style.max_input}>
                 <input
                     className={style.input_buy}
-                    type="text"
+                    type="number"
                     placeholder="Enter Amount"
                     value={tokensFromAmount}
                     onChange={(e) => {
+                        const valueFromInput = e.target.value;
+                        console.log('valueFromInput:', valueFromInput);
+
                         const value = e.target.value.replace(/[^0-9.]/g, '');
                         console.log(tokensFromAmount);
                         const trimmedValue = value
@@ -303,18 +312,10 @@ export const YouPayComponent = () => {
                             .replace(/^0+\.$/, '0.')
                             .replace(/^\.$/, '0.');
                         setTokensFromAmount(trimmedValue);
-                        // if (value === 0) {
-                        //   setTokensToAmount('');
-                        // } else {
-                        const tokensToAmountNew =
-                            (Number(value) * (isBaseCoinSelected() ? getBaseCoinPrice() : 1)) / tokenPrice;
 
+                        setInputAmountInUsd(Number(trimmedValue) * (isBaseCoinSelected() ? getBaseCoinPrice() : 1));
 
-                        setTokensToAmount(tokensToAmountNew);
-                        // }
-
-                        // console.log(getBaseCoinPrice() * 2);
-                        // console.log('actual tokens to amount:', tokensToAmount);
+                        setTokensToAmount(inputAmountInUsd / tokenPrice);
                     }}
                 />
                 {mounted

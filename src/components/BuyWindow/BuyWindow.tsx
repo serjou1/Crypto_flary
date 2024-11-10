@@ -11,9 +11,8 @@ import SOL from '../../assets/solana.svg';
 
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 
-import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { ethers, formatUnits } from 'ethers';
-import { useConnections, useSwitchChain } from 'wagmi';
+import { useSwitchChain } from 'wagmi';
 import { } from 'wagmi/connectors';
 import { config } from '../../config';
 import {
@@ -45,13 +44,12 @@ import { PopupNetwork } from './PopapNetwork/PopupNetwork';
 import { Successful } from './Successful/Successful';
 import { getSolanaPrice } from './solana/get-solana-price';
 import { useBuy } from './BuyContext';
-import { BuyButtonSolana } from './BuyButtonSolana';
 import { getContract } from './evm/get-contract';
 import { getEvmNativeCurrencyPrice } from './evm/get-evm-native-coin-price';
 import { getSolanaBoughtTokensFromContract } from './solana/get-solana-bought-tokens';
 import { YouPayComponent } from './YouPayComponent';
 // import { ConnectSolanaButton } from '../Navbar/ConnectSolanaButton';
-import { BuyButton, BuyButton2 } from './BuyButton';
+import { BuyButton } from './BuyButton';
 
 const {
     RPC_ETH,
@@ -67,18 +65,12 @@ export const BuyWindow = () => {
     const [tokenSold, setTokenSold] = useState(0);
     const [networkImg, setNetworkImg] = useState(ETH);
     const [loading, setLoading] = useState(false);
-    const [successful, setSuccessful] = useState(false);
     const [tokenHoldings, setTokenHoldings] = useState('0');
     const [tokenPriceActually, setTokenPriceActually] = useState(0);
-    const [error, setError] = useState(false);
-    const [errorTransaction, setErrorTransaction] = useState(false);
 
     const [openPopupNetwork, setOpenPopupNetwork] = useState(false);
 
-    const connections = useConnections();
-    const checkConnector = connections[0]?.connector.name;
-
-    const { publicKey } = useWallet();
+    const { publicKey, connected: isSolanaConnected } = useWallet();
 
     const {
         address,
@@ -99,7 +91,12 @@ export const BuyWindow = () => {
         network,
         tokenPrice,
         tokensToAmount,
-        tokensFromAmount
+        successful,
+        error,
+        setError,
+        errorTransaction,
+        setSuccessful,
+        setErrorTransaction
     } = useBuy();
 
     const { connection } = useConnection();
@@ -353,12 +350,19 @@ export const BuyWindow = () => {
     };
 
     const updateTokenHoldings = async () => {
-        const boughtTokensEth = await getBoughtTokens(NETWORK_ETHEREUM, address);
-        const boughtTokensBsc = await getBoughtTokens(NETWORK_BSC, address);
+        let sum = 0;
+        if (status === 'connected') {
+            const boughtTokensEth = await getBoughtTokens(NETWORK_ETHEREUM, address);
+            const boughtTokensBsc = await getBoughtTokens(NETWORK_BSC, address);
+            sum = boughtTokensEth + boughtTokensBsc;
+        }
 
-        const boughtTokensSol = await getSolanaBoughtTokens();
+        if (isSolanaConnected) {
+            const boughtTokensSol = await getSolanaBoughtTokens();
+            sum += boughtTokensSol;
+        }
 
-        setTokenHoldings((boughtTokensEth + boughtTokensBsc + boughtTokensSol).toFixed(2));
+        setTokenHoldings(sum.toFixed(2));
     };
 
     const isBaseCoinSelected = () => {
@@ -475,7 +479,6 @@ export const BuyWindow = () => {
                         </div>
                     )}
                 </div>
-
 
                 <div className={style.down_button}>
                     <YouPayComponent />

@@ -28,6 +28,14 @@ export const BuyProvider = ({ children }) => {
 
     const [tokenPrice, setTokenPrice] = useState(0);
 
+    const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [errorTransaction, setErrorTransaction] = useState(false);
+
+    const [inputAmountInUsd, setInputAmountInUsd] = useState(0);
+
+    const [successful, setSuccessful] = useState(false);
+
     return (
         <BuyContext.Provider value={{
             address,
@@ -54,7 +62,17 @@ export const BuyProvider = ({ children }) => {
             networkPrices,
             setNetworkPrices,
             tokenPrice,
-            setTokenPrice
+            setTokenPrice,
+            error,
+            setError,
+            loading,
+            setLoading,
+            errorTransaction,
+            setErrorTransaction,
+            inputAmountInUsd,
+            setInputAmountInUsd,
+            successful,
+            setSuccessful
         }}>
             {children}
         </BuyContext.Provider>
@@ -89,7 +107,17 @@ export const useBuy = () => {
         networkPrices,
         setNetworkPrices,
         tokenPrice,
-        setTokenPrice
+        setTokenPrice,
+        error,
+        setError,
+        loading,
+        setLoading,
+        errorTransaction,
+        setErrorTransaction,
+        inputAmountInUsd,
+        setInputAmountInUsd,
+        successful,
+        setSuccessful
     } = context;
 
     return {
@@ -117,6 +145,16 @@ export const useBuy = () => {
         networkPrices,
         setNetworkPrices,
         tokenPrice,
-        setTokenPrice
+        setTokenPrice,
+        error,
+        setError,
+        loading,
+        setLoading,
+        errorTransaction,
+        setErrorTransaction,
+        inputAmountInUsd,
+        setInputAmountInUsd,
+        successful,
+        setSuccessful
     };
 };
