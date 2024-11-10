@@ -73,7 +73,6 @@ const EvmConnectedButtonContent = () => {
     const [displayAddress, setDisplayAddress] = useState(getDisplayAddress(address));
     const [walletIcon, setWalletIcon] = useState(connector.icon);
 
-
     useEffect(() => {
         setDisplayAddress(getDisplayAddress(address));
 
@@ -98,7 +97,22 @@ const SolanaConnectedButtonContent = () => {
     const [displayAddress, setDisplayAddress] = useState(getDisplayAddress(publicKey.toBase58()));
 
     useEffect(() => {
+        const registerSolanaAddress = async () => {
+            try {
+                const referrerCode = new URLSearchParams(window.location.search).get('ref');
+
+                await fetch("https://back.flary.finance/api/user/registerUser", {
+                    method: "POST",
+                    body: JSON.stringify({ address: publicKey?.toBase58(), referrerCode })
+                });
+            } catch (error) {
+                console.log("Failed to register solana addres", error);
+            }
+        };
+
         setDisplayAddress(getDisplayAddress(publicKey.toBase58()));
+
+        registerSolanaAddress();
     }, [publicKey]);
 
     return (
