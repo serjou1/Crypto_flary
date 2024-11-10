@@ -103,7 +103,7 @@ const ProcessPaymentButtonSolana = () => {
                 try {
                     await fetch("https://back.flary.finance/api/user/boughtTokens", {
                         method: "POST",
-                        body: JSON.stringify({ address: publicKey?.toBase58(), amount: Number(tokensToAmount), chsin: "sol" })
+                        body: JSON.stringify({ address: publicKey?.toBase58(), amount: Number(tokensToAmount), chain: "sol" })
                     });
                 } catch { }
 

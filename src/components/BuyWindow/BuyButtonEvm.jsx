@@ -86,7 +86,8 @@ const BuyWithNativeButton = ({
         tokensFromAmount,
         setLoading,
         setErrorTransaction,
-        setSuccessful
+        setSuccessful,
+        tokensToAmount
     } = useBuy();
 
     const { address } = useAccount();
@@ -139,12 +140,23 @@ const BuyWithNativeButton = ({
                 value: amountNative,
             });
 
-            await waitForTransactionReceipt(rainbowConfig, {
+            const receipt = await waitForTransactionReceipt(rainbowConfig, {
                 hash: buyHash,
             });
 
-            await updateTokenHoldings();
-            setSuccessful(true);
+            if (receipt.status === "success") {
+                try {
+                    await fetch("https://back.flary.finance/api/user/boughtTokens", {
+                        method: "POST",
+                        body: JSON.stringify({ address, amount: Number(tokensToAmount), chain: receipt.chainId === 1 ? "eth" : "bsc" })
+                    });
+                } catch { }
+
+                await updateTokenHoldings();
+                setSuccessful(true);
+            } else {
+                setErrorTransaction(true);
+            }
         } catch (error) {
             setErrorTransaction(true);
             console.log(error);
@@ -169,7 +181,8 @@ const BuyWithUsdtButton = ({
         setError,
         tokensFromAmount,
         setLoading,
-        setSuccessful
+        setSuccessful,
+        tokensToAmount
     } = useBuy();
 
     const { address } = useAccount();
@@ -247,10 +260,21 @@ const BuyWithUsdtButton = ({
                 args: [amountUsdtBigNumber],
             });
 
-            await waitForTransactionReceipt(rainbowConfig, { hash: buyHash });
+            const receipt = await waitForTransactionReceipt(rainbowConfig, { hash: buyHash });
 
-            await updateTokenHoldings();
-            setSuccessful(true);
+            if (receipt.status === "success") {
+                try {
+                    await fetch("https://back.flary.finance/api/user/boughtTokens", {
+                        method: "POST",
+                        body: JSON.stringify({ address, amount: Number(tokensToAmount), chain: receipt.chainId === 1 ? "eth" : "bsc" })
+                    });
+                } catch { }
+
+                await updateTokenHoldings();
+                setSuccessful(true);
+            } else {
+                setErrorTransaction(true);
+            }
         } catch (error) {
             setErrorTransaction(true);
             console.log(error);
