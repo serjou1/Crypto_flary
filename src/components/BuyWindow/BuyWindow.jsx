@@ -303,7 +303,6 @@ export const BuyWindow = () => {
 
   const initializeSolanaPrice = async () => {
     const price = await getSolanaPrice();
-    console.log('Solana price is', price);
 
     networkPrices[NETWORK_SOLANA] = price;
     setNetworkPrices(networkPrices);
@@ -311,7 +310,6 @@ export const BuyWindow = () => {
 
   const initializeNativeCurrencyPrice = async (network) => {
     const price = await getEvmNativeCurrencyPrice(network);
-
 
     networkPrices[network] = price;
     setNetworkPrices(networkPrices);

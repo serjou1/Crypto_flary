@@ -11,6 +11,7 @@ import { PublicKey } from '@solana/web3.js';
 import { getAssociatedTokenAddress } from '@solana/spl-token';
 import { useIsMounted } from './useIsMounted';
 import { formatEther, JsonRpcProvider } from 'ethers';
+import { getSolanaPrice } from './solana/get-solana-price';
 
 const {
     ETH_USDT_ADDRESS,
@@ -49,7 +50,8 @@ export const YouPayComponent = () => {
         tokenPrice,
         inputAmountInUsd,
         setInputAmountInUsd,
-        chainId
+        chainId,
+        setNetworkPrices
     } = useBuy();
 
     const { connection } = useConnection();
@@ -77,10 +79,13 @@ export const YouPayComponent = () => {
 
             if (publicKey) {
                 try {
+                    const price = await getSolanaPrice();
+
                     const balanceLamports = await connection.getBalance(publicKey);
                     const balanceSol = balanceLamports / 1e9;
                     setSolBalance(balanceSol);
-                    setSolBalanceFiat(balanceSol * networkPrices[NETWORK_SOLANA]);
+                    setSolBalanceFiat(Number((balanceSol * price).toFixed(2)));
+
                 } catch (error) {
                     console.error("Failed to fetch balance:", error);
                 }
@@ -126,8 +131,11 @@ export const YouPayComponent = () => {
             }
         } else if (bnbBNB?.formatted) {
             const bnbValue = Math.floor(bnbBNB.formatted * 1000) / 1000;
-            setBalanceValue(bnbValue);
-            setBalanceValueFiat(calculateBalanceInFiat(bnbValue));
+
+            if (!isNaN(bnbValue)) {
+                setBalanceValue(bnbValue);
+                setBalanceValueFiat(calculateBalanceInFiat(bnbValue));
+            }
         }
     },
         [address, status, chainId, network]
@@ -152,13 +160,15 @@ export const YouPayComponent = () => {
         balance,
         balanceFiat
     ) => {
+        console.log(token, balance, balanceFiat, Number(balanceFiat), Number(balanceFiat).toFixed(2), Number(Number(balanceFiat).toFixed(2)))
+
         setDropNetwork(!dropToken);
         setToken(token);
         setTokenImage(tokenImg);
         setTokensFromAmount('');
         setTokensToAmount('');
         setBalanceValue(balance);
-        setBalanceValueFiat(balanceFiat);
+        setBalanceValueFiat(Number(Number(balanceFiat).toFixed(2)));
     };
 
     const { data: bnbBNB } = useBalance({
@@ -172,8 +182,7 @@ export const YouPayComponent = () => {
         address: address,
         token: BSC_USDT_ADDRESS,
     });
-
-    const bnbUsdtValue = Number(bnbUsdt?.formatted);
+    const bnbUsdtValue = Number(bnbUsdt?.formatted ?? 0);
 
 
     const { data: ethEth } = useBalance({
@@ -188,8 +197,11 @@ export const YouPayComponent = () => {
         address: address,
         token: ETH_USDT_ADDRESS
     });
-
     const ethUsdtValue = Number(ethUsdt?.formatted);
+
+    console.log('ethUsdtValue:', ethUsdtValue);
+    console.log('bnbUsdtValue:', bnbUsdtValue);
+
 
     const getBaseCoinPrice = () => {
         return networkPrices[network];
