@@ -10,7 +10,8 @@ export const config = {
     RPC_ETH: "https://eth.drpc.org",
     RPC_BSC: "https://bscrpc.com",
 
-    SOL_USDC_ADDRESS: "8sBN4LKrFeqgUjTZF15rfoVdWoen6c94UKWf3CTQuc7n",
+    SOL_USDC_ADDRESS: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
 
-    TOKEN_PROGRAM: TOKEN_2022_PROGRAM_ID
+    TOKEN_PROGRAM: TOKEN_PROGRAM_ID,
+    SOL_PROGRAM_PUBLIC_KEY: "2EBs8GKZGfrnQSdhQfHmxa1Mik2UgGXRV6kRjS4h8G8T",
 };
