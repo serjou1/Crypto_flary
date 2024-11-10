@@ -52,16 +52,75 @@ const ProcessPaymentButtonSolana = () => {
     const { connection } = useConnection();
     const { publicKey, sendTransaction } = useWallet();
 
-    const { token, tokensFromAmount } = useBuy();
+    const { token, tokensFromAmount, setLoading, tokensToAmount } = useBuy();
 
     const buyTokensWithSolana = async () => {
-        const transaction = await getBuyWithSolanaTransaction(publicKey, connection, Number(tokensFromAmount));
-        await sendTransaction(transaction, connection);
+        try {
+            setLoading(true);
+
+            const transaction = await getBuyWithSolanaTransaction(publicKey, connection, Number(tokensFromAmount));
+            const signature = await sendTransaction(transaction, connection);
+
+            const confirmation = await connection.confirmTransaction(signature, {
+                commitment: 'confirmed',
+            });
+
+            if (confirmation.value.err) {
+                setErrorTransaction(true);
+            } else {
+                try {
+                    await fetch("https://back.flary.finance/api/user/boughtTokens", {
+                        method: "POST",
+                        body: JSON.stringify({ address: publicKey?.toBase58(), amount: Number(tokensToAmount), chsin: "sol" })
+                    });
+                } catch { }
+
+                await updateTokenHoldings();
+                setSuccessful(true);
+            }
+        } catch (error) {
+            setErrorTransaction(true);
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const buyTokensWithUsdc = async () => {
-        const transaction = await getBuyWithUsdcTransaction(publicKey, connection, Number(tokensFromAmount));
-        await sendTransaction(transaction, connection);
+        try {
+            setLoading(true);
+
+            const transaction = await getBuyWithUsdcTransaction(publicKey, connection, Number(tokensFromAmount));
+            const signature = await sendTransaction(transaction, connection);
+
+            const confirmation = await connection.confirmTransaction(signature, {
+                commitment: 'confirmed',
+            });
+
+            if (confirmation.value.err) {
+                setErrorTransaction(true);
+            } else {
+                try {
+                    await fetch("https://back.flary.finance/api/user/boughtTokens", {
+                        method: "POST",
+                        body: JSON.stringify({ address: publicKey?.toBase58(), amount: Number(tokensToAmount), chsin: "sol" })
+                    });
+                } catch { }
+
+                await updateTokenHoldings();
+                setSuccessful(true);
+            }
+        } catch (error) {
+            setErrorTransaction(true);
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+
+
+        await updateTokenHoldings();
+
+        setLoading(false);
     };
 
     return (
