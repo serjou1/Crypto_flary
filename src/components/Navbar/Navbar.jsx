@@ -6,6 +6,9 @@ import style from './Navbar.module.scss';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
 import { useAccount } from 'wagmi';
+import WalletConnect from './ConnectSolanaButton';
+import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import ConnectHeaderMenu from '../ConnectHeaderMenu/ConnectHeaderMenu';
 
 export const Navbar = ({ navLink }) => {
   const account = useAccount();
@@ -54,27 +57,28 @@ export const Navbar = ({ navLink }) => {
             </Link>
           </li>
           <li>
-            <ConnectButton
+            {/* <ConnectButton
               accountStatus="address"
               chainStatus="none"
               showBalance={false}
-              label="Connect Wallet"
-            />
+              label="Connect EVM Wallet"
+            /> */}
+            <ConnectHeaderMenu />
           </li>
-
-          {/* <li>
-            <Button />
-          </li> */}
+          <li>
+            {/* <WalletMultiButton /> */}
+          </li>
         </ul>
         {/* <Select /> */}
         <div className={style.mobile_button} onClick={handlerMobileNav}>
-          <div onClick={(e)=>e.stopPropagation()}>
-            <ConnectButton
+          <div onClick={(e) => e.stopPropagation()}>
+            {/* <ConnectButton
               accountStatus="address"
               chainStatus="none"
               showBalance={false}
               label="Connect Wallet"
-            />
+            /> */}
+            <ConnectHeaderMenu />
           </div>
 
           {mobileNav ? (
@@ -86,7 +90,7 @@ export const Navbar = ({ navLink }) => {
 
         <div className={mobileNav ? style.mobile_open : style.mobile_close}>
           <ul className={style.mobile_list}>
-            
+
             <li>
               <Link
                 to="/"

@@ -8,16 +8,13 @@ import BNB from '../../assets/bnb logo.webp';
 import ETH from '../../assets/ETH.svg';
 import FLFI from '../../assets/flary_coin.png';
 import SOL from '../../assets/solana.svg';
-import USDT from '../../assets/USDT.svg';
 
-import { BigNumber } from '@ethersproject/bignumber';
-import { JsonRpcProvider } from '@ethersproject/providers'; // Импорт провайдера
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { Contract, ethers, formatEther, formatUnits, parseEther } from 'ethers';
-import { useAccount, useBalance, useConnect, useConnections, useSwitchChain } from 'wagmi';
-import {} from 'wagmi/connectors';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+
+import { ethers, formatUnits } from 'ethers';
+import { useSwitchChain } from 'wagmi';
+import { } from 'wagmi/connectors';
 import { config } from '../../config';
-import { BuyButton } from './BuyButton';
 import {
   NETWORK_BSC,
   NETWORK_ETHEREUM,
@@ -31,6 +28,7 @@ import {
   TOKEN_CAP_STAGE_6,
   TOKEN_ETHEREUM,
   TOKEN_SOL,
+  TOKEN_USDC,
   TOKEN_USDT,
   USDT_STAGE_1,
   USDT_STAGE_2,
@@ -41,18 +39,19 @@ import {
 } from './constants';
 import { Error } from './Error';
 import { ErrorTransaction } from './ErrorTransaction/ErrorTransaction';
-import { FLARY_PRESALE_ABI } from './flary-contract-abi';
 import { Loader } from './Loader/Loader';
 import { PopupNetwork } from './PopapNetwork/PopupNetwork';
-import { PRICE_FEED_ABI } from './price-feed-abi';
 import { Successful } from './Successful/Successful';
-import { useIsMounted } from './useIsMounted';
+import { getSolanaPrice } from './solana/get-solana-price';
+import { useBuy } from './BuyContext';
+import { getContract } from './evm/get-contract';
+import { getEvmNativeCurrencyPrice } from './evm/get-evm-native-coin-price';
+import { getSolanaBoughtTokensFromContract } from './solana/get-solana-bought-tokens';
+import { YouPayComponent } from './YouPayComponent';
+// import { ConnectSolanaButton } from '../Navbar/ConnectSolanaButton';
+import { BuyButton } from './BuyButton';
 
 const {
-  ETH_CONTRACT_ADDRESS,
-  BSC_CONTRACT_ADDRESS,
-  ETH_USDT_ADDRESS,
-  BSC_USDT_ADDRESS,
   RPC_ETH,
   RPC_BSC,
 } = config;
@@ -63,97 +62,50 @@ export const BuyWindow = () => {
   const [usdtPerStage, setUsdtPerStage] = useState(0);
   const [collected, setCollected] = useState(0);
   const [progress, setProgress] = useState(0);
-  const [dropNetwork, setDropNetwork] = useState(false);
-  const [dropToken, setDropToken] = useState(false);
-  const [network, setNetwork] = useState(NETWORK_ETHEREUM);
   const [tokenSold, setTokenSold] = useState(0);
   const [networkImg, setNetworkImg] = useState(ETH);
-  const [tokenImgETH, setTokenImgETH] = useState(ETH);
-  const [tokenImgBNB, setTokenImgBNB] = useState(BNB);
-  const [tokenImgSOL, setTokenImgSOL] = useState(SOL);
   const [loading, setLoading] = useState(false);
-  const [successful, setSuccessful] = useState(false);
-  const [tokensFromAmount, setTokensFromAmount] = useState('');
-  const [tokensToAmount, setTokensToAmount] = useState('');
   const [tokenHoldings, setTokenHoldings] = useState('0');
-  const [networkPrices, setNetworkPrices] = useState({});
-  const [tokenPrice, setTokenPrice] = useState(0);
   const [tokenPriceActually, setTokenPriceActually] = useState(0);
-  const [error, setError] = useState(false);
-  const [balanceValue, setBalanceValue] = useState(0);
-  const [balanceValueFiat, setBalanceValueFiat] = useState(0);
-  const [tokenETH, setTokenETH] = useState(TOKEN_ETHEREUM);
-  const [tokenBNB, setTokenBNB] = useState(TOKEN_BNB);
-  const [tokenSOL, setTokenSOL] = useState(TOKEN_SOL);
-  const [errorTransaction, setErrorTransaction] = useState(false);
 
   const [openPopupNetwork, setOpenPopupNetwork] = useState(false);
-  const [token, setToken] = useState('');
 
-  const account = useAccount();
-  const { connect, connectors } = useConnect();
-  const connections = useConnections();
-  const checkConnector = connections[0]?.connector.name;
+  const { publicKey, connected: isSolanaConnected } = useWallet();
 
-  const { address, status, chainId } = useAccount();
+  const {
+    address,
+    status,
+    chainId,
+    token,
+    setToken,
+    dropNetwork,
+    setTokenImage,
+    setDropNetwork,
+    setDropToken,
+    setNetwork,
+    setTokensFromAmount,
+    setTokensToAmount,
+    networkPrices,
+    setNetworkPrices,
+    setTokenPrice,
+    network,
+    tokenPrice,
+    tokensToAmount,
+    successful,
+    error,
+    setError,
+    errorTransaction,
+    setSuccessful,
+    setErrorTransaction,
+    setBalanceValue,
+    setBalanceValueFiat,
+    solBalance,
+    solBalanceFiat
+  } = useBuy();
+
+  const { connection } = useConnection();
 
   const { switchChain } = useSwitchChain();
-
-  const mounted = useIsMounted();
-  const { data: bnbUsdt } = useBalance({
-    address: address,
-    token: BSC_USDT_ADDRESS,
-  });
-  const bnbUsdtValue = Number(bnbUsdt?.formatted); //.toFixed(3);
-  const { data: ethUsdt } = useBalance({
-    address: address,
-    token: ETH_USDT_ADDRESS,
-  });
-
-  const ethUsdtValue = Number(ethUsdt?.formatted); //.toFixed(3);
-  const { data: solanaUsdt } = useBalance({
-    address: address,
-    //token: SOL_USDT_ADDRESS,
-  });
-  const solanaUsdtValue = Number(solanaUsdt?.formatted);
-  const { data: ethEth } = useBalance({
-    address: address,
-  });
-
-  const ethEthValue = Math.floor(ethEth?.formatted * 1000) / 1000;
-
-  const { data: bnbBNB } = useBalance({
-    address: address,
-  });
-
-  const bnbBNBValue = Math.floor(bnbBNB?.formatted * 1000) / 1000;
-
-  const { data: solanaSol } = useBalance({
-    address: address,
-  });
-
-  const solanaSolValue = Math.floor(solanaSol?.formatted * 1000) / 1000;
-
-  console.log(checkConnector);
-  useEffect(() => {
-    const calculateBalanceInFiat = (coinValue) => {
-      const price = getBaseCoinPrice();
-      if (!price) return null;
-      return (coinValue * price).toFixed(1);
-    };
-    if (ethEth?.formatted) {
-      const ethValue = Math.floor(ethEth.formatted * 1000) / 1000;
-
-      if (!isNaN(ethValue)) {
-        setBalanceValue(ethEthValue);
-        setBalanceValueFiat(calculateBalanceInFiat(ethValue));
-      }
-    } else if (bnbBNB?.formatted) {
-      const bnbValue = Math.floor(bnbBNB.formatted * 1000) / 1000;
-      setBalanceValue(bnbValue);
-      setBalanceValueFiat(calculateBalanceInFiat(bnbValue));
-    }
-  }, [ethEth, bnbBNB, network]);
 
   useEffect(() => {
     const checkNetwork = async () => {
@@ -172,12 +124,13 @@ export const BuyWindow = () => {
 
     checkNetwork();
   }, [chainId, status]);
+
   useEffect(() => {
-    console.log(tokenETH);
     const fetchData = async () => {
       try {
         const response = await fetch('https://back.flary.finance/api/tokens/totalTokens');
-        if (!response.ok) throw new Error('Response was not successful');
+        if (!response.ok)
+          throw 'Response was not successful';
         const result = await response.json();
         setTokenSold(result);
       } catch (e) {
@@ -209,8 +162,8 @@ export const BuyWindow = () => {
         setUsdtPerStage(USDT_STAGE_2 + USDT_STAGE_1 + USDT_STAGE_3);
         setCollected(
           (tokenSold - TOKEN_CAP_STAGE_1 - TOKEN_CAP_STAGE_2) * tokenPriceActually +
-            USDT_STAGE_2 +
-            USDT_STAGE_1,
+          USDT_STAGE_2 +
+          USDT_STAGE_1,
         );
         setProgress((collected / usdtPerStage) * 100);
       } else if (tokenSold >= 16137500 && tokenSold < 20087500) {
@@ -220,10 +173,10 @@ export const BuyWindow = () => {
         setUsdtPerStage(USDT_STAGE_2 + USDT_STAGE_1 + USDT_STAGE_3 + USDT_STAGE_4);
         setCollected(
           (tokenSold - TOKEN_CAP_STAGE_1 - TOKEN_CAP_STAGE_2 - TOKEN_CAP_STAGE_3) *
-            tokenPriceActually +
-            USDT_STAGE_2 +
-            USDT_STAGE_1 +
-            USDT_STAGE_3,
+          tokenPriceActually +
+          USDT_STAGE_2 +
+          USDT_STAGE_1 +
+          USDT_STAGE_3,
         );
         setProgress((collected / usdtPerStage) * 100);
       } else if (tokenSold >= 20087500 && tokenSold < 23750000) {
@@ -237,11 +190,11 @@ export const BuyWindow = () => {
             TOKEN_CAP_STAGE_2 -
             TOKEN_CAP_STAGE_3 -
             TOKEN_CAP_STAGE_4) *
-            tokenPriceActually +
-            USDT_STAGE_2 +
-            USDT_STAGE_1 +
-            USDT_STAGE_3 +
-            USDT_STAGE_4,
+          tokenPriceActually +
+          USDT_STAGE_2 +
+          USDT_STAGE_1 +
+          USDT_STAGE_3 +
+          USDT_STAGE_4,
         );
         setProgress((collected / usdtPerStage) * 100);
       } else {
@@ -258,12 +211,12 @@ export const BuyWindow = () => {
             TOKEN_CAP_STAGE_3 -
             TOKEN_CAP_STAGE_4 -
             TOKEN_CAP_STAGE_5) *
-            tokenPriceActually +
-            USDT_STAGE_2 +
-            USDT_STAGE_1 +
-            USDT_STAGE_3 +
-            USDT_STAGE_4 +
-            USDT_STAGE_5,
+          tokenPriceActually +
+          USDT_STAGE_2 +
+          USDT_STAGE_1 +
+          USDT_STAGE_3 +
+          USDT_STAGE_4 +
+          USDT_STAGE_5,
         );
         setProgress((collected / usdtPerStage) * 100);
       }
@@ -298,7 +251,7 @@ export const BuyWindow = () => {
 
     fetchData();
     getStage();
-  }, [capPerStage, collected, tokenPriceActually, tokenSold, tokenETH]);
+  }, [capPerStage, collected, tokenPriceActually, tokenSold, token]);
 
   useEffect(() => {
     if (successful || errorTransaction) {
@@ -311,67 +264,40 @@ export const BuyWindow = () => {
       return () => clearTimeout(timer);
     }
 
-    if (account.status === 'connected') {
+    initBaseCurrenciesPrices();
+    updateTokenPrice();
+
+    if (status === 'connected') {
       updateTokenHoldings();
     }
-  }, [account.status, errorTransaction, successful]);
-
-  const maxValue = async () => {
-    if (network === NETWORK_ETHEREUM && tokenETH === TOKEN_ETHEREUM) {
-      setTokensFromAmount(
-        balanceValue && (await calculateBalanceAfterGas(providerEthereum, balanceValue)) > 0
-          ? await calculateBalanceAfterGas(providerEthereum, balanceValue)
-          : 0,
-      );
-      const tokensToAmountNew =
-        ((await calculateBalanceAfterGas(providerEthereum, balanceValue)) *
-          (isBaseCoinSelected() ? getBaseCoinPrice() : 1)) /
-        tokenPrice;
-      setTokensToAmount(tokensToAmountNew > 0 ? tokensToAmountNew : 0);
-    } else if (network === NETWORK_BSC && tokenBNB === TOKEN_BNB) {
-      setTokensFromAmount(
-        balanceValue && (await calculateBalanceAfterGas(providerBSC, balanceValue)) > 0
-          ? await calculateBalanceAfterGas(providerBSC, balanceValue)
-          : 0,
-      );
-      const tokensToAmountNew =
-        ((await calculateBalanceAfterGas(providerBSC, balanceValue)) *
-          (isBaseCoinSelected() ? getBaseCoinPrice() : 1)) /
-        tokenPrice;
-      setTokensToAmount(tokensToAmountNew > 0 ? tokensToAmountNew : 0);
-    } else {
-      setTokensFromAmount(balanceValue);
-      const tokensToAmountNew =
-        (balanceValue * (isBaseCoinSelected() ? getBaseCoinPrice() : 1)) / tokenPrice;
-      setTokensToAmount(tokensToAmountNew);
-    }
-  };
+  }, [status, errorTransaction, successful]);
 
   const handlerClickNetwork = () => {
+    console.log('click network');
+
     setDropNetwork(!dropNetwork);
     setDropToken(false);
   };
-  const handlerClickToken = () => {
-    setDropToken(!dropToken);
-    setDropNetwork(false);
-  };
-  const handlerChangeNetwork = async (arg, argImg, controlDrop = true) => {
+
+  const handlerChangeNetwork = (arg, argImg, controlDrop = true) => {
     if (arg === NETWORK_ETHEREUM) {
       setToken(TOKEN_ETHEREUM);
-      setTokenETH(TOKEN_ETHEREUM);
-      setTokenImgETH(ETH);
+      setTokenImage(ETH);
 
       switchChain({ chainId: 1 });
     } else if (arg === NETWORK_BSC) {
       setToken(TOKEN_BNB);
-      setTokenBNB(TOKEN_BNB);
-      setTokenImgBNB(BNB);
+      setTokenImage(BNB);
 
       switchChain({ chainId: 56 });
     } else {
       setToken(TOKEN_SOL);
-      setTokenSOL(TOKEN_SOL);
-      setTokenImgSOL(SOL);
+      setTokenImage(SOL);
+
+      console.log('solana', "settomf", solBalance, solBalanceFiat);
+
+      setBalanceValue(solBalance);
+      setBalanceValueFiat(solBalanceFiat);
     }
 
     if (controlDrop) {
@@ -383,64 +309,18 @@ export const BuyWindow = () => {
     setTokensFromAmount('');
     setTokensToAmount('');
   };
-  const handlerChangeTokenETH = (arg, argImg, balance, balanceFiat) => {
-    console.log(balanceValue, balanceValueFiat, balance);
-    setDropNetwork(!dropToken);
-    setTokenETH(arg);
-    setToken(arg);
-    setTokenImgETH(argImg);
-    setTokensFromAmount('');
-    setTokensToAmount('');
-    setBalanceValue(balance);
-    setBalanceValueFiat(balanceFiat);
-    console.log(balanceValue, balanceValueFiat, balance, balanceFiat);
-  };
-  const handlerChangeTokenBNB = (arg, argImg, balance, balanceFiat) => {
-    setDropNetwork(!dropToken);
-    setToken(arg);
-    setTokenBNB(arg);
-    setTokenImgBNB(argImg);
-    setTokensFromAmount('');
-    setTokensToAmount('');
-    setBalanceValue(balance);
-    setBalanceValueFiat(balanceFiat);
-  };
-  const handlerChangeTokenSolana = (arg, argImg, balance, balanceFiat) => {
-    setDropNetwork(!dropToken);
-    setToken(arg);
-    setTokenSOL(arg);
-    setTokenImgSOL(argImg);
-    setTokensFromAmount('');
-    setTokensToAmount('');
-    setBalanceValue(balance);
-    setBalanceValueFiat(balanceFiat);
-  };
 
-  const getContract = (network, provider) => {
-    const contractAddress =
-      network === NETWORK_ETHEREUM ? ETH_CONTRACT_ADDRESS : BSC_CONTRACT_ADDRESS;
+  const initializeSolanaPrice = async () => {
+    const price = await getSolanaPrice();
 
-    const contract = new ethers.Contract(contractAddress, FLARY_PRESALE_ABI, provider);
-
-    return contract;
+    networkPrices[NETWORK_SOLANA] = price;
+    setNetworkPrices(networkPrices);
   };
 
   const initializeNativeCurrencyPrice = async (network) => {
-    const providerRpc = network === NETWORK_ETHEREUM ? RPC_ETH : RPC_BSC;
+    const price = await getEvmNativeCurrencyPrice(network);
 
-    const provider = new ethers.JsonRpcProvider(providerRpc);
-
-    const contract = getContract(network, provider);
-
-    const priceFeedAddress = await contract.nativeUsdPriceFeed();
-
-    const priceFeed = new Contract(priceFeedAddress, PRICE_FEED_ABI, provider);
-
-    const priceLatest = await priceFeed.latestAnswer();
-    const decimals = await priceFeed.decimals();
-
-    networkPrices[network] = Number(formatUnits(priceLatest, decimals));
-
+    networkPrices[network] = price;
     setNetworkPrices(networkPrices);
 
     console.log(`${network} price is ${networkPrices[network]}`);
@@ -457,73 +337,72 @@ export const BuyWindow = () => {
     return Number(ethers.formatEther(balance));
   };
 
-  const updateTokenHoldings = async () => {
+  const getSolanaBoughtTokens = async () => {
+    return publicKey
+      ? getSolanaBoughtTokensFromContract(publicKey, connection)
+      : 0;
+  };
+
+  const initBaseCurrenciesPrices = async () => {
     await initializeNativeCurrencyPrice(NETWORK_ETHEREUM);
     await initializeNativeCurrencyPrice(NETWORK_BSC);
+    await initializeSolanaPrice();
+  };
 
+  const updateTokenPrice = async () => {
     const providerEth = new ethers.JsonRpcProvider(RPC_ETH);
     const contract = getContract(NETWORK_ETHEREUM, providerEth);
     const tp = Number(formatUnits(await contract.tokensPriceInUsdt(), 6));
     setTokenPrice(tp);
+  };
 
-    const provider = window.ethereum
-      ? new ethers.BrowserProvider(window.ethereum)
-      : ethers.getDefaultProvider();
-    const signer = await provider.getSigner();
+  const updateTokenHoldings = async () => {
+    let sum = 0;
+    if (status === 'connected') {
+      const boughtTokensEth = await getBoughtTokens(NETWORK_ETHEREUM, address);
+      const boughtTokensBsc = await getBoughtTokens(NETWORK_BSC, address);
+      sum = boughtTokensEth + boughtTokensBsc;
+    }
 
-    const boughtTokensEth = await getBoughtTokens(NETWORK_ETHEREUM, signer.address);
-    const boughtTokensBsc = await getBoughtTokens(NETWORK_BSC, signer.address);
-    console.log('Wyzow updateTokenHoldings');
-    setTokenHoldings(
-      `${(boughtTokensEth + boughtTokensBsc).toFixed(2)}`,
-      // (${boughtTokensEth.toFixed(
-      //   2,
-      // )} on ETH + ${boughtTokensBsc.toFixed(2)} on BSC)`,
-    );
+    if (isSolanaConnected) {
+      const boughtTokensSol = await getSolanaBoughtTokens();
+      sum += boughtTokensSol;
+    }
+
+    setTokenHoldings(sum.toFixed(2));
   };
 
   const isBaseCoinSelected = () => {
     if (network === NETWORK_ETHEREUM) {
-      return tokenETH !== TOKEN_USDT;
+      return token !== TOKEN_USDT;
     } else if (network === NETWORK_BSC) {
-      return tokenBNB !== TOKEN_USDT;
+      return token !== TOKEN_USDT;
+    } else if (network === NETWORK_SOLANA) {
+      return token !== TOKEN_USDC;
     }
     return false;
   };
 
   const getBaseCoinPrice = () => {
-    // console.log('network', network);
-    // console.log(networkPrices.Ethereum);
-
     return networkPrices[network];
   };
 
-  const bnbBNBValueFiat = (bnbBNBValue * getBaseCoinPrice()).toFixed(1);
-  const bnbUsdtValueFiat = Number(bnbUsdtValue).toFixed(1);
-  const ethEthValueFiat = (ethEthValue * getBaseCoinPrice()).toFixed(1);
-  const ethUsdtValueFiat = Number(ethUsdtValue).toFixed(1);
+  const updateReceivedValue = (amountToPay) => {
+    console.log("Update received price");
 
-  // Провайдеры для Ethereum и BSC
-  const providerEthereum = new JsonRpcProvider(
-    'https://mainnet.infura.io/v3/2f33107b586b463cbaea43b40c5cae3f',
-  );
-  const providerBSC = new JsonRpcProvider('https://bsc-dataseed.binance.org/');
+    setTokensToAmount(amountToPay);
 
-  // Функция для получения текущей цены газа
-  const getCurrentGasPrice = async (provider) => {
-    const gasPrice = await provider.send('eth_gasPrice', []);
-    return BigNumber.from(gasPrice);
-  };
+    const _isBaseCoinSelected = isBaseCoinSelected();
 
-  // Функция для расчета баланса с учетом комиссии
-  const calculateBalanceAfterGas = async (provider, balance, gasLimit = 210000) => {
-    const gasPriceInWei = await getCurrentGasPrice(provider);
-    const totalGasCost = BigInt(gasPriceInWei.toNumber() * gasLimit);
-    const balanceInWei = BigInt(parseEther(balance.toString()));
-    const balanceAfterGas = balanceInWei - totalGasCost;
+    const tokensFromAmountNew =
+      (amountToPay * tokenPrice) / (_isBaseCoinSelected ? getBaseCoinPrice() : 1);
 
-    return (Number(formatEther(balanceAfterGas.toString())) - 0.001).toFixed(4); // Возвращаем результат в ETH или BNB
-  };
+    setTokensFromAmount(tokensFromAmountNew);
+
+    console.log("Is base coin selected", _isBaseCoinSelected);
+    console.log("Amount to pay", amountToPay);
+    console.log("Tokens from amount", tokensFromAmountNew);
+  }
 
   return (
     <div className={style.BuyWindow}>
@@ -561,7 +440,6 @@ export const BuyWindow = () => {
         Raised USD : $
         {collected
           .toFixed()
-          .toString()
           .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
         / ${usdtPerStage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
       </p>
@@ -569,15 +447,15 @@ export const BuyWindow = () => {
       <div className={style.button_group}>
         <div
           className={style.button}
-          onClick={handlerClickNetwork}
+          onClick={() => handlerClickNetwork()}
           style={
             dropNetwork
               ? {
-                  borderBottomLeftRadius: '0',
-                  borderBottomRightRadius: '0',
-                  padding: '10px 15px',
-                  width: '100%',
-                }
+                borderBottomLeftRadius: '0',
+                borderBottomRightRadius: '0',
+                padding: '10px 15px',
+                width: '100%',
+              }
               : { padding: '10px 15px', width: '100%' }
           }>
           <div className={style.button_tittle}>
@@ -587,283 +465,30 @@ export const BuyWindow = () => {
           <img src={Arrow} alt="" />
           {dropNetwork && (
             <div className={style.drop_network}>
-              <div
-                style={{ justifyContent: 'start' }}
-                className={style.button_drop}
-                onClick={async () => await handlerChangeNetwork(NETWORK_ETHEREUM, ETH)}>
-                <img src={ETH} alt="" />
-                <p>Ethereum</p>
-              </div>
-              <div
-                style={{ justifyContent: 'start' }}
-                className={style.button_drop}
-                onClick={() => handlerChangeNetwork(NETWORK_BSC, BNB)}>
-                <img src={BNB} alt="" />
-                <p>BNB Chain</p>
-              </div>
-              <div
-                style={{ justifyContent: 'start' }}
-                className={style.button_drop}
-                onClick={() => handlerChangeNetwork(NETWORK_SOLANA, SOL)}>
-                <img src={SOL} alt="" />
-                <p>Solana</p>
-              </div>
+              <NetworkDropDownElement
+                img={ETH}
+                network={NETWORK_ETHEREUM}
+                handlerChangeNetwork={handlerChangeNetwork}
+                name="Ethereum"
+              />
+              <NetworkDropDownElement
+                img={BNB}
+                network={NETWORK_BSC}
+                handlerChangeNetwork={handlerChangeNetwork}
+                name="BNB Chain"
+              />
+              <NetworkDropDownElement
+                img={SOL}
+                network={NETWORK_SOLANA}
+                handlerChangeNetwork={handlerChangeNetwork}
+                name="Solana"
+              />
             </div>
           )}
         </div>
+
         <div className={style.down_button}>
-          <div className={style.block_input}>
-            <p className={style.labelLine}>You pay: </p>
-            <div
-              className={style.button}
-              onClick={
-                account.status === 'disconnected' || network === NETWORK_SOLANA
-                  ? null
-                  : handlerClickToken
-              }
-              style={
-                dropToken ? { borderBottomLeftRadius: '0', borderBottomRightRadius: '0' } : {}
-              }>
-              {network === NETWORK_BSC && (
-                <div className={style.button_tittle}>
-                  <img src={tokenImgBNB} alt="" />
-                  <p>{tokenBNB}</p>
-
-                  {account.status === 'disconnected' ? '' : <img src={Arrow} alt="" />}
-                </div>
-              )}{' '}
-              {network === NETWORK_ETHEREUM && (
-                <div className={style.button_tittle}>
-                  {' '}
-                  <img src={tokenImgETH} alt="" />
-                  <p>{tokenETH}</p>{' '}
-                  {account.status === 'disconnected' ? '' : <img src={Arrow} alt="" />}
-                </div>
-              )}
-              {network === NETWORK_SOLANA && (
-                <div className={style.button_tittle}>
-                  {' '}
-                  <img src={tokenImgSOL} alt="" />
-                  <p>{tokenSOL}</p>{' '}
-                  {account.status === 'disconnected' || network === NETWORK_SOLANA ? (
-                    ''
-                  ) : (
-                    <img src={Arrow} alt="" />
-                  )}
-                </div>
-              )}
-              {account.status === 'disconnected' || network === NETWORK_SOLANA ? (
-                ''
-              ) : (
-                <div>
-                  <p className={style.balanceValue} style={{ textAlign: 'end' }}>
-                    {balanceValue > 0.001 ? balanceValue : 0}
-                  </p>
-                  <p
-                    className={style.balanceValue}
-                    style={{ color: 'gray', fontWeight: '300', textAlign: 'end' }}>
-                    ${balanceValueFiat}
-                  </p>
-                </div>
-              )}
-              {network === NETWORK_BSC
-                ? dropToken && (
-                    <div className={style.drop_token}>
-                      <div
-                        className={style.button_drop}
-                        onClick={() =>
-                          handlerChangeTokenBNB(
-                            TOKEN_BNB,
-                            BNB,
-                            bnbBNBValue.toFixed(3),
-                            bnbBNBValueFiat,
-                          )
-                        }>
-                        <div className={style.button_drop_left}>
-                          <img src={BNB} alt="" />
-                          <p>BNB</p>
-                        </div>
-                        <div className={style.button_drop_right}>
-                          <p className={style.balanceValue}>
-                            {bnbBNBValue > 0 ? bnbBNBValue.toFixed(3) : 0}
-                          </p>
-                          <p
-                            className={style.balanceValue}
-                            style={{ color: 'gray', fontWeight: '300' }}>
-                            ${bnbBNBValueFiat}
-                          </p>
-                        </div>
-                      </div>
-                      <div
-                        className={style.button_drop}
-                        onClick={() =>
-                          handlerChangeTokenBNB(
-                            TOKEN_USDT,
-                            USDT,
-                            bnbUsdtValue.toFixed(3),
-                            bnbUsdtValueFiat,
-                          )
-                        }>
-                        <div className={style.button_drop_left}>
-                          <img src={USDT} alt="" />
-                          <p>USDT</p>
-                        </div>
-                        <div className={style.button_drop_right}>
-                          <p className={style.balanceValue}>
-                            {bnbUsdtValue > 0.001 ? bnbUsdtValue.toFixed(3) : 0}
-                          </p>
-                          <p
-                            className={style.balanceValue}
-                            style={{ color: 'gray', fontWeight: '300' }}>
-                            ${bnbUsdtValueFiat}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )
-                : null}
-              {network === NETWORK_ETHEREUM
-                ? dropToken && (
-                    <div className={style.drop_token}>
-                      <div
-                        className={style.button_drop}
-                        onClick={() =>
-                          handlerChangeTokenETH(
-                            TOKEN_ETHEREUM,
-                            ETH,
-                            ethEthValue.toFixed(3),
-                            ethEthValueFiat,
-                          )
-                        }>
-                        <div className={style.button_drop_left}>
-                          <img src={ETH} alt="" />
-                          <p>ETH</p>
-                        </div>
-                        <div className={style.button_drop_right}>
-                          <p className={style.balanceValue}>
-                            {ethEthValue > 0.001 ? ethEthValue.toFixed(3) : 0}
-                          </p>
-                          <p
-                            className={style.balanceValue}
-                            style={{ color: 'gray', fontWeight: '300' }}>
-                            ${ethEthValueFiat}
-                          </p>
-                        </div>
-                      </div>
-                      <div
-                        className={style.button_drop}
-                        onClick={() =>
-                          handlerChangeTokenETH(
-                            TOKEN_USDT,
-                            USDT,
-                            ethUsdtValue.toFixed(3),
-                            ethUsdtValueFiat,
-                          )
-                        }>
-                        <div className={style.button_drop_left}>
-                          <img src={USDT} alt="" />
-                          <p>USDT</p>
-                        </div>
-                        <div className={style.button_drop_right}>
-                          <p className={style.balanceValue}>
-                            {ethUsdtValue > 0.001 ? ethUsdtValue.toFixed(3) : 0}
-                          </p>
-                          <p
-                            className={style.balanceValue}
-                            style={{ color: 'gray', fontWeight: '300' }}>
-                            ${ethUsdtValueFiat}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )
-                : null}
-              {network === NETWORK_SOLANA
-                ? dropToken && (
-                    <div className={style.drop_token}>
-                      <div
-                        className={style.button_drop}
-                        onClick={() =>
-                          handlerChangeTokenSolana(TOKEN_SOL, SOL, solanaSolValue.toFixed(3), 0)
-                        }>
-                        <div className={style.button_drop_left}>
-                          <img src={SOL} alt="" />
-                          <p>SOL</p>
-                        </div>
-                        <div className={style.button_drop_right}>
-                          <p className={style.balanceValue}>
-                            {solanaSolValue > 0.001 ? solanaSolValue.toFixed(3) : 0}
-                          </p>
-                          <p
-                            className={style.balanceValue}
-                            style={{ color: 'gray', fontWeight: '300' }}>
-                            ${0}
-                          </p>
-                        </div>
-                      </div>
-                      <div
-                        className={style.button_drop}
-                        onClick={() =>
-                          handlerChangeTokenETH(TOKEN_USDT, USDT, solanaUsdtValue.toFixed(3), 0)
-                        }>
-                        <div className={style.button_drop_left}>
-                          <img src={USDT} alt="" />
-                          <p>USDT</p>
-                        </div>
-                        <div className={style.button_drop_right}>
-                          <p className={style.balanceValue}>
-                            {solanaUsdtValue > 0.001 ? solanaUsdtValue.toFixed(3) : 0}
-                          </p>
-                          <p
-                            className={style.balanceValue}
-                            style={{ color: 'gray', fontWeight: '300' }}>
-                            ${0}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )
-                : null}
-            </div>
-            <div className={style.max_input}>
-              <input
-                className={style.input_buy}
-                type="text"
-                placeholder="Enter Amount"
-                value={tokensFromAmount}
-                onChange={(e) => {
-                  const value = e.target.value.replace(/[^0-9.]/g, '');
-                  console.log(tokensFromAmount);
-                  const trimmedValue = value
-                    .replace(/^0+(?=\d)/, '')
-                    .replace(/^0+\.$/, '0.')
-                    .replace(/^\.$/, '0.');
-                  setTokensFromAmount(trimmedValue);
-                  // if (value === 0) {
-                  //   setTokensToAmount('');
-                  // } else {
-                  const tokensToAmountNew =
-                    (value * (isBaseCoinSelected() ? getBaseCoinPrice() : 1)) / tokenPrice;
-                  console.log('isBaseCoinSelected', value);
-                  console.log('getBaseCoinPrice', getBaseCoinPrice());
-                  console.log('new tokens to amount:', tokensToAmountNew);
-
-                  setTokensToAmount(tokensToAmountNew);
-                  // }
-
-                  // console.log(getBaseCoinPrice() * 2);
-                  // console.log('actual tokens to amount:', tokensToAmount);
-                }}
-              />
-              {mounted
-                ? (account.status === 'connected' && network !==NETWORK_SOLANA) && (
-                    <p className={style.max} onClick={maxValue}>
-                      MAX
-                    </p>
-                  )
-                : null}
-            </div>
-          </div>
+          <YouPayComponent />
           <div className={style.block_input}>
             <p className={style.labelLine}>You receive: </p>
             <div className={style.button}>
@@ -879,12 +504,7 @@ export const BuyWindow = () => {
               placeholder="0.0"
               value={tokensToAmount}
               onChange={(e) => {
-                const value = Number(e.target.value);
-
-                setTokensToAmount(value);
-                const tokensFromAmountNew =
-                  (value * tokenPrice) / (isBaseCoinSelected() ? getBaseCoinPrice() : 1);
-                setTokensFromAmount(tokensFromAmountNew);
+                updateReceivedValue(Number(e.target.value))
               }}
             />
           </div>
@@ -904,43 +524,20 @@ export const BuyWindow = () => {
       ) : successful ? (
         <Successful />
       ) : (
-        account.status === 'connected' &&
-        network !== NETWORK_SOLANA && (
-          <BuyButton
-            error={error}
-            tokensToAmount={tokensToAmount}
-            network={network}
-            tokensFromAmount={tokensFromAmount}
-            setError={setError}
-            setLoading={setLoading}
-            token={token}
-            updateTokenHoldings={updateTokenHoldings}
-            setProgress={setProgress}
-            setSuccessful={setSuccessful}
-            setErrorTransaction={setErrorTransaction}
-            // Amount_FOR_STAGE={Amount_FOR_STAGE}
-          />
-        )
+        <BuyButton updateTokenHoldings={updateTokenHoldings} />
       )}
-
-      <div className={style.ConnectButton}>
-        {network === NETWORK_SOLANA &&
-        checkConnector !== 'Phantom' &&
-        account.status === 'connected' ? (
-          <div className={style.pay_button} style={{ width: '100%' }}>
-            Connect SOL wallet first
-          </div>
-        ) : (
-          account.status === 'disconnected' && (
-            <ConnectButton
-              style={{ marginBottom: '20px', marginTop: '20px' }}
-              accountStatus="address"
-              showBalance={false}
-              label="Connect Wallet"
-            />
-          )
-        )}
-      </div>
     </div>
   );
 };
+
+const NetworkDropDownElement = ({ img, network, handlerChangeNetwork, name }) => {
+  return (
+    <div
+      style={{ justifyContent: 'start' }}
+      className={style.button_drop}
+      onClick={() => handlerChangeNetwork(network, img)}>
+      <img src={img} alt="" />
+      <p>{name}</p>
+    </div>
+  );
+}

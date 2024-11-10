@@ -3,7 +3,12 @@ import style from './App.module.scss';
 import { Footer1 } from './components';
 import { Contact, Giveaway, Home, HowToBuy } from './page';
 import { useAccount } from 'wagmi';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
+
+import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
+import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
+import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets';
+import { clusterApiUrl } from '@solana/web3.js';
 
 function App() {
   const { isConnected, address } = useAccount();
@@ -28,15 +33,27 @@ function App() {
     }
   }, [isConnected])
 
+  const network = clusterApiUrl('devnet'); // Change to 'mainnet-beta' for mainnet
+  const wallets = useMemo(() => [new PhantomWalletAdapter()], []);
+
   return (
     <div className={style.App}>
       <div className={style.wrapper}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/how-to-buy" element={<HowToBuy />} />
-          <Route path="/giveaway" element={<Giveaway />} />
-          <Route path="/contact" element={<Contact />} />
-        </Routes>
+
+        <ConnectionProvider endpoint={network}>
+          <WalletProvider wallets={wallets} autoConnect>
+            <WalletModalProvider>
+
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/how-to-buy" element={<HowToBuy />} />
+                <Route path="/giveaway" element={<Giveaway />} />
+                <Route path="/contact" element={<Contact />} />
+              </Routes>
+
+            </WalletModalProvider>
+          </WalletProvider>
+        </ConnectionProvider>
       </div>
       <Footer1 />
     </div>
