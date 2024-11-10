@@ -51,17 +51,20 @@ export const YouPayComponent = () => {
         inputAmountInUsd,
         setInputAmountInUsd,
         chainId,
-        setNetworkPrices
+        setNetworkPrices,
+        tokensToAmount,
+        solBalance,
+        setSolBalance,
+        solBalanceFiat,
+        setSolBalanceFiat,
+        solUsdcBalance,
+        setSolUsdcBalance
     } = useBuy();
 
     const { connection } = useConnection();
     const { publicKey, connected: solWalletConnected } = useWallet();
 
     const mounted = useIsMounted();
-
-    const [solBalance, setSolBalance] = useState(0);
-    const [solBalanceFiat, setSolBalanceFiat] = useState(0);
-    const [solUsdcBalance, setSolUsdcBalance] = useState(0);
 
     const [maxButtonAvailable, setMaxButtonAvailable] = useState(false);
 
@@ -77,6 +80,7 @@ export const YouPayComponent = () => {
         const fetchBalance = async () => {
             console.log("Fetching balance");
 
+            console.log('publicKey:', publicKey);
             if (publicKey) {
                 try {
                     const price = await getSolanaPrice();
@@ -136,6 +140,9 @@ export const YouPayComponent = () => {
                 setBalanceValue(bnbValue);
                 setBalanceValueFiat(calculateBalanceInFiat(bnbValue));
             }
+        } else if (network === NETWORK_SOLANA) {
+            setBalanceValue(solBalance);
+            setBalanceValueFiat(solBalanceFiat);
         }
     },
         [address, status, chainId, network]
@@ -160,8 +167,6 @@ export const YouPayComponent = () => {
         balance,
         balanceFiat
     ) => {
-        console.log(token, balance, balanceFiat, Number(balanceFiat), Number(balanceFiat).toFixed(2), Number(Number(balanceFiat).toFixed(2)))
-
         setDropNetwork(!dropToken);
         setToken(token);
         setTokenImage(tokenImg);
@@ -249,6 +254,10 @@ export const YouPayComponent = () => {
         }
     };
 
+    const doNotShow = () => {
+        return (network === NETWORK_SOLANA && !solWalletConnected) || (network !== NETWORK_SOLANA && status === 'disconnected');
+    };
+
     return (
         <div className={style.block_input}>
             <p className={style.labelLine}>You pay: </p>
@@ -262,11 +271,11 @@ export const YouPayComponent = () => {
                     <img src={tokenImage} alt="" />
                     <p>{token}</p>
 
-                    {status === 'disconnected' ? '' : <img src={Arrow} alt="" />}
+                    {doNotShow() ? '' : <img src={Arrow} alt="" />}
                 </div>{' '}
 
                 {
-                    status === 'disconnected'
+                    doNotShow()
                         ? ('') :
                         (
                             <div>
@@ -310,7 +319,7 @@ export const YouPayComponent = () => {
             <div className={style.max_input}>
                 <input
                     className={style.input_buy}
-                    type="number"
+                    type="text"
                     placeholder="Enter Amount"
                     value={tokensFromAmount}
                     onChange={(e) => {
@@ -325,9 +334,15 @@ export const YouPayComponent = () => {
                             .replace(/^\.$/, '0.');
                         setTokensFromAmount(trimmedValue);
 
+                        console.log('isBaseCoinSelected():', isBaseCoinSelected(), getBaseCoinPrice(), Number(trimmedValue), Number(trimmedValue) * (isBaseCoinSelected() ? getBaseCoinPrice() : 1));
+
                         setInputAmountInUsd(Number(trimmedValue) * (isBaseCoinSelected() ? getBaseCoinPrice() : 1));
 
+                        console.log("inputAmountInUsd", inputAmountInUsd, inputAmountInUsd, tokenPrice);
+
                         setTokensToAmount(inputAmountInUsd / tokenPrice);
+
+                        console.log('tokensToAmount:', tokensToAmount);
                     }}
                 />
                 {mounted

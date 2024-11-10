@@ -96,7 +96,11 @@ export const BuyWindow = () => {
     setError,
     errorTransaction,
     setSuccessful,
-    setErrorTransaction
+    setErrorTransaction,
+    setBalanceValue,
+    setBalanceValueFiat,
+    solBalance,
+    solBalanceFiat
   } = useBuy();
 
   const { connection } = useConnection();
@@ -289,6 +293,11 @@ export const BuyWindow = () => {
     } else {
       setToken(TOKEN_SOL);
       setTokenImage(SOL);
+
+      console.log('solana', "settomf", solBalance, solBalanceFiat);
+
+      setBalanceValue(solBalance);
+      setBalanceValueFiat(solBalanceFiat);
     }
 
     if (controlDrop) {

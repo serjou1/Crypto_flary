@@ -18,10 +18,11 @@ window.Buffer = Buffer;
 
 const {
     SOL_USDC_ADDRESS,
-    TOKEN_PROGRAM
+    TOKEN_PROGRAM,
+    SOL_PROGRAM_PUBLIC_KEY
 } = config;
 
-const flaryTokenSaleAddress = new PublicKey("2EBs8GKZGfrnQSdhQfHmxa1Mik2UgGXRV6kRjS4h8G8T");
+const flaryTokenSaleAddress = new PublicKey(SOL_PROGRAM_PUBLIC_KEY);
 const USDC_MINT_ADDRESS = new PublicKey(SOL_USDC_ADDRESS);
 
 export const BuyButtonSolana = ({

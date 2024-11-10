@@ -36,6 +36,12 @@ export const BuyProvider = ({ children }) => {
 
     const [successful, setSuccessful] = useState(false);
 
+
+
+    const [solBalance, setSolBalance] = useState(0);
+    const [solBalanceFiat, setSolBalanceFiat] = useState(0);
+    const [solUsdcBalance, setSolUsdcBalance] = useState(0);
+
     return (
         <BuyContext.Provider value={{
             address,
@@ -72,7 +78,14 @@ export const BuyProvider = ({ children }) => {
             inputAmountInUsd,
             setInputAmountInUsd,
             successful,
-            setSuccessful
+            setSuccessful,
+
+            solBalance,
+            setSolBalance,
+            solBalanceFiat,
+            setSolBalanceFiat,
+            solUsdcBalance,
+            setSolUsdcBalance
         }}>
             {children}
         </BuyContext.Provider>
@@ -117,7 +130,14 @@ export const useBuy = () => {
         inputAmountInUsd,
         setInputAmountInUsd,
         successful,
-        setSuccessful
+        setSuccessful,
+
+        solBalance,
+        setSolBalance,
+        solBalanceFiat,
+        setSolBalanceFiat,
+        solUsdcBalance,
+        setSolUsdcBalance
     } = context;
 
     return {
@@ -155,6 +175,13 @@ export const useBuy = () => {
         inputAmountInUsd,
         setInputAmountInUsd,
         successful,
-        setSuccessful
+        setSuccessful,
+
+        solBalance,
+        setSolBalance,
+        solBalanceFiat,
+        setSolBalanceFiat,
+        solUsdcBalance,
+        setSolUsdcBalance
     };
 };
