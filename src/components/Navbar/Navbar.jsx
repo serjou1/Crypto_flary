@@ -6,8 +6,8 @@ import style from './Navbar.module.scss';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
 import { useAccount } from 'wagmi';
-import WalletConnect from './ConnectSolanaButton';
-import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+// import WalletConnect from './ConnectSolanaButton';
+// import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import ConnectHeaderMenu from '../ConnectHeaderMenu/ConnectHeaderMenu';
 
 export const Navbar = ({ navLink }) => {

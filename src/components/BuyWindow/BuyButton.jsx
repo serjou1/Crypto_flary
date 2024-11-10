@@ -1,8 +1,8 @@
 import React from 'react';
 import style from './BuyWindow.module.scss';
-import { NETWORK_SOLANA } from './constants';
+// import { NETWORK_SOLANA } from './constants';
 import { useBuy } from './BuyContext';
-import { BuyButtonSolana } from './BuyButtonSolana';
+// import { BuyButtonSolana } from './BuyButtonSolana';
 import { BuyButtonEvm } from './BuyButtonEvm';
 
 export const BuyButton = ({ updateTokenHoldings }) => {
@@ -11,9 +11,10 @@ export const BuyButton = ({ updateTokenHoldings }) => {
   return (
     <>
       {
-        network === NETWORK_SOLANA
-          ? <BuyButtonSolana updateTokenHoldings={updateTokenHoldings} />
-          : <BuyButtonEvm updateTokenHoldings={updateTokenHoldings} />
+        // network === NETWORK_SOLANA
+        //   ? <BuyButtonSolana updateTokenHoldings={updateTokenHoldings} />
+        //   : 
+        <BuyButtonEvm updateTokenHoldings={updateTokenHoldings} />
       }
     </>
   );

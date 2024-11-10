@@ -1,4 +1,4 @@
-import { TOKEN_PROGRAM_ID, TOKEN_2022_PROGRAM_ID } from '@solana/spl-token';
+// import { TOKEN_PROGRAM_ID, TOKEN_2022_PROGRAM_ID } from '@solana/spl-token';
 
 export const config = {
     ETH_CONTRACT_ADDRESS: "0xDC55a5aCcAB5cf8C6B3286920C282fe3AA6AE68F",
@@ -12,6 +12,6 @@ export const config = {
 
     SOL_USDC_ADDRESS: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
 
-    TOKEN_PROGRAM: TOKEN_PROGRAM_ID,
+    // TOKEN_PROGRAM: TOKEN_PROGRAM_ID,
     SOL_PROGRAM_PUBLIC_KEY: "2EBs8GKZGfrnQSdhQfHmxa1Mik2UgGXRV6kRjS4h8G8T",
 };

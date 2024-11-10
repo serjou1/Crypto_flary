@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
-import { useWallet } from '@solana/wallet-adapter-react';
+// import { useWallet } from '@solana/wallet-adapter-react';
 import { useAccount, useDisconnect } from 'wagmi';
 import style from '../BuyWindow/BuyWindow.module.scss';
 import Arrow from '../../assets/arrow_down.svg';
-import { useWalletConnectButton } from '@solana/wallet-adapter-base-ui';
-import { useWalletModal } from '@solana/wallet-adapter-react-ui';
+// import { useWalletConnectButton } from '@solana/wallet-adapter-base-ui';
+// import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 
 import ETH from '../../assets/ETH.svg';
 import SOL from '../../assets/solana.svg';
@@ -13,7 +13,7 @@ import SOL from '../../assets/solana.svg';
 function ConnectHeaderMenu() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const { isConnected: isEvmConnected } = useAccount();
-    const { connected: isSolanaConnected } = useWallet();
+    // const { connected: isSolanaConnected } = useWallet();
 
     const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
@@ -33,6 +33,13 @@ function ConnectHeaderMenu() {
                 }
             >
                 {
+                    (
+                        isEvmConnected
+                            ? <EvmConnectedButtonContent />
+                            : <NotConnectedButtonContent />
+                    )
+                }
+                {/* {
                     isSolanaConnected
                         ? <SolanaConnectedButtonContent address={"ddddd"} />
                         : (
@@ -40,13 +47,13 @@ function ConnectHeaderMenu() {
                                 ? <EvmConnectedButtonContent />
                                 : <NotConnectedButtonContent />
                         )
-                }
+                } */}
                 <img src={Arrow} alt="" />
                 {
                     isDropdownOpen && (
                         <div className={style.drop_network}>
                             <EvmConnectionManageElement />
-                            <SolanaConnectionManagerElement />
+                            {/* <SolanaConnectionManagerElement /> */}
                         </div>
                     )
                 }
@@ -90,40 +97,40 @@ const EvmConnectedButtonContent = () => {
     )
 };
 
-const SolanaConnectedButtonContent = () => {
-    const { walletIcon } = useWalletConnectButton();
-    const { publicKey } = useWallet();
+// const SolanaConnectedButtonContent = () => {
+//     const { walletIcon } = useWalletConnectButton();
+//     const { publicKey } = useWallet();
 
-    const [displayAddress, setDisplayAddress] = useState(getDisplayAddress(publicKey.toBase58()));
+//     const [displayAddress, setDisplayAddress] = useState(getDisplayAddress(publicKey.toBase58()));
 
-    useEffect(() => {
-        const registerSolanaAddress = async () => {
-            try {
-                const referrerCode = new URLSearchParams(window.location.search).get('ref');
+//     useEffect(() => {
+//         const registerSolanaAddress = async () => {
+//             try {
+//                 const referrerCode = new URLSearchParams(window.location.search).get('ref');
 
-                await fetch("https://back.flary.finance/api/user/registerUser", {
-                    method: "POST",
-                    body: JSON.stringify({ address: publicKey?.toBase58(), referrerCode })
-                });
-            } catch (error) {
-                console.log("Failed to register solana addres", error);
-            }
-        };
+//                 await fetch("https://back.flary.finance/api/user/registerUser", {
+//                     method: "POST",
+//                     body: JSON.stringify({ address: publicKey?.toBase58(), referrerCode })
+//                 });
+//             } catch (error) {
+//                 console.log("Failed to register solana addres", error);
+//             }
+//         };
 
-        setDisplayAddress(getDisplayAddress(publicKey.toBase58()));
+//         setDisplayAddress(getDisplayAddress(publicKey.toBase58()));
 
-        registerSolanaAddress();
-    }, [publicKey]);
+//         registerSolanaAddress();
+//     }, [publicKey]);
 
-    return (
-        <>
-            <div className={style.button_title} style={{ display: 'flex' }}>
-                <img src={walletIcon} alt="" />
-                <p style={{ marginInline: 15 }}>{displayAddress}</p>
-            </div>
-        </>
-    )
-};
+//     return (
+//         <>
+//             <div className={style.button_title} style={{ display: 'flex' }}>
+//                 <img src={walletIcon} alt="" />
+//                 <p style={{ marginInline: 15 }}>{displayAddress}</p>
+//             </div>
+//         </>
+//     )
+// };
 
 const DisconnectButton = (
     { disconnect }
@@ -147,33 +154,33 @@ const ConnectEvmCustomButton = () => {
     )
 };
 
-const ConnectSolanaCustomButton = () => {
-    const { setVisible } = useWalletModal();
+// const ConnectSolanaCustomButton = () => {
+//     const { setVisible } = useWalletModal();
 
-    return (
-        <div className={style.button_title} onClick={() => setVisible(true)} style={{ display: 'flex' }}>
-            <img src={SOL} alt="" />
-            <p style={{ marginInline: 15 }}>Connect SOL</p>
-        </div>
-    )
-};
+//     return (
+//         <div className={style.button_title} onClick={() => setVisible(true)} style={{ display: 'flex' }}>
+//             <img src={SOL} alt="" />
+//             <p style={{ marginInline: 15 }}>Connect SOL</p>
+//         </div>
+//     )
+// };
 
-const SolanaConnectionManagerElement = () => {
-    const { connected: isSolanaConnected, disconnect } = useWallet();
+// const SolanaConnectionManagerElement = () => {
+//     const { connected: isSolanaConnected, disconnect } = useWallet();
 
-    return (
-        <div className={style.button_drop}>
-            {
-                isSolanaConnected
-                    ? <div style={{ display: 'flex' }}>
-                        <SolanaConnectedButtonContent />
-                        <DisconnectButton disconnect={disconnect} />
-                    </div>
-                    : <ConnectSolanaCustomButton />
-            }
-        </div>
-    )
-};
+//     return (
+//         <div className={style.button_drop}>
+//             {
+//                 isSolanaConnected
+//                     ? <div style={{ display: 'flex' }}>
+//                         <SolanaConnectedButtonContent />
+//                         <DisconnectButton disconnect={disconnect} />
+//                     </div>
+//                     : <ConnectSolanaCustomButton />
+//             }
+//         </div>
+//     )
+// };
 
 const EvmConnectionManageElement = () => {
     const { isConnected: isEvmConnected } = useAccount();

@@ -6,9 +6,9 @@ import Arrow from '../../assets/arrow_down.svg';
 import { SelectBscToken, SelectEthToken, SelectSolToken } from './SelectToken';
 import { useBalance } from 'wagmi';
 import { config } from '../../config';
-import { useConnection, useWallet } from '@solana/wallet-adapter-react';
-import { PublicKey } from '@solana/web3.js';
-import { getAssociatedTokenAddress } from '@solana/spl-token';
+// import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+// import { PublicKey } from '@solana/web3.js';
+// import { getAssociatedTokenAddress } from '@solana/spl-token';
 import { useIsMounted } from './useIsMounted';
 import { formatEther, JsonRpcProvider } from 'ethers';
 import { getSolanaPrice } from './solana/get-solana-price';
@@ -22,7 +22,7 @@ const {
     TOKEN_PROGRAM
 } = config;
 
-const USDC_MINT_ADDRESS = new PublicKey(SOL_USDC_ADDRESS);
+// const USDC_MINT_ADDRESS = new PublicKey(SOL_USDC_ADDRESS);
 
 const providerEthereum = new JsonRpcProvider(RPC_ETH);
 const providerBSC = new JsonRpcProvider(RPC_BSC);
@@ -61,62 +61,65 @@ export const YouPayComponent = () => {
         setSolUsdcBalance
     } = useBuy();
 
-    const { connection } = useConnection();
-    const { publicKey, connected: solWalletConnected } = useWallet();
+    // const { connection } = useConnection();
+    // const { publicKey, connected: solWalletConnected } = useWallet();
 
     const mounted = useIsMounted();
 
     const [maxButtonAvailable, setMaxButtonAvailable] = useState(false);
 
     useEffect(() => {
-        if (network === NETWORK_SOLANA) {
-            setMaxButtonAvailable(solWalletConnected);
-        } else {
-            setMaxButtonAvailable(status === 'connected');
-        }
-    }, [network, solWalletConnected, status]);
+        // if (network === NETWORK_SOLANA) {
+        //     setMaxButtonAvailable(solWalletConnected);
+        // } else {
+        setMaxButtonAvailable(status === 'connected');
+        // }
+    }, [network,
+        //  solWalletConnected, 
+        status]);
 
-    useEffect(() => {
-        const fetchBalance = async () => {
-            console.log("Fetching balance");
+    // useEffect(() => {
+    //     const fetchBalance = async () => {
+    //         console.log("Fetching balance");
 
-            console.log('publicKey:', publicKey);
-            if (publicKey) {
-                try {
-                    const price = await getSolanaPrice();
+    //         console.log('publicKey:', publicKey);
+    //         if (publicKey) {
+    //             try {
+    //                 const price = await getSolanaPrice();
 
-                    const balanceLamports = await connection.getBalance(publicKey);
-                    const balanceSol = balanceLamports / 1e9;
-                    setSolBalance(balanceSol);
-                    setSolBalanceFiat(Number((balanceSol * price).toFixed(2)));
+    //                 const balanceLamports = await connection.getBalance(publicKey);
+    //                 const balanceSol = balanceLamports / 1e9;
+    //                 setSolBalance(balanceSol);
+    //                 setSolBalanceFiat(Number((balanceSol * price).toFixed(2)));
 
-                } catch (error) {
-                    console.error("Failed to fetch balance:", error);
-                }
+    //             } catch (error) {
+    //                 console.error("Failed to fetch balance:", error);
+    //             }
 
-                console.log('publicKey:', publicKey.toBase58());
-                console.log('USDC_MINT_ADDRESS:', USDC_MINT_ADDRESS.toBase58());
-                const usdcAddress = await getAssociatedTokenAddress(
-                    USDC_MINT_ADDRESS,
-                    publicKey,
-                    false,
-                    TOKEN_PROGRAM
-                );
+    //             console.log('publicKey:', publicKey.toBase58());
+    //             console.log('USDC_MINT_ADDRESS:', USDC_MINT_ADDRESS.toBase58());
+    //             const usdcAddress = await getAssociatedTokenAddress(
+    //                 USDC_MINT_ADDRESS,
+    //                 publicKey,
+    //                 false,
+    //                 TOKEN_PROGRAM
+    //             );
 
-                console.log('usdcAddress:', usdcAddress.toBase58());
+    //             console.log('usdcAddress:', usdcAddress.toBase58());
 
-                const accountInfo = await connection.getTokenAccountBalance(usdcAddress);
+    //             const accountInfo = await connection.getTokenAccountBalance(usdcAddress);
 
-                console.log('accountInfo:', accountInfo);
+    //             console.log('accountInfo:', accountInfo);
 
-                setSolUsdcBalance(accountInfo.value.uiAmount);
-            }
-            setSolBalance(0);
-            setSolBalanceFiat(0);
-        };
+    //             setSolUsdcBalance(accountInfo.value.uiAmount);
+    //         } 
+    //         // else  ????
+    //         setSolBalance(0);
+    //         setSolBalanceFiat(0);
+    //     };
 
-        fetchBalance();
-    }, [connection, publicKey]);
+    //     fetchBalance();
+    // }, [connection, publicKey]);
 
 
     useEffect(() => {
@@ -140,20 +143,22 @@ export const YouPayComponent = () => {
                 setBalanceValue(bnbValue);
                 setBalanceValueFiat(calculateBalanceInFiat(bnbValue));
             }
-        } else if (network === NETWORK_SOLANA) {
-            setBalanceValue(solBalance);
-            setBalanceValueFiat(solBalanceFiat);
         }
+        // else if (network === NETWORK_SOLANA) {
+        //     setBalanceValue(solBalance);
+        //     setBalanceValueFiat(solBalanceFiat);
+        // }
     },
         [address, status, chainId, network]
     );
 
     const dropTokenList = () => {
-        if (network === NETWORK_SOLANA) {
-            if (!solWalletConnected) {
-                return;
-            }
-        } else if (status === 'disconnected') {
+        // if (network === NETWORK_SOLANA) {
+        //     if (!solWalletConnected) {
+        //         return;
+        //     }
+        // } else 
+        if (status === 'disconnected') {
             return;
         }
 
@@ -217,9 +222,10 @@ export const YouPayComponent = () => {
             return token !== TOKEN_USDT;
         } else if (network === NETWORK_BSC) {
             return token !== TOKEN_USDT;
-        } else if (network === NETWORK_SOLANA) {
-            return token !== TOKEN_USDC;
         }
+        // else if (network === NETWORK_SOLANA) {
+        //     return token !== TOKEN_USDC;
+        // }
         return false;
     };
 
@@ -240,12 +246,13 @@ export const YouPayComponent = () => {
 
             const tokensToAmountNew = availableBalance * networkPrices[NETWORK_BSC] / tokenPrice;
             setTokensToAmount(tokensToAmountNew);
-        } else if (network === NETWORK_SOLANA && token === TOKEN_SOL) {
-            const feeInSolana = 0.00001;
-            const balanceWithoutFee = solBalance - feeInSolana;
-            const availableBalance = Math.max(balanceWithoutFee, 0);
-            setTokensFromAmount(availableBalance);
         }
+        // else if (network === NETWORK_SOLANA && token === TOKEN_SOL) {
+        //     const feeInSolana = 0.00001;
+        //     const balanceWithoutFee = solBalance - feeInSolana;
+        //     const availableBalance = Math.max(balanceWithoutFee, 0);
+        //     setTokensFromAmount(availableBalance);
+        // }
         else {
             setTokensFromAmount(balanceValue);
             const tokensToAmountNew =
@@ -255,7 +262,9 @@ export const YouPayComponent = () => {
     };
 
     const doNotShow = () => {
-        return (network === NETWORK_SOLANA && !solWalletConnected) || (network !== NETWORK_SOLANA && status === 'disconnected');
+        return
+        // (network === NETWORK_SOLANA && !solWalletConnected) || 
+        (network !== NETWORK_SOLANA && status === 'disconnected');
     };
 
     return (
@@ -306,14 +315,14 @@ export const YouPayComponent = () => {
                         ethUsdtValue={ethUsdtValue}
                     />
                     : null}
-                {network === NETWORK_SOLANA
+                {/* {network === NETWORK_SOLANA
                     ? dropToken && <SelectSolToken
                         solanaSolValue={solBalance}
                         solanaSolValueFiat={solBalanceFiat}
                         solanaUsdcValue={solUsdcBalance}
                         handlerSelectPaymentCoin={handlerSelectPaymentCoin}
                     />
-                    : null}
+                    : null} */}
             </div>
 
             <div className={style.max_input}>

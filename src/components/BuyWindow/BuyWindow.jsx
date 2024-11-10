@@ -9,7 +9,7 @@ import ETH from '../../assets/ETH.svg';
 import FLFI from '../../assets/flary_coin.png';
 import SOL from '../../assets/solana.svg';
 
-import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+// import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 
 import { ethers, formatUnits } from 'ethers';
 import { useSwitchChain } from 'wagmi';
@@ -70,7 +70,7 @@ export const BuyWindow = () => {
 
   const [openPopupNetwork, setOpenPopupNetwork] = useState(false);
 
-  const { publicKey, connected: isSolanaConnected } = useWallet();
+  // const { publicKey, connected: isSolanaConnected } = useWallet();
 
   const {
     address,
@@ -103,7 +103,7 @@ export const BuyWindow = () => {
     solBalanceFiat
   } = useBuy();
 
-  const { connection } = useConnection();
+  // const { connection } = useConnection();
 
   const { switchChain } = useSwitchChain();
 
@@ -290,15 +290,16 @@ export const BuyWindow = () => {
       setTokenImage(BNB);
 
       switchChain({ chainId: 56 });
-    } else {
-      setToken(TOKEN_SOL);
-      setTokenImage(SOL);
-
-      console.log('solana', "settomf", solBalance, solBalanceFiat);
-
-      setBalanceValue(solBalance);
-      setBalanceValueFiat(solBalanceFiat);
     }
+    // else {
+    //   setToken(TOKEN_SOL);
+    //   setTokenImage(SOL);
+
+    //   console.log('solana', "settomf", solBalance, solBalanceFiat);
+
+    //   setBalanceValue(solBalance);
+    //   setBalanceValueFiat(solBalanceFiat);
+    // }
 
     if (controlDrop) {
       setDropNetwork(!dropNetwork);
@@ -310,12 +311,12 @@ export const BuyWindow = () => {
     setTokensToAmount('');
   };
 
-  const initializeSolanaPrice = async () => {
-    const price = await getSolanaPrice();
+  // const initializeSolanaPrice = async () => {
+  //   const price = await getSolanaPrice();
 
-    networkPrices[NETWORK_SOLANA] = price;
-    setNetworkPrices(networkPrices);
-  };
+  //   networkPrices[NETWORK_SOLANA] = price;
+  //   setNetworkPrices(networkPrices);
+  // };
 
   const initializeNativeCurrencyPrice = async (network) => {
     const price = await getEvmNativeCurrencyPrice(network);
@@ -337,16 +338,16 @@ export const BuyWindow = () => {
     return Number(ethers.formatEther(balance));
   };
 
-  const getSolanaBoughtTokens = async () => {
-    return publicKey
-      ? getSolanaBoughtTokensFromContract(publicKey, connection)
-      : 0;
-  };
+  // const getSolanaBoughtTokens = async () => {
+  //   return publicKey
+  //     ? getSolanaBoughtTokensFromContract(publicKey, connection)
+  //     : 0;
+  // };
 
   const initBaseCurrenciesPrices = async () => {
     await initializeNativeCurrencyPrice(NETWORK_ETHEREUM);
     await initializeNativeCurrencyPrice(NETWORK_BSC);
-    await initializeSolanaPrice();
+    // await initializeSolanaPrice();
   };
 
   const updateTokenPrice = async () => {
@@ -364,10 +365,10 @@ export const BuyWindow = () => {
       sum = boughtTokensEth + boughtTokensBsc;
     }
 
-    if (isSolanaConnected) {
-      const boughtTokensSol = await getSolanaBoughtTokens();
-      sum += boughtTokensSol;
-    }
+    // if (isSolanaConnected) {
+    //   const boughtTokensSol = await getSolanaBoughtTokens();
+    //   sum += boughtTokensSol;
+    // }
 
     setTokenHoldings(sum.toFixed(2));
   };
@@ -377,9 +378,10 @@ export const BuyWindow = () => {
       return token !== TOKEN_USDT;
     } else if (network === NETWORK_BSC) {
       return token !== TOKEN_USDT;
-    } else if (network === NETWORK_SOLANA) {
-      return token !== TOKEN_USDC;
     }
+    // else if (network === NETWORK_SOLANA) {
+    //   return token !== TOKEN_USDC;
+    // }
     return false;
   };
 
@@ -477,12 +479,12 @@ export const BuyWindow = () => {
                 handlerChangeNetwork={handlerChangeNetwork}
                 name="BNB Chain"
               />
-              <NetworkDropDownElement
+              {/* <NetworkDropDownElement
                 img={SOL}
                 network={NETWORK_SOLANA}
                 handlerChangeNetwork={handlerChangeNetwork}
                 name="Solana"
-              />
+              /> */}
             </div>
           )}
         </div>
